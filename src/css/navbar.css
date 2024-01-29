@@ -5,6 +5,21 @@
   background: url("/public/home/super_car.jpg");
   background-size: cover;
 }
+.format_dealer.home_navbar {
+    width: 100%;
+    height: 500px;
+    display: flex;
+    background: url("/public/dealer/car.avif");
+    background-size: cover;  
+  }
+  
+  .format_others.home_navbar {
+    width: 100%;
+    height: 500px;
+    display: flex;
+    background: url("/public/dealer/car.avif");
+    background-size: cover;  
+  }
 
 .home_navbar .navbar_config {
   width: 1244.69px;
