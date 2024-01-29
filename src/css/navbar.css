@@ -1,0 +1,195 @@
+.format.home_navbar {
+  width: 100%;
+  height: 800px;
+  display: flex;
+  background: url("/public/home/super_car.jpg");
+  background-size: cover;
+}
+
+.home_navbar .navbar_config {
+  width: 1244.69px;
+  height: 46px;
+  margin-left: 26px;
+  margin-top: 55px;
+}
+.home_navbar .navbar_config .border_icons {
+  display: flex;
+  flex-direction: column;
+}
+
+.home_navbar .navbar_config .angel_image {
+  width: 120px;
+  height: 55px;
+  flex-shrink: 0;
+  border-radius: 25%;
+}
+
+.home_navbar .navbar_links {
+  width: 752px;
+  height: 46px;
+}
+
+.home_navbar a {
+  text-decoration: none;
+}
+
+.home_navbar .hover-line a {
+  color: #ffffff;
+}
+
+.home_navbar .underline {
+  display: block;
+  content: "";
+  border-bottom: solid 2px #d7b486;
+}
+
+.home_navbar .hover-line:after {
+  display: block;
+  content: "";
+  border-bottom: solid 2px #d7b486;
+  transform: scaleX(0);
+  transition: transform 250ms ease-in-out;
+}
+
+.home_navbar .hover-line:hover:after {
+  transform: scaleX(1);
+}
+
+.home_navbar .head_information {
+  display: flex;
+  flex-direction: column;
+  width: 1290px;
+  height: 477px;
+}
+
+.home_navbar .define_restaurant {
+  position: relative;
+  width: 484px;
+  height: 143px;
+  margin-top: 40px;
+
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 50px;
+  line-height: 75x;
+  color: #ffffff;
+}
+
+.home_navbar .timeline_service {
+  position: relative;
+  width: 466px;
+  height: 28px;
+  margin-top: 30px;
+
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 30px;
+  color: #d5d5d5;
+}
+
+
+.login-button {
+  background-color: #149746;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+}
+
+.login-button:hover {
+  background-color: #19b249;
+}
+
+.login-button i {
+  margin-right: 8px;
+}
+
+.head_information .site_name {
+  height: 20px;
+  width: auto;
+  margin-top: 10px;
+  margin-left: 140px;
+}
+.site_name .name_deco {
+  color: #ffc600;
+
+  font-family: "DM Mono";
+  font-size: 20px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 100%; /* 20px */
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.head_information .center_word_1 {
+  margin-left: 140px;
+  display: flex;
+  flex-direction: row;
+}
+.center_word_1 .center_word_inner1 {
+  color: #fff;
+
+  font-family: Inter;
+  font-size: 80px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 100%; /* 80px */
+}
+.center_word_1 .center_word_inner2 {
+  color: #ffc600;
+
+  font-family: Inter;
+  font-size: 80px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 100%; /* 80px */
+}
+.center_word_1 .center_word_div {
+  height: 80px;
+  width: auto;
+}
+.head_information .site_desc {
+  margin-left: 140px;
+  margin-top: 134px;
+  width: 399px;
+  height: auto;
+}
+.site_desc .site_desc_text {
+  color: #fff;
+
+  font-family: "DM Mono";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 180%; /* 28.8px */
+}
+
+.head_information .bottom_frame {
+  margin-left: 249px;
+  margin-top: 70px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.bottom_frame .frame_div {
+  width: 150px;
+  height: 150px;
+  justify-content: center;
+}
+.frame_div .svg_text {
+  color: #fff;
+
+  font-family: Inter;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 100%; /* 20px */
+  text-transform: uppercase;
+}

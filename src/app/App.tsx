@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../css/App.css';
+import "../css/navbar.css";
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { DealerPage } from './screens/DealerPage';
@@ -9,13 +10,24 @@ import { MemberPage } from './screens/MemberPage';
 import { HelpPage } from './screens/HelpPage';
 import { LoginPage } from './screens/LoginPage';
 import { HomePage } from './screens/HomePage';
+import { NavbarHome } from "./components/header";
+import { NavbarDealer } from "./components/header/dealer";
+import { NavbarOthers } from "./components/header/others";
 
 
 function App() {
+  const [path, setPath] = useState()
+  const main_path = window.location.pathname;
   return (
     <Router>
-      <div>
-        <nav>
+      {main_path == "/" ? (
+        <NavbarHome setPath={setPath}/>
+      ) : main_path.includes("/dealer") ? (
+        <NavbarDealer setPath={setPath}/>
+      ) : (
+        <NavbarOthers setPath={setPath}/>
+      )}
+        {/* <nav>
           <ul>
             <li>
               <Link to="/">Home</Link>
@@ -39,7 +51,7 @@ function App() {
               <Link to="/login">LoginPage</Link>
             </li>
           </ul>
-        </nav>
+        </nav> */}
 
         <Switch>
         <Route path="/dealer">
@@ -64,7 +76,7 @@ function App() {
             <HomePage />
           </Route>
         </Switch>
-      </div>
+      
     </Router>
   );
 }
