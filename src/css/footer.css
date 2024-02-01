@@ -1,0 +1,187 @@
+.footer_config {
+  position: relative;
+  display: flex;
+  padding: 20.96px 26.2px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20.96px;
+  width: 100%;
+  height: auto;
+  background: linear-gradient(to right, #3498db, #2980b9);
+  color: #fff;
+  border-top: 0.327px solid let(--Border, rgba(0, 0, 0, 0.2));
+}
+.footer_config .footer_up {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+  height: auto;
+}
+.footer_up .footer_logo {
+  margin-left: 15px;
+  margin-top: 1.55px;
+  margin-bottom: 1.55px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+.footer_logo span {
+  color: let(--primary-blue-600, let(--color-brand-600, #0eb4d3));
+  font-family: Poppins;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 9.17px;
+  margin-left: 4px;
+}
+.footer_up_left .footer_service {
+  width: 240px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 11px;
+}
+.footer_service span {
+  color: let(--Text-400, #5c5f66);
+  font-family: Poppins;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 5.24px;
+}
+.footer_up_left .social_icons {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 125.28px;
+  height: 15.14px;
+  margin-top: 11.3px;
+}
+
+.footer_up_2 span {
+  color: var(--Text-900, #101113);
+  font-family: Poppins;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 15px;
+}
+.footer_up_2 .footer_up_2_1 {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin-top: 8px;
+  justify-content: space-between;
+}
+.footer_up_2_1 span {
+  color: var(--Text-400, #5c5f66);
+  font-family: Poppins;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 15px;
+}
+.footer_config .footer_head {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 20.96px 26.2px;
+}
+.footer_head .head_up {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.head_up h1 {
+  color: var(--Text-900, #101113);
+  text-align: center;
+  font-family: Poppins;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 9.17px; /* 140% */
+  letter-spacing: -0.065px;
+}
+
+.head_up p {
+  color: var(--Text-400, #5c5f66);
+  text-align: center;
+  font-family: Poppins;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 7.86px;
+}
+.footer_head .email_box {
+  display: flex;
+  width: 200.798px;
+  padding: 3.93px;
+  align-items: center;
+  gap: 5.24px;
+  border-radius: 4.62px;
+  border: 0.327px solid var(--Neutral-300, #d6d6d6);
+}
+.email_box span {
+  color: var(--Text-300, #a6a7ab);
+  font-family: Poppins;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 12px;
+  flex: 1 0 0;
+}
+.head_up .subscribe_button {
+  border-radius: 2.62px;
+  background: var(--color-brand-600, #0eb4d3);
+  display: flex;
+  padding: 3.93px 6.55px;
+  justify-content: center;
+  align-items: center;
+  gap: 2.62px;
+}
+.footer_config .footer_down {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-left: 50px;
+  margin-right: 50px;
+  width: 100%;
+}
+
+.footer_down .down_left {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5.24px;
+}
+.down_left span {
+  color: var(--Text-300, #A6A7AB);
+  font-family: Poppins;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 10px;
+}
+.down_left .black_point {
+  width: 4px;
+  height: 4px;
+  border-radius: 5.24px;
+  background: var(--Text-400, #5c5f66);
+}
+.footer_down .down_right {
+  color: var(--Text-300, #A6A7AB);
+font-family: Poppins;
+font-size: 10px;
+font-style: normal;
+font-weight: 400;
+line-height: 10px;
+margin-right: 55px;
+}
