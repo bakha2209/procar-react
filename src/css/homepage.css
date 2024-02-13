@@ -1,0 +1,505 @@
+/* ByCategory  */
+.category_frame {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  background: #fffcfc;
+}
+.category_frame .top_text {
+  width: 90%;
+  height: 83px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.category_frame .top_text p {
+  color: #0d1637;
+
+  font-family: "Plus Jakarta Sans";
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 26px; /* 188.636% */
+  text-transform: capitalize;
+}
+.category_frame .top_text .top_text_view {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+.top_text .top_text_view p {
+  color: #d01818;
+  text-align: center;
+
+  font-family: "Plus Jakarta Sans";
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 16px; /* 187.5% */
+  letter-spacing: 1.76px;
+  text-transform: uppercase;
+}
+.category_frame .swiper-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.category_frame .prev_btn,
+.category_frame .next_btn {
+  width: 10%;
+  height: 147px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.category_frame .cars_avatars_wrapper {
+  width: 90%;
+  height: 147px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+}
+.category_frame .cars_avatars_wrapper .car_avatars {
+  width: 108px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f0f0f2;
+}
+.category_frame .car_avatars img {
+  width: 108px;
+  height: 108px;
+
+  border-radius: 25%;
+}
+.car_avatars .car_avatars_text {
+  width: 108px;
+  border: outset;
+  border-color: hsl(0, 0%, 73%);
+  border-radius: 12px;
+  justify-content: center;
+  align-items: center;
+  padding-left: 20px;
+}
+.category_frame .car_avatars .car_avatars_text span {
+  color: #0d1637;
+
+  font-family: "Plus Jakarta Sans";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 14px;
+}
+
+/* TOP BRANDS */
+.top_brand {
+  width: 100%;
+  height: auto;
+  background: #f2f5fb;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+}
+.brand_red_text {
+  color: #d01818;
+
+  text-align: center;
+  leading-trim: both;
+
+  text-edge: cap;
+  font-family: "Plus Jakarta Sans";
+  font-size: 8px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 12px; /* 187.5% */
+  letter-spacing: 1.76px;
+  text-transform: uppercase;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+.brand_blue_text {
+  color: #0d1637;
+
+  text-align: center;
+  font-family: "Plus Jakarta Sans";
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 26px;
+  text-transform: capitalize;
+}
+.top_brand .brand_stack {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+}
+.brand_stack .brand_box {
+  width: 170px;
+  height: 210px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #ebebeb;
+  padding: 25px;
+  background: #fff;
+  margin-right: 15px;
+  box-shadow: 0px 6px 17px 0px rgba(0, 0, 0, 0.04);
+}
+.brand_box p {
+  color: #0d1637;
+
+  text-align: center;
+  font-family: "DM Sans";
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 31px; /* 155% */
+  text-transform: capitalize;
+}
+.top_brand .brand_button {
+  width: 120px;
+  height: 40px;
+  color: #fff;
+
+  text-align: center;
+  font-family: "DM Sans";
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  background: #d01818;
+}
+/* BEST DEALERS */
+.all_vehicle {
+  width: 100%;
+  height: auto;
+  background: #fff;
+  display: flex;
+}
+.all_vehicle .main_stack {
+  width: 1920px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  margin-left: 60px;
+  margin-top: 65px;
+  margin-right: 60px;
+}
+.main_stack .main_text_desc {
+  color: #d01818;
+  leading-trim: both;
+  text-edge: cap;
+  font-family: "Plus Jakarta Sans";
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 30px; /* 187.5% */
+  letter-spacing: 1.44px;
+  text-transform: uppercase;
+}
+.main_stack .all_car_box {
+  position: relative;
+  width: 1305px;
+  height: auto;
+  margin-top: 70px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.ads_car_frame {
+  width: 100%;
+  height: 693px;
+  display: flex;
+  overflow: hidden;
+  box-shadow: 0px -62px 60px 20px rgb(217 217 217 / 40%);
+  margin-top: 186px;
+  background-color: #956dd3;
+}
+.ads_video {
+  width: 100%;
+  background: #0c0e12;
+  display: flex;
+  box-shadow: 0px -8px 90px rgb(215 215 255);
+  transform: scale(1.5);
+  overflow: hidden;
+}
+
+/* EVENTS */
+.homepage .events_frame {
+  margin-top: 45px;
+  width: 100%;
+  height: 700px;
+  display: flex;
+  overflow: hidden;
+}
+
+.homepage .events_main {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.homepage .events_main .events_text {
+  position: relative;
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.homepage .category_title {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 42px;
+
+  color: #e3c08d;
+}
+
+.homepage .events_main .prev_next_frame {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 250px;
+  height: 24px;
+  margin-left: 901px;
+  margin-top: 19px;
+}
+
+.homepage .dot_frame_pagination {
+  position: relative;
+  width: auto;
+  display: flex;
+}
+
+.homepage .events_main .events_info {
+  margin-top: 75px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.homepage .events_info_frame {
+  position: relative;
+  width: 679px;
+  height: 447px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.events_img {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  border-radius: 10px;
+  background-size: cover;
+}
+
+.events_desc {
+  position: absolute;
+  padding: 10px;
+  display: flex;
+  width: 90%;
+  height: auto;
+  bottom: 5px;
+  background: #ffffff;
+  box-shadow: 0px 40px 30px rgba(25, 25, 46, 0.04);
+  border-radius: 8px;
+}
+
+.events_desc .events_bott {
+  width: 97%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.events_desc .events_bott .bott_left {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.bott_left .event_title_speaker {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.event_title_speaker .event_organizator {
+  display: flex;
+  align-items: center;
+}
+
+.event_organizator .spec_text_author {
+  font-family: "GT Walsheim Pro";
+  font-style: normal;
+  line-height: 20px;
+  color: #140342;
+}
+
+.bott_left .text_desc {
+  font-family: "GT Walsheim Pro";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 26px;
+  color: #4f547b;
+}
+
+.bott_left .bott_info {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: row;
+  width: 100%;
+  height: 16px;
+}
+
+.bott_info .bott_info_main {
+  margin-left: 10px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  width: auto;
+  height: 100%;
+  font-family: "GT Walsheim Pro";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  color: #4f547b;
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+
+  /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* STATISTICS */
+.static_frame {
+  width: 100%;
+  height: auto;
+  background: #737985;
+  margin-bottom: 15px;
+}
+.static_frame .stat_stack {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-left: 60px;
+  margin-right: 20px;
+  margin-top: 20px;
+}
+.stat_stack .stat_heading {
+  width: 350px;
+
+  color: #fff;
+  font-family: "Plus Jakarta Sans";
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 36px; /* 121.154% */
+  text-transform: capitalize;
+}
+.stat_stack .stat_desc {
+  width: 440px;
+  color: #fff;
+  margin-top: 25px;
+  font-family: "Plus Jakarta Sans";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 25px;
+}
+.stat_stack .head_red_text {
+  color: #d01818;
+  justify-content: flex-start;
+  leading-trim: both;
+  text-edge: cap;
+  font-family: "Plus Jakarta Sans";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 30px; /* 187.5% */
+  letter-spacing: 1.76px;
+  text-transform: uppercase;
+}
+.stat_stack .stat_bottom {
+  width: 100%;
+  height: 180px;
+  background: #fff;
+  box-shadow: 0px 4px 24px 0px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+.stat_bottom .inner_box {
+  width: 200px;
+  height: 140px;
+  border: 1px solid rgba(65, 74, 79, 0.11);
+  background: #fff;
+  align-items: center;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+}
+.stat_bottom .inner_box_num {
+  color: #0d1637;
+  text-align: center;
+  leading-trim: both;
+  text-edge: cap;
+  font-family: "Plus Jakarta Sans";
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 700;
+   /* 79.412% */
+  text-transform: capitalize;
+}
+.stat_bottom .inner_box_desc {
+  color: #0d1637;
+
+  text-align: center;
+  font-family: "Plus Jakarta Sans";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+   /* 461.111% */
+  text-transform: capitalize;
+}
