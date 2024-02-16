@@ -1,0 +1,390 @@
+.dealer_page {
+  position: relative;
+  width: 100%;
+  height: auto;
+  background: #fff;
+}
+/* ALL_DEALER */
+.dealer_page .all_dealer {
+  display: flex;
+  flex-direction: column;
+  margin-right: 20px;
+  margin-left: 60px;
+  margin-top: 50px;
+}
+.all_dealer .main_title {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+.all_dealer .main_title .vertical_line {
+  width: 1.651px;
+  height: 21px;
+  flex-shrink: 0;
+  background: #d01818;
+}
+.all_dealer .main_title .dealer_title {
+  color: #000;
+  margin-left: 8px;
+  leading-trim: both;
+  text-edge: cap;
+  font-family: "Plus Jakarta Sans";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 34px;
+  /* 233.333% */
+}
+.all_dealer .all_dealer_box {
+  position: relative;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 50px;
+}
+.all_dealer_box .hor_list {
+  height: 70px;
+  width: 100%;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: #f8f8f8;
+  margin-bottom: 5px;
+}
+.all_dealer_box .hor_list .hor_list_inner {
+  margin-top: 14px;
+  margin-bottom: 14px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.hor_list .hor_list_inner .dealer_name {
+  color: #000;
+
+  leading-trim: both;
+
+  text-edge: cap;
+  font-family: "Plus Jakarta Sans";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px; /* 155.556% */
+  text-transform: capitalize;
+}
+.hor_list .hor_list_inner .phone_box {
+  width: 33px;
+  height: 33px;
+  display: flex;
+  flex-shrink: 0;
+  background: #fff;
+  border-radius: 50%;
+  margin-top: 5px;
+  margin-right: 8px;
+  justify-content: center;
+  align-items: center;
+  filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.06));
+}
+.hor_list .hor_list_inner .dealer_phone {
+  color: #000;
+  leading-trim: both;
+  text-edge: cap;
+  font-family: "Plus Jakarta Sans";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 19px;
+  text-decoration-line: underline;
+}
+.hor_list .hor_list_inner .like_view {
+  width: 100px;
+  background: #ffffff;
+  border-radius: 20%;
+  justify-content: center;
+  align-items: center;
+}
+.all_dealer .bottom_box {
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+/* ONE_DEALER */
+.dealer_page .one_dealer {
+  display: flex;
+  flex-direction: column;
+  margin-right: 20px;
+  margin-left: 60px;
+  margin-top: 40px;
+}
+.one_dealer .dealer_page_title {
+  color: #000;
+  font-family: "Plus Jakarta Sans";
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 30px; /* 394.444% */
+  text-transform: capitalize;
+}
+.one_dealer .title_address {
+  color: #83827f;
+
+  font-family: "DM Sans";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px; /* 183.333% */
+}
+.one_dealer .central_info {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+}
+.one_dealer .central_info .info_left {
+  flex-direction: column;
+  height: auto;
+  width: 800px;
+}
+.central_info .info_left .big_image {
+  width: 575px;
+  height: 327px;
+  flex-shrink: 0;
+  border-radius: 13px;
+  background: #b6b6bc;
+  margin-bottom: 8px;
+}
+.info_left .image_desc {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+.info_left .map_box {
+  width: 33px;
+  height: 33px;
+  display: flex;
+  flex-shrink: 0;
+  background: #fff;
+  border-radius: 50%;
+  margin-top: 5px;
+  margin-right: 8px;
+  justify-content: center;
+  align-items: center;
+  filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.06));
+}
+.info_left .dealer_names {
+  color: #000;
+
+  leading-trim: both;
+
+  text-edge: cap;
+  font-family: "Plus Jakarta Sans";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px; /* 155.556% */
+  text-transform: capitalize;
+}
+.info_left .dealer_phones {
+  color: #000;
+  leading-trim: both;
+  text-edge: cap;
+  font-family: "Plus Jakarta Sans";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 19px;
+  text-decoration-line: underline;
+}
+.info_left .inventory_sec {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+}
+.info_left .inventory_sec .invent_line {
+  width: 100%;
+  height: 5px;
+
+  margin-top: 18px;
+  margin-bottom: 5px;
+}
+.inventory_sec .all_invent_box {
+  position: relative;
+  width: 100%;
+  height: auto;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.all_invent_box .car_img {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+}
+.all_invent_box .view_btn {
+  width: 80px;
+  height: 30px;
+  margin-top: 190px;
+  margin-left: 10px;
+  padding-left: 25px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  background: rgba(28, 23, 23, 0.59);
+  border: 2px solid #b48b50;
+  border-radius: 10px;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 13px;
+  color: #ffffff;
+}
+.all_invent_box .car_img:hover .view_btn {
+  opacity: 1;
+}
+.all_invent_box .view_btn img {
+  width: 30px;
+  height: 12px;
+}
+.all_invent_box .view_btness {
+  position: absolute;
+  padding: 20px;
+  top: 217px;
+  width: 64px;
+  height: 46px;
+  left: 105px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  background: rgb(198 0 255 / 66%);
+  border: 2px solid #d7b686;
+  border-radius: 10px;
+
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 10px;
+  line-height: 15px;
+  color: #ffffff;
+}
+.one_dealer .central_info .info_right {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  width: 380px;
+}
+.info_right .seller_page {
+  width: 246px;
+  height: 345px;
+  background: #f4f6f8;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+}
+.seller_page .seller_avatar {
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 30px;
+}
+.seller_name h2 {
+  color: #202732;
+
+  text-align: center;
+  font-family: "Plus Jakarta Sans";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  text-transform: uppercase;
+}
+.seller_name p {
+  color: #727a7d;
+
+  text-align: center;
+  font-family: "DM Sans";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.seller_page .seller_desc {
+  color: #5e5f63;
+  width: auto;
+  height: auto;
+  text-align: center;
+  font-family: "Plus Jakarta Sans";
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 15px; /* 180% */
+  margin-left: 20px;
+  margin-right: 20px;
+}
+.seller_page .seller_social {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.info_right .car_location {
+  display: flex;
+  flex-direction: column;
+  padding-left: 22px;
+  padding-top: 36px;
+  padding-right: 18px;
+  padding-bottom: 16;
+  background: #f8f8f8;
+  width: 248px;
+  height: auto;
+  margin-top: 45px;
+}
+.vertical_line {
+  width: 1.651px;
+  height: 14px;
+  flex-shrink: 0;
+  background: #d01818;
+  margin-right: 8px;
+}
+.line_near {
+  color: #000;
+
+  leading-trim: both;
+
+  text-edge: cap;
+  font-family: "Plus Jakarta Sans";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 32px; /* 233.333% */
+}
+.car_location .map_loc {
+  width: 222px;
+  height: 235px;
+}
+.info_right .car_filtering {
+  width: 248px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  background: #f8f8f8;
+  margin-top: 30px;
+}
