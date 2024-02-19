@@ -388,3 +388,313 @@
   background: #f8f8f8;
   margin-top: 30px;
 }
+/* CHOSENCAR */
+.dealer_page .chosen_car {
+  width: 100%;
+  height: auto;
+  display: flex;
+  background: #fff;
+  align-items: center;
+}
+.chosen_car .main_car {
+  flex-direction: column;
+  margin-left: 60px;
+  margin-right: 60px;
+}
+.main_car .swiper_box {
+  margin-top: 30px;
+
+  height: 458px;
+  margin-bottom: 20px;
+}
+.swiper_box.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper_box.swiper-slide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.swiper_box.swiper-slide img {
+  display: block;
+  width: 100%;
+}
+
+.swiper_box.swiper-slide:first-child {
+  transition: transform 100ms;
+}
+
+.swiper_box.swiper-slide:first-child img {
+  transition: box-shadow 500ms;
+}
+
+.swiper-slide.swiper-slide-active:first-child {
+  transform: translateX(50%);
+  z-index: 2;
+}
+.main_car .car_description {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  height: auto;
+}
+.car_description .car_main_title {
+  flex-direction: row;
+  align-items: center;
+}
+.car_description .car_title {
+  color: #1b1b1b;
+
+  font-family: "DM Sans";
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 23px; /* 63.889% */
+  text-transform: capitalize;
+}
+.car_description .sale_off {
+  width: 52.553px;
+  height: 20px;
+  flex-shrink: 0;
+  border-radius: 1px;
+  background: #ea1b25;
+  margin-left: 40px;
+  padding-left: 5px;
+}
+.car_description .car_brand {
+  flex-direction: row;
+  width: 40%;
+  justify-content: space-between;
+}
+.car_description .car_brand .car_toyota {
+  color: #000;
+
+  font-family: "DM Sans";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 23px; /* 115% */
+  text-transform: capitalize;
+}
+.car_description .car_para {
+  color: #83827f;
+
+  font-family: "DM Sans";
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 33px; /* 183.333% */
+  margin-bottom: 40px;
+}
+.car_description .car_model {
+  color: #000;
+
+  font-family: "DM Sans";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 23px; /* 115% */
+  text-transform: capitalize;
+  margin-bottom: 30px;
+}
+.car_description .con_trans {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 45px;
+}
+.car_description .con_trans p {
+  color: #000;
+
+  leading-trim: both;
+
+  text-edge: cap;
+  font-family: "Plus Jakarta Sans";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  text-transform: capitalize;
+  margin-bottom: 15px;
+}
+.car_description .con_trans .con_div {
+  width: 295.041px;
+  height: 55px;
+  flex-shrink: 0;
+  border-radius: 3px;
+  border: 1px solid #ebebeb;
+  padding-left: 13px;
+  background: #fff;
+  color: #86898e;
+
+  font-family: "DM Sans";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 56px; /* 350% */
+}
+.car_description .car_price {
+  flex-direction: row;
+  justify-content: space-between;
+  width: 50%;
+}
+.car_price .price_old {
+  flex-direction: row;
+}
+.car_price .price_old p {
+  color: #000;
+
+  font-family: "DM Sans";
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 23px; /* 76.667% */
+  text-transform: capitalize;
+}
+.car_price .price_old span {
+  color: #83827f;
+
+  font-family: "DM Sans";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 23px; /* 115% */
+  text-decoration: line-through;
+  text-transform: capitalize;
+}
+.car_price .otzivlar {
+  width: 51.522px;
+  height: 50px;
+  flex-shrink: 0;
+  border-radius: 36px;
+  background: #fff;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08);
+  margin-right: 5px;
+}
+.car_description .boston_address {
+  color: #000;
+
+  font-family: "Plus Jakarta Sans";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 23px; /* 143.75% */
+  letter-spacing: 0.32px;
+  text-transform: capitalize;
+  margin-left: 10px;
+}
+.main_car .car_overview {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+  border-radius: 15px;
+  border: 1px solid #ebebeb;
+  margin-bottom: 50px;
+  background: #f8f8f8;
+  padding: 30px 61px;
+}
+.car_overview h3 {
+  color: #000;
+
+  leading-trim: both;
+
+  text-edge: cap;
+  font-family: "Plus Jakarta Sans";
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 26px; /* 233.333% */
+}
+.car_overview .overview_line {
+  flex-direction: row;
+  align-items: center;
+}
+.overview_line img {
+  width: 33px;
+  height: 32px;
+  margin-right: 30px;
+}
+.overview_line p {
+  color: #24242a;
+  font-family: "Plus Jakarta Sans";
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px;
+}
+.overview_line span {
+  color: #595960;
+  font-family: "Plus Jakarta Sans";
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+}
+.main_car .car_features {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+  padding: 30px 61px;
+  border-radius: 15px;
+  border: 1px solid #ebebeb;
+  margin-bottom: 50px;
+}
+.car_features h3 {
+  color: #000;
+
+  leading-trim: both;
+
+  text-edge: cap;
+  font-family: "Plus Jakarta Sans";
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 26px; /* 233.333% */
+}
+.car_features .feature_line {
+  flex-direction: row;
+  display: flex;
+
+  justify-content: space-between;
+}
+.feature_line img {
+  width: 18px;
+  height: 18px;
+  margin-right: 12px;
+}
+.feature_line p {
+  color: #595960;
+
+  font-family: "Plus Jakarta Sans";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 18px; /* 300% */
+}
+.main_car h3 {
+  color: #000;
+
+leading-trim: both;
+
+text-edge: cap;
+font-family: "Plus Jakarta Sans";
+font-size: 24px;
+font-style: normal;
+font-weight: 700;
+line-height: 56px; /* 233.333% */
+}
+.main_car .location_car {
+  width: 100%;
+  height: 490px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}

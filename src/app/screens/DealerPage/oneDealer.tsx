@@ -1,8 +1,9 @@
 import { Box, Container, Button } from "@mui/material";
 import React from "react";
-import Select from "@mui/joy/Select";
+
 import Option from "@mui/joy/Option";
-import { StyledEngineProvider } from "@mui/joy/styles";
+import { Select } from "antd";
+import { StyledEngineProvider } from "@mui/material/styles";
 import {
   AspectRatio,
   Card,
@@ -23,12 +24,25 @@ import { styled } from "@mui/material/styles";
 import Badge from "@mui/material/Badge";
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Selects, { SelectChangeEvent } from "@mui/material/Select";
+import Slider from '@mui/material/Slider';
+import Typographys from '@mui/material/Typography';
 
-
-
+const MAX = 100;
+const MIN = 0;
+const marks = [
+  {
+    value: MIN,
+    label: '',
+  },
+  {
+    value: MAX,
+    label: '',
+  },
+];
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -68,6 +82,15 @@ export function OneDealer() {
     newValue: string | null
   ) => {
     alert(`You chose "${newValue}"`);
+  };
+  const [make, setMake] = React.useState("");
+
+  const handleClick = (event: SelectChangeEvent) => {
+    setMake(event.target.value);
+  };
+  const [val, setVal] = React.useState<number>(MIN);
+  const handlePrice = (_: Event, newValue: number | number[]) => {
+    setVal(newValue as number);
   };
   return (
     <div className="one_dealer">
@@ -138,13 +161,34 @@ export function OneDealer() {
               <Stack flexDirection={"row"} justifyContent={"space-between"}>
                 <h2 style={{ color: "#000" }}>Dealer Inventory</h2>
 
-                <CssVarsProvider>
-                  <Select defaultValue="Recently" onChange={handleChange}>
-                    <Option value="Recently">Recently</Option>
-                    <Option value="Likes">Most Liked</Option>
-                    <Option value="Views">Most Viewed</Option>
-                  </Select>
-                </CssVarsProvider>
+                <Select
+                  showSearch
+                  style={{ width: 200,marginTop:"20px",marginRight:"20px" }}
+                  placeholder="Search to Select"
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    (option?.label ?? "").includes(input)
+                  }
+                  filterSort={(optionA, optionB) =>
+                    (optionA?.label ?? "")
+                      .toLowerCase()
+                      .localeCompare((optionB?.label ?? "").toLowerCase())
+                  }
+                  options={[
+                    {
+                      value: "1",
+                      label: "Recently",
+                    },
+                    {
+                      value: "2",
+                      label: "Most Viewed",
+                    },
+                    {
+                      value: "3",
+                      label: "Most Liked",
+                    },
+                  ]}
+                />
               </Stack>
               <div className="invent_line"></div>
               <Stack className="all_invent_box">
@@ -427,7 +471,143 @@ export function OneDealer() {
                 <div className="vertical_line"></div>
                 <div className="line_near">Search By Filter</div>
               </Stack>
-
+              <StyledEngineProvider injectFirst>
+                <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                  <InputLabel id="demo-select-small-label">Make</InputLabel>
+                  <Selects
+                    labelId="demo-select-small-label"
+                    id="demo-select-small"
+                    value={make}
+                    label="Make"
+                    onChange={handleClick}
+                  >
+                    <MenuItem value="">
+                      <em>All</em>
+                    </MenuItem>
+                    <MenuItem value={10}>BMW</MenuItem>
+                    <MenuItem value={20}>Audi</MenuItem>
+                    <MenuItem value={30}>KIA</MenuItem>
+                  </Selects>
+                </FormControl>
+                <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                  <InputLabel id="demo-select-small-label">Transmission</InputLabel>
+                  <Selects
+                    labelId="demo-select-small-label"
+                    id="demo-select-small"
+                    value={make}
+                    label="Make"
+                    onChange={handleClick}
+                  >
+                    <MenuItem value="">
+                      <em>All</em>
+                    </MenuItem>
+                    <MenuItem value={1}>AutoMative</MenuItem>
+                    <MenuItem value={2}>Manual</MenuItem>
+                    
+                  </Selects>
+                </FormControl>
+                <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                  <InputLabel id="demo-select-small-label">Petrol Type</InputLabel>
+                  <Selects
+                    labelId="demo-select-small-label"
+                    id="demo-select-small"
+                    value={make}
+                    label="Make"
+                    onChange={handleClick}
+                  >
+                    <MenuItem value="">
+                      <em>All</em>
+                    </MenuItem>
+                    <MenuItem value={3}>Gasoline</MenuItem>
+                    <MenuItem value={4}>Dizel</MenuItem>
+                    <MenuItem value={5}>Gas</MenuItem>
+                    <MenuItem value={6}>Hybrid</MenuItem>
+                    <MenuItem value={7}>Electric</MenuItem>
+                  </Selects>
+                </FormControl>
+                <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                  <InputLabel id="demo-select-small-label">Color</InputLabel>
+                  <Selects
+                    labelId="demo-select-small-label"
+                    id="demo-select-small"
+                    value={make}
+                    label="Make"
+                    onChange={handleClick}
+                  >
+                    <MenuItem value="">
+                      <em>All</em>
+                    </MenuItem>
+                    <MenuItem value={8}>White</MenuItem>
+                    <MenuItem value={9}>Black</MenuItem>
+                    <MenuItem value={11}>Red</MenuItem>
+                  </Selects>
+                </FormControl>
+                <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                  <InputLabel id="demo-select-small-label">Year</InputLabel>
+                  <Selects
+                    labelId="demo-select-small-label"
+                    id="demo-select-small"
+                    value={make}
+                    label="Make"
+                    onChange={handleClick}
+                  >
+                    <MenuItem value="">
+                      <em>All</em>
+                    </MenuItem>
+                    <MenuItem value={12}>2024</MenuItem>
+                    <MenuItem value={13}>2023</MenuItem>
+                    <MenuItem value={14}>2022</MenuItem>
+                  </Selects>
+                </FormControl>
+                <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                  <InputLabel id="demo-select-small-label">Body Type</InputLabel>
+                  <Selects
+                    labelId="demo-select-small-label"
+                    id="demo-select-small"
+                    value={make}
+                    label="Make"
+                    onChange={handleClick}
+                  >
+                    <MenuItem value="">
+                      <em>All</em>
+                    </MenuItem>
+                    <MenuItem value={15}>Sedan</MenuItem>
+                    <MenuItem value={16}>SUV</MenuItem>
+                    <MenuItem value={17}>CrossOver</MenuItem>
+                  </Selects>
+                </FormControl>
+              </StyledEngineProvider>
+              <Stack flexDirection={"row"} alignItems={"center"}>
+                <div className="vertical_line"></div>
+                <div className="line_near">By Price</div>
+              </Stack>
+              <Box sx={{ width: 250 }}>
+      <Slider
+        marks={marks}
+        step={10}
+        value={val}
+        valueLabelDisplay="auto"
+        min={MIN}
+        max={MAX}
+        onChange={handlePrice}
+      />
+      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Typographys
+          variant="body2"
+          onClick={() => setVal(MIN)}
+          sx={{ cursor: 'pointer' }}
+        >
+          {MIN} min
+        </Typographys>
+        <Typographys
+          variant="body2"
+          onClick={() => setVal(MAX)}
+          sx={{ cursor: 'pointer' }}
+        >
+          {MAX} max
+        </Typographys>
+      </Box>
+    </Box>
             </Stack>
           </Stack>
         </Stack>
