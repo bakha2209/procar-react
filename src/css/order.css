@@ -1,0 +1,416 @@
+.order_page {
+  width: 100%;
+  height: auto;
+  background: #f4f4f4;
+  display: flex;
+}
+
+.order_page .order_left {
+  width: 70%;
+  height: auto;
+}
+
+.order_page .order_right {
+  margin-top: 86px;
+  margin-left: 30px;
+  width: 30%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.order_page .order_right .order_info_box {
+  padding: 20px;
+  width: 100%;
+  height: auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #0a1426;
+  box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25),
+    inset 0px 4px 4px rgba(0, 0, 0, 0.25),
+    inset 0px 4px 16px rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+}
+
+.order_page .order_info_box .order_user_img {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 95px;
+  height: 95px;
+  fill: #b6b6bc;
+
+  filter: drop-shadow(0px 4px 21px rgba(0, 0, 0, 0.07));
+}
+
+.order_page .order_info_box .order_user_img .order_user_avatar {
+  width: 117px;
+  height: 112px;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  border-radius: 37px;
+}
+
+.order_page .order_info_box .order_user_icon_box {
+  position: absolute;
+  padding: 5px;
+  width: 30px;
+  height: 30px;
+  top: 81%;
+  right: 0;
+  display: flex;
+  background: rgba(0, 0, 0, 0.33);
+  border-radius: 37px;
+}
+
+.order_page .order_user_icon_box .order_user_prof_img {
+  filter: brightness(0) invert(1);
+}
+
+.order_page .order_info_box .order_user_name {
+  margin-top: 10px;
+  color: #FFF;
+
+text-align: center;
+font-family: "Plus Jakarta Sans";
+font-size: 18px;
+font-style: normal;
+font-weight: 700;
+line-height: normal;
+text-transform: capitalize;
+}
+
+.order_page .order_info_box .order_user_prof {
+    color: #83827F;
+
+    text-align: center;
+    font-family: "Plus Jakarta Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  margin-top: 2px;
+  margin-bottom: 10px;
+}
+
+.order_page .order_info_box .order_user_address {
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+}
+
+.order_page .order_info_box .spec_address_txt {
+  margin-left: 5px;
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #616164;
+}
+.order_page .payment_box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 16px;
+  background: #fff;
+  margin-top: 13px;
+  padding-top: 30px;
+  padding-bottom: 27px;
+}
+
+.order_page .payment_box .twice_input {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 90%;
+}
+
+.order_page .payment_box .card_input {
+  margin-top: 10px;
+  padding: 10px;
+  width: 90%;
+  height: 40px;
+  background: #f5f5f5;
+  border-radius: 10px;
+
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+  border: 0.5px solid #b3a6a6;
+  letter-spacing: -0.02em;
+  color: #434141;
+}
+
+.order_page .payment_box .card_half_input {
+  margin-top: 10px;
+  padding: 10px;
+  width: 49%;
+  height: 40px;
+  background: #f5f5f5;
+  border-radius: 10px;
+
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+  border: 0.5px solid #b3a6a6;
+  letter-spacing: -0.02em;
+  color: #434141;
+}
+
+.order_page .order_info_box .cards_box {
+  margin-top: 35px;
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.order_page .order_info_box .css-wca78v-MuiButtonBase-root-MuiButton-root {
+  min-width: 160px;
+}
+
+.order_page .order_left .order_nav_frame {
+  width: 100%;
+  height: 60px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  border-bottom: 1px solid #ffffff;
+}
+
+.order_page .css-1gsv261 {
+  width: 75%;
+}
+
+.order_page .css-heg063-MuiTabs-flexContainer {
+  justify-content: space-between;
+}
+.order_page .order_main_content {
+  width: 100%;
+  height: auto;
+}
+
+.order_page .css-19kzrtu {
+  padding-top: 24px;
+}
+
+.order_page .order_main_content .order_main_box {
+  position: relative;
+  width: 100%;
+  max-height: 284px;
+  margin-bottom: 25px;
+
+  background: #ffffff;
+  box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25),
+    inset 0px 4px 4px rgba(0, 0, 0, 0.25),
+    inset 0px 4px 16px rgba(242, 189, 87, 0.04);
+  border-radius: 16px;
+}
+.order_page .order_main_content .order_main_box .order_box_scroll {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-height: 203px;
+  margin-top: 15px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: scroll;
+}
+.order_page .order_box_scroll .ordersName_price {
+  position: relative;
+  width: 100%;
+  height: 47px;
+  margin-top: 5px;
+  margin-left: 40px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.order_box_scroll .ordersName_price .orderDishImg {
+  position: relative;
+  width: 50px;
+  height: 47px;
+
+  border-radius: 29px;
+  background-size: cover;
+}
+.order_box_scroll .ordersName_price .titleDish {
+  position: relative;
+  width: 260px;
+  height: 36px;
+  margin-left: 20px;
+
+  font-family: "Commissioner";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 36px;
+  /* identical to box height, or 164% */
+
+  color: #000000;
+}
+.order_box_scroll .ordersName_price .priceBox {
+  position: relative;
+  max-width: 170px;
+  height: 100%;
+  margin-left: 70px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.order_box_scroll .ordersName_price .priceBox p {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 27px;
+  /* identical to box height */
+
+  color: #262626;
+}
+
+.order_page .order_main_content .order_main_box .total_price_box {
+  position: relative;
+  width: 100%;
+  height: 41px;
+  margin-top: 15px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+
+.black_solid {
+  border-width: 1px 0px;
+  border-style: solid;
+  border-color: #000000;
+  background: #d9d9d9;
+}
+
+.blue_solid {
+  border-width: 1px 0px;
+  border-style: solid;
+  border-color: #00a9ff;
+  background: rgb(140 102 242 / 81%);
+}
+
+.red_solid {
+  border-width: 1px 0px;
+  border-style: solid;
+  border-color: #ff5757;
+  background: rgb(255 52 52);
+}
+
+.order_main_box .total_price_box .boxTotal {
+  position: relative;
+  max-width: 535px;
+  height: 100%;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.total_price_box .boxTotal p {
+  margin-left: 20px;
+  font-family: "Commissioner";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 36px;
+  color: #000000;
+}
+
+.total_price_box .boxTotal .data_compl {
+  /*margin-left: 20px;*/
+  font-family: "Commissioner";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 36px;
+  /* or 257% */
+  color: #000000;
+}
+
+.order_main_box .total_price_box .boxTotal .button_box {
+  width: 100%;
+  height: 80%;
+  border-radius: 10px;
+  border: 1px solid #d10202;
+
+  background: #d10202;
+  color: #fff;
+
+  font-family: Poppins;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25),
+    0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+}
+.order_page .wish_box {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+}
+.wish_box img {
+  width: 80px;
+  height: 75px;
+  border-radius: 9px;
+  margin-right: 15px;
+}
+.wish_box .car_desc {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 75px;
+}
+.car_desc span {
+  color: #86898e;
+
+  font-family: "Plus Jakarta Sans";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+}
+.car_desc .car_name {
+  color: #26232a;
+
+  font-family: "Plus Jakarta Sans";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px; /* 187.5% */
+}
+.car_desc .car_price {
+  color: #d01818;
+
+  font-family: "Plus Jakarta Sans";
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}

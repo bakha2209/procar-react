@@ -683,18 +683,224 @@
 .main_car h3 {
   color: #000;
 
-leading-trim: both;
+  leading-trim: both;
 
-text-edge: cap;
-font-family: "Plus Jakarta Sans";
-font-size: 24px;
-font-style: normal;
-font-weight: 700;
-line-height: 56px; /* 233.333% */
+  text-edge: cap;
+  font-family: "Plus Jakarta Sans";
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 56px; /* 233.333% */
 }
 .main_car .location_car {
   width: 100%;
   height: 490px;
   border-radius: 10px;
   margin-bottom: 15px;
+}
+
+/* ALLCARS */
+.dealer_page .all_cars {
+  width: 100%;
+  height: auto;
+  background: #fff;
+  padding: 80px 190px;
+}
+.all_cars .whole_stack {
+  flex-direction: column;
+}
+.whole_stack h3 {
+  color: #1b1b1b;
+
+  font-family: "Plus Jakarta Sans";
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px; /* 166.667% */
+  text-transform: capitalize;
+}
+.whole_stack .search_big_box {
+  position: relative;
+  width: 250px;
+  height: 33px;
+
+  display: flex;
+  align-items: center;
+  background: #fffcfc;
+  border: 1px solid #ffffff;
+  box-shadow: 0px 4px 4px rgba(213, 213, 213, 0.25);
+  border-radius: 18.5px;
+  box-sizing: border-box;
+}
+.search_big_box .search_form {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.search_big_box .search_form .searchInput {
+  position: relative;
+  width: 245px;
+  height: 29px;
+  margin-left: 10px;
+  display: flex;
+  border: none;
+  border-radius: 10px 0px 0px 10px;
+  font-family: "GT Walsheim Pro";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 26px;
+  color: #4f547b;
+}
+.search_big_box .search_form .button_search {
+  position: relative;
+  width: 60px;
+  height: 33px;
+  display: flex;
+  border-radius: 18.5px;
+  background: #f8be69;
+}
+.whole_stack .center_cars {
+  flex-direction: row;
+  margin-top: 15px;
+  justify-content: space-between;
+  width: 100%;
+}
+.center_cars .car_box {
+  flex-direction: row;
+  display: flex;
+  width: 100%;
+  padding-left: 20px;
+  padding-right: 30px;
+  padding-bottom: 16px;
+  padding-top: 5px;
+}
+.car_box .car_size {
+  width: 223px;
+  height: 165px;
+  background-size: cover;
+}
+.car_size .car_condition {
+  height: 20px;
+  width: 65px;
+  padding: 1px;
+  border-radius: 4px;
+  background: #d01818;
+  color: #fff;
+
+  text-align: center;
+  leading-trim: both;
+
+  text-edge: cap;
+  font-family: "Plus Jakarta Sans";
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 15px; /* 200% */
+}
+.car_box .right_desc {
+  padding-bottom: 25px;
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+  height: 165px;
+}
+.right_desc .right_above {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.right_above h4 {
+  color: #26232a;
+
+  font-family: "Plus Jakarta Sans";
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 18px; /* 166.667% */
+  margin-right: 55px;
+}
+.right_above .serdechka {
+  width: 32px;
+  height: 30px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  border-radius: 2px;
+  background: #0a1426;
+  margin-right: 55px;
+}
+.right_above p {
+  color: #d01818;
+
+  font-family: "Plus Jakarta Sans";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+.right_desc .all_feature {
+  flex-direction: row;
+}
+.all_feature .every_aspect {
+  flex-direction: column;
+  margin-right: 15px;
+}
+.every_aspect img {
+  width: 14px;
+  height: 14px;
+}
+.every_aspect p {
+  color: #000;
+
+  text-align: center;
+  font-family: "Plus Jakarta Sans";
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 10px; /* 200% */
+}
+.right_desc .right_bottom {
+  flex-direction: row;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.right_bottom .detail_button {
+  width: 139px;
+  height: 30px;
+  border-radius: 2px;
+  background: #f6f6f6;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #26232a;
+
+  text-align: center;
+  leading-trim: both;
+
+  text-edge: cap;
+  font-family: "Plus Jakarta Sans";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: 0.42px;
+  text-transform: uppercase;
+}
+
+.whole_stack .bottom_box {
+  margin-top: 40px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }

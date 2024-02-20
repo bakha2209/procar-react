@@ -5,6 +5,7 @@ import { ChosenCar } from "./chosenCar";
 import { OneDealer } from "./oneDealer";
 import { AllDealers } from "./allDealers";
 import "../../../css/dealer.css"
+import { AllCars } from "./allCars";
 
 export function DealerPage() {
   let dealer = useRouteMatch();
@@ -13,6 +14,9 @@ export function DealerPage() {
       <Switch>
         <Route path={`${dealer.path}/car/:car_id`}>
           <ChosenCar />
+        </Route>
+        <Route path={`${dealer.path}/cars`}>
+          <AllCars />
         </Route>
         <Route path={`${dealer.path}/:dealer_id`}>
           <OneDealer />
