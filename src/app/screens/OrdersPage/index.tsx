@@ -85,9 +85,9 @@ export function OrdersPage() {
                 justifyContent={"space-between"}
                 marginTop={"35px"}
               >
-                <img src="/icons/western_union.svg" style={{width:"38px", height:"25px"}} />
-                <img src="/icons/paypal.svg" style={{width:"38px", height:"25px"}} />
-                <img src="/icons/western_union.svg" style={{width:"38px", height:"25px"}} />
+                <img src="/icons/western_union.svg" style={{width:"38px", height:"25px",marginRight:"10px"}} />
+                <img src="/icons/paypal.svg" style={{width:"38px", height:"25px",marginRight:"10px"}} />
+                <img src="/icons/western_union.svg" style={{width:"38px", height:"25px",marginRight:"10px"}} />
                 <img src="/icons/paypal.svg" style={{width:"38px", height:"25px"}} />
               </Box>
             </Box>

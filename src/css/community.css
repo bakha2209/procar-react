@@ -1,0 +1,40 @@
+.community_main {
+  width: 100%;
+  height: auto;
+  background: #f4f4f4;
+}
+.community_main .center_flow {
+  display: flex;
+  flex-direction: column;
+    margin-bottom: 20px;
+  height: auto;
+  justify-content: center;
+  align-items: center;
+}
+.article_bott {
+  margin-top: 25px;
+  margin-bottom: 15px;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin:auto;
+}
+.center_flow .typeof_article {
+  margin-left: auto;
+  width: auto;
+  height: 26px;
+  background: #d01818;
+  color: #fff;
+  display: flex;
+  padding: 2px;
+  justify-content: center;
+  align-items: center;
+  text-align: right;
+  font-family: "Plus Jakarta Sans";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 15px; /* 157.143% */
+  letter-spacing: 1.89px;
+  text-transform: uppercase;
+}
