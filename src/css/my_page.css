@@ -1,0 +1,501 @@
+.my_page {
+  width: 100%;
+  height: auto;
+  display: flex;
+  background: #0a1426;
+}
+.my_page .my_page_frame {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+}
+
+.my_page_frame .my_page_left {
+  width: 235px;
+  display: flex;
+  flex-direction: column;
+  height: 800px;
+}
+.my_page_left .profile_img {
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  margin: auto;
+}
+.my_page_left .full_name {
+  color: #fff;
+  margin-top: 18px;
+  margin-bottom: 8px;
+  text-align: center;
+  font-family: "Plus Jakarta Sans";
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  text-transform: capitalize;
+}
+.my_page_left span {
+  color: #83827f;
+  margin-bottom: 45px;
+  text-align: center;
+  font-family: "Plus Jakarta Sans";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+.my_page_left .profile_tabs {
+  flex-direction: row;
+}
+.my_page_left .my_page_menu {
+  margin-top: 30px;
+  width: 100%;
+  height: auto;
+
+  display: flex;
+  flex-direction: column;
+}
+.my_page_menu .left_tabs {
+  flex-direction: column;
+  display: flex;
+  height: auto;
+  width: 100%;
+}
+.my_page_left .menu_box {
+  display: flex;
+  flex-direction: row;
+  padding-left: 15px;
+  align-items: center;
+  width: 100%;
+  height: auto;
+}
+.my_page_left .menu_box img {
+  width: 15px;
+  height: 15.892px;
+  margin-right: 15px;
+}
+.my_page_left .menu_box p {
+  color: #fff;
+
+  leading-trim: both;
+
+  text-edge: cap;
+  font-family: "Plus Jakarta Sans";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 28px; /* 175% */
+  text-transform: capitalize;
+  cursor: pointer;
+}
+.my_page_left .phone_box {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 25px;
+  margin-bottom: 20px;
+}
+.phone_box img {
+  width: 25px;
+  height: 25px;
+}
+.phone_box .phone_div {
+  color: rgba(255, 255, 255, 0.53);
+
+  font-family: "DM Sans";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  text-transform: uppercase;
+}
+.phone_box span {
+  color: #fff;
+
+  font-family: "Plus Jakarta Sans";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  text-transform: uppercase;
+}
+.my_page_left .social_box {
+  width: 172px;
+  height: auto;
+  border-radius: 8px;
+  background: #1a2435;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.social_box img {
+  width: 14px;
+  height: 14px;
+  margin-right: 10px;
+}
+.social_box span {
+  color: #fff;
+
+  font-family: "DM Sans";
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px; /* 177.778% */
+}
+.my_page_frame .my_page_right {
+  width: 100%;
+  height: auto;
+  border-radius: 20px;
+  background: #f4f4f4;
+}
+
+.my_page_right .menu_name {
+  width: 100%;
+  height: 70px;
+
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid #ffffff;
+
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 45px;
+  color: #000;
+}
+.my_page_right .menu_content {
+  margin-top: 10px;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+}
+.my_page .member_posts {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.member_posts .post_card {
+  height: auto;
+  width: 580px;
+  flex-direction: column;
+  display: flex;
+  margin-bottom: 15px;
+}
+.post_card .post_type {
+  width: 90px;
+  height: 25px;
+  margin: 14px;
+  background: #d01818;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: right;
+  font-family: "Plus Jakarta Sans";
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 14px; /* 157.143% */
+  letter-spacing: 1.89px;
+  text-transform: uppercase;
+}
+.post_card .post_desc {
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  display: flex;
+}
+.post_desc img {
+  margin-right: 7px;
+  height: 11px;
+}
+.post_desc span {
+  color: #83827f;
+  margin-right: 7px;
+  font-family: "Plus Jakarta Sans";
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+.post_card p {
+  color: #000;
+
+  font-family: "Plus Jakarta Sans";
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 22px; /* 138.125% */
+}
+.post_card span {
+  color: #83827f;
+
+  font-family: "Plus Jakarta Sans";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px; /* 183.333% */
+}
+.post_card .read_icon {
+  color: #2d2b26;
+  margin-right: 7px;
+  font-family: "Plus Jakarta Sans";
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 22px; /* 157.143% */
+  letter-spacing: 2.52px;
+  text-transform: uppercase;
+}
+
+/* SETTINGS */
+.my_page .my_settings_page {
+  width: 100%;
+  height: auto;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.my_page .my_settings_page .input_frame {
+  margin-top: 25px;
+  width: 100%;
+  height: auto;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.my_page .my_settings_page .short_input {
+  width: 49%;
+  height: auto;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.my_page .my_settings_page .long_input {
+  width: 100%;
+  height: auto;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.my_page .my_settings_page .spec_label {
+  color: #000;
+
+  font-family: "Plus Jakarta Sans";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 10px;
+}
+
+.my_page .my_settings_page .spec_input {
+  position: relative;
+  margin-top: 10px;
+  padding-left: 20px;
+  width: 100%;
+  height: 54px;
+  border: none;
+
+  background: #f7f7f7;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+
+  font-family: "GT Walsheim Pro";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 26px;
+  color: #4f547b;
+}
+
+.my_page .my_settings_page .spec_textarea {
+  position: relative;
+  margin-top: 10px;
+  padding: 20px;
+  width: 100%;
+  height: 200px;
+  border: none;
+
+  background: #f7f7f7;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+
+  font-family: "GT Walsheim Pro";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 26px;
+  color: #4f547b;
+}
+
+.my_page .my_settings_page .member_media_frame {
+  margin-top: 25px;
+  position: relative;
+  padding: 10px;
+  width: 100%;
+  height: auto;
+  display: flex;
+  border-radius: 5px;
+  background: #f7f7f7;
+}
+
+.my_page .my_settings_page .media_change_box {
+  position: relative;
+  margin-left: 20px;
+  width: auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.my_page .my_settings_page .media_change_box span {
+  font-family: "GT Walsheim Pro";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 18px;
+  color: #140342;
+}
+
+.my_page .my_settings_page .media_change_box p {
+  margin: 10px 0px 14px 0px;
+  font-family: "GT Walsheim Pro";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  color: #4f547b;
+}
+
+.my_page .my_settings_page .up_del_box {
+  position: relative;
+  width: 37px;
+  height: 37px;
+  display: flex;
+  background: #cbcbcb;
+  border-radius: 8px;
+  justify-content: center;
+  align-items: center;
+}
+
+.my_page .my_settings_page .up_del_box input {
+  position: absolute;
+  width: 20px;
+  height: 16px;
+  padding: 0;
+  background: red;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+/* FOLLOWING */
+.my_page .menu_content .follow_box {
+    margin-top: 15px;
+    padding: 25px 45px;
+    width: 100%;
+    height: 140px;
+  
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background: linear-gradient(
+      180deg,
+      rgba(38, 112, 129, 0.9) 0%,
+      rgba(21, 61, 70, 0.9) 100%
+    );
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15),
+      inset 3px 2px 9px rgba(255, 255, 255, 0.25);
+    border-radius: 17px;
+  }
+  
+  .my_page .follow_box .username_text {
+    margin-top: 10px;
+    width: 100%;
+  
+    font-family: "Montserrat";
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 12px;
+    color: #ffffff;
+  }
+  
+  .my_page .follow_box .name_text {
+    margin-top: 16px;
+    font-family: "Montserrat";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 26px;
+    line-height: 24px;
+    color: #ffffff;
+  }
+  
+  .my_page .follow_box .follow_btn {
+    width: 175px;
+    height: 57px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    background: #30945e;
+    border: 1px solid #ffffff;
+    box-shadow: 1px 4px 6px rgba(211, 211, 211, 0.25),
+      inset 0px 4px 4px rgba(255, 255, 255, 0.25);
+    border-radius: 43px;
+    font-family: "Montserrat";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 24px;
+    color: #ffffff;
+  }
+  
+  .my_page .follow_box .follow_cancel_btn {
+    width: 185px;
+    height: 57px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    background: #e81010b8;
+    border: 1px solid #ffffff;
+    box-shadow: 1px 4px 6px rgba(211, 211, 211, 0.25),
+      inset 0px 4px 4px rgba(255, 255, 255, 0.25);
+    border-radius: 43px;
+    font-family: "Montserrat";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 24px;
+    color: #ffffff;
+  }
+  
+  .my_page .follow_box .following_already {
+    margin-left: 11px;
+    width: 160px;
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background: #68c5cb;
+    box-shadow: 1px 4px 6px rgba(211, 211, 211, 0.25),
+      inset 0px 4px 4px rgba(255, 255, 255, 0.25);
+    border-radius: 26px;
+    font-family: "Montserrat";
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    color: #ffffff;
+  }
