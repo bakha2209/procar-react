@@ -10,8 +10,9 @@ import { Statistics } from "./statistics";
 export function HomePage() {
   return (
     <div className="homepage">
-      <ByCategories />
       <TopBrands />
+      <ByCategories />
+      
       <BestDealers />
       <Advertisements />
       <Events />

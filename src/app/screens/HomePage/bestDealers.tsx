@@ -39,10 +39,10 @@ export function BestDealers() {
       <Container>
         <Stack className="main_stack">
           <Box flexDirection={"row"} justifyContent={"flex-start"}>
-            <p className="main_text_desc">Trusted Car Delaer Service</p>
+            <span className="main_text_desc">Trusted Car Delaer Service</span>
           </Box>
-          <Stack flexDirection={"row"} justifyContent={"space-between"}>
-            <p className="brand_blue_text">Explore all Vehicles</p>
+          <Stack flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
+            <div className="brand_blue_text">Explore all Vehicles</div>
             <Box marginTop={"20px"}>
               <ButtonGroup
                 variant="outlined"
@@ -60,7 +60,7 @@ export function BestDealers() {
                 return (
                   <Card
                     variant="outlined"
-                    sx={{ minHeight: 483, minWidth: 330, mr: "35px" }}
+                    sx={{ minHeight: 483, minWidth: 330, mr: "35px",mb:"15px" }}
                   >
                     <CardOverflow>
                       <AspectRatio ratio={"1"}>
