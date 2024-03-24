@@ -1,7 +1,7 @@
 import { Box, Container, Stack } from "@mui/material";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
-import React from "react";
+import React, { useRef } from "react";
 import "../../../css/homepage.css";
 import CardCover from "@mui/joy/CardCover";
 import CardContent from "@mui/joy/CardContent";
@@ -30,10 +30,105 @@ import "swiper/css/navigation";
 
 // import required modules
 import { EffectFlip, Pagination, Navigation } from "swiper/modules";
+//REDUX
+import { useDispatch, useSelector } from "react-redux";
+import { retrieveBestDealers } from "./selector";
+import { createSelector } from "reselect";
+import { Car } from "../../../types/car";
+import { serverApi } from "../../lib/config";
+import { Dispatch } from "@reduxjs/toolkit";
+import { setBestDealers } from "./slice";
+import { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import { CarSearchObj } from "../../../types/others";
+import CarApiService from "../../apiServices/carApiService";
+import assert from "assert";
+import { Definer } from "../../lib/Definer";
+import MemberApiService from "../../apiServices/memberApiService";
+import {
+  sweetErrorHandling,
+  sweetTopSmallSuccessAlert,
+} from "../../lib/sweetAlert";
+//others
 
-const order_list = Array.from(Array(6).keys());
+// REDUX SLICE
+const actionDispatch = (dispach: Dispatch) => ({
+  setBestDealers: (data: Car[]) => dispach(setBestDealers(data)),
+});
+
+// REDUX SELECTOR
+const bestDealersRetriever = createSelector(
+  retrieveBestDealers,
+  (bestDealers) => ({ bestDealers })
+);
+
+
 
 export function BestDealers() {
+  /**INITIALIZATIONS */
+  const history = useHistory();
+  const { setBestDealers } = actionDispatch(useDispatch());
+  const { bestDealers } = useSelector(bestDealersRetriever);
+  const [bestDealerSearchObj, setBestDealerSearchObj] = useState<CarSearchObj>({
+    page: 1,
+    limit: 6,
+    order: "createdAt",
+  });
+  const [carRebuild, setCarRebuild] = useState<Date>(new Date());
+  const [clicked, setClicked] = useState(false);
+  const refs: any = useRef([]);
+
+
+  useEffect(() => {
+    const carService = new CarApiService();
+    carService
+      .getTargetCars(bestDealerSearchObj)
+      .then((data) => setBestDealers(data))
+      .catch((err) => console.log(err));
+  }, [bestDealerSearchObj, carRebuild]);
+  /**HANDLERS */
+  const searchOrderHandler = (order: string) => {
+    bestDealerSearchObj.page = 1;
+    bestDealerSearchObj.order = order;
+    setBestDealerSearchObj({ ...bestDealerSearchObj });
+  };
+  const goCarsHandler = () => history.push("/cars")
+
+  const targetLikeCar = async (e: any, id: string) => {
+    try {
+      assert.ok(localStorage.getItem("member_data"), Definer.auth_err1);
+
+      const memberService = new MemberApiService(),
+        like_result = await memberService.memberLikeTarget({
+          like_ref_id: id,
+          group_type: "car",
+        });
+      assert.ok(like_result, Definer.general_err1);
+
+      if (like_result.like_status > 0) {
+        e.target.style.fill = "red";
+        refs.current[like_result.like_ref_id].innerHTML++;
+      } else {
+        e.target.style.fill = "white";
+        refs.current[like_result.like_ref_id].innerHTML--;
+      }
+
+      await sweetTopSmallSuccessAlert("success", 700, false);
+      
+    } catch (err: any) {
+      console.log("targetLikeCar, ERROR:", err);
+      sweetErrorHandling(err).then();
+    }
+  };
+  const chosenCarHandler = (id: string) => {
+    history.push(`/dealer/cars/${id}`)
+  }
+  
+
+  const handleClick = () => {
+    setClicked(true);
+  };
+
   return (
     <div className="all_vehicle">
       <Container>
@@ -41,26 +136,66 @@ export function BestDealers() {
           <Box flexDirection={"row"} justifyContent={"flex-start"}>
             <span className="main_text_desc">Trusted Car Delaer Service</span>
           </Box>
-          <Stack flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
+          <Stack
+            flexDirection={"row"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+          >
             <div className="brand_blue_text">Explore all Vehicles</div>
             <Box marginTop={"20px"}>
               <ButtonGroup
                 variant="outlined"
                 aria-label="outlined button group"
               >
-                <Button>popular</Button>
-                <Button>recent</Button>
-                <Button>best</Button>
+                <Button
+                  style={{
+                    backgroundColor: clicked ? "red" : "white",
+                  }}
+                  onClick={() => searchOrderHandler("car_views")}
+                >
+                  popular
+                </Button>
+                <Button
+                  style={{
+                    backgroundColor: clicked ? "red" : "white",
+                  }}
+                  onClick={() => searchOrderHandler("createdAt")}
+                >
+                  recent
+                </Button>
+                <Button
+                  style={{
+                    backgroundColor: clicked ? "red" : "white",
+                  }}
+                  onClick={() => searchOrderHandler("car_likes")}
+                >
+                  best
+                </Button>
               </ButtonGroup>
             </Box>
           </Stack>
           <Stack className="all_car_box">
-            <CssVarsProvider>
-              {order_list.map((ele) => {
+            
+              {bestDealers.map((car: Car) => {
+                const image_path_0 = `${serverApi}/${car.car_images[0]}`;
+                const image_path_1 = `${serverApi}/${car.car_images[1]}`;
+                const image_path_2 = `${serverApi}/${car.car_images[2]}`;
+                const image_path_3 = `${serverApi}/${car.car_images[3]}`;
+                const image_path_4 = `${serverApi}/${car.car_images[4]}`;
+
+                const car_desc = `${car.car_description.slice(0,35)}`
+                // const discount_price = `${car.car_price}`- `${car.car_price}`*(`${car.car_discount}`/100)
                 return (
+                  <CssVarsProvider key={car._id}>
                   <Card
                     variant="outlined"
-                    sx={{ minHeight: 483, minWidth: 330, mr: "35px",mb:"15px" }}
+                    sx={{
+                      minHeight: 483,
+                      minWidth: 330,
+                      mr: "35px",
+                      mb: "15px",
+                    }}
+                    onClick = {()=> chosenCarHandler(car._id)}
                   >
                     <CardOverflow>
                       <AspectRatio ratio={"1"}>
@@ -74,35 +209,35 @@ export function BestDealers() {
                         >
                           <SwiperSlide>
                             <img
-                              src="/cars/top_car.webp"
+                              src={`${image_path_0}`}
                               width={"330px"}
                               height={"330px"}
                             />
                           </SwiperSlide>
                           <SwiperSlide>
                             <img
-                              src="/cars/top_car.webp"
+                              src={`${image_path_1}`}
                               width={"330px"}
                               height={"330px"}
                             />{" "}
                           </SwiperSlide>
                           <SwiperSlide>
                             <img
-                              src="/cars/top_car.webp"
+                              src={`${image_path_2}`}
                               width={"330px"}
                               height={"330px"}
                             />{" "}
                           </SwiperSlide>
                           <SwiperSlide>
                             <img
-                              src="/cars/top_car.webp"
+                              src={`${image_path_3}`? `${image_path_3}`: `${image_path_0}`}
                               width={"330px"}
                               height={"330px"}
                             />{" "}
                           </SwiperSlide>
                           <SwiperSlide>
                             <img
-                              src="/cars/top_car.webp"
+                              src={`${image_path_4}`? `${image_path_4}`: `${image_path_0}`}
                               width={"330px"}
                               height={"330px"}
                             />{" "}
@@ -123,16 +258,28 @@ export function BestDealers() {
                           transform: "translateY(50%)",
                           color: "rgba(0,0,0,.4)",
                         }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
                       >
-                        <Favorite style={{ color: "white" }} />
+                        <Favorite
+                          onClick={(e)=> targetLikeCar(e, car._id)}
+                          
+                          style={{
+                            fill:
+                              car?.me_liked && car?.me_liked[0]?.my_favorite //i should check here
+                                ? "red"
+                                : "white",
+                          }}
+                        />
                       </IconButton>
                     </CardOverflow>
                     <Typography level="h2" fontSize="md" mt="2">
-                      Chevrolet Suburban 2021
+                      {car.car_brand} {car.car_name} {car.produced_year}
                     </Typography>
                     <Typography level="body-sm" sx={{ mt: 0.5, mb: 2 }}>
                       <Link textColor="neutral.700">
-                        For 15 years, we raising the standard of
+                       {car_desc}... 
                       </Link>
                     </Typography>
                     <Typography level="body-sm" sx={{ mt: 0.5, mb: 2 }}>
@@ -140,14 +287,14 @@ export function BestDealers() {
                         startDecorator={<LocalGasStationIcon />}
                         textColor="#000"
                       >
-                        15/100
+                        {car.petrol_consumption}/100
                       </Link>
                       <Link
                         startDecorator={<SpeedIcon />}
                         textColor="#000"
                         sx={{ ml: "7px" }}
                       >
-                        1500cc
+                        {car.acceleration}cc
                       </Link>
                       <Link textColor="#000" sx={{ ml: "7px" }}>
                         <img
@@ -159,7 +306,7 @@ export function BestDealers() {
                           }}
                           alt=""
                         />{" "}
-                        manual
+                        {car.car_transmission}
                       </Link>
                     </Typography>
                     <CardOverflow
@@ -189,7 +336,7 @@ export function BestDealers() {
                             display: "flex",
                           }}
                         >
-                          $112000
+                         ${Math.round(car.car_price - (car.car_price * (car.car_discount / 100)))} 
                         </Typography>
                         <Typography
                           level="body-sm"
@@ -202,7 +349,7 @@ export function BestDealers() {
                             display: "flex",
                           }}
                         >
-                          $112000
+                          ${car.car_price}
                         </Typography>
                         <Stack flexDirection={"row"}>
                           <Typography
@@ -214,7 +361,7 @@ export function BestDealers() {
                               display: "flex",
                             }}
                           >
-                            100{" "}
+                            {car.car_views}{" "}
                             <VisibilityIcon
                               sx={{ fontsize: 20, marginLeft: "5px" }}
                             />
@@ -229,7 +376,7 @@ export function BestDealers() {
                               display: "flex",
                             }}
                           >
-                            <div>50</div>
+                            <div ref={(element) => (refs.current[car._id] = element)}>{car.car_likes}</div>
                             <Favorite
                               sx={{ fontSize: 20, marginLeft: "5px" }}
                             />
@@ -237,10 +384,25 @@ export function BestDealers() {
                         </Stack>
                       </Stack>
                     </CardOverflow>
+
                   </Card>
+                  </CssVarsProvider>
                 );
               })}
-            </CssVarsProvider>
+           
+          </Stack>
+          <Stack
+            style={{
+              width: "100%",
+              height: "auto",
+              flexDirection: "row",
+              justifyContent: "center",
+              marginTop: "40px",
+            }}
+          >
+            <Button variant="contained" color="primary" onClick={goCarsHandler}>
+              see all
+            </Button>
           </Stack>
         </Stack>
       </Container>

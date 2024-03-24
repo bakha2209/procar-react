@@ -1,5 +1,5 @@
 import { Box, Container, Button } from "@mui/material";
-import React from "react";
+import React, { useRef } from "react";
 
 import Option from "@mui/joy/Option";
 import { Select } from "antd";
@@ -28,19 +28,63 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Selects, { SelectChangeEvent } from "@mui/material/Select";
-import Slider from '@mui/material/Slider';
-import Typographys from '@mui/material/Typography';
+import Slider from "@mui/material/Slider";
+import Typographys from "@mui/material/Typography";
+//REDUX
+import { useDispatch, useSelector } from "react-redux";
+import {
+  retrieveChosenDealer,
+  retrieveTargetCars,
+} from "../DealerPage/selector";
+import { createSelector } from "reselect";
+import { Dealer } from "../../../types/user";
+import { serverApi } from "../../lib/config";
+import { Dispatch } from "@reduxjs/toolkit";
+import { setChosenDealer, setTargetCars } from "../../screens/DealerPage/slice";
+import { useEffect, useState } from "react";
+import { useHistory, useParams } from "react-router-dom";
+import { Car } from "../../../types/car";
+import { CarSearchObj } from "../../../types/others";
+import CarApiService from "../../apiServices/carApiService";
+import assert from "assert";
+import { Definer } from "../../lib/Definer";
+import MemberApiService from "../../apiServices/memberApiService";
+import {
+  sweetErrorHandling,
+  sweetTopSmallSuccessAlert,
+} from "../../lib/sweetAlert";
+import DealerApiService from "../../apiServices/dealerApiService";
+//others
+
+// REDUX SLICE
+const actionDispatch = (dispach: Dispatch) => ({
+  setChosenDealer: (data: Dealer) => dispach(setChosenDealer(data)),
+  setTargetCars: (data: Car[]) => dispach(setTargetCars(data)),
+});
+// REDUX SELECTOR
+const chosenDealerRetriever = createSelector(
+  retrieveChosenDealer,
+  (chosenDealer) => ({
+    chosenDealer,
+  })
+);
+const targetCarsRetriever = createSelector(
+  retrieveTargetCars,
+  (targetCars) => ({
+    targetCars,
+  })
+);
 
 const MAX = 100;
 const MIN = 0;
 const marks = [
   {
     value: MIN,
-    label: '',
+    label: "",
   },
   {
     value: MAX,
-    label: '',
+    label: "",
   },
 ];
 
@@ -77,6 +121,60 @@ const order_list = Array.from(Array(6).keys());
 const car_list = Array.from(Array(5).keys());
 
 export function OneDealer() {
+  /**INITIALIZATIONS */
+  let { dealer_id } = useParams<{ dealer_id: string }>();
+  const { setChosenDealer, setTargetCars } = actionDispatch(useDispatch());
+  const { chosenDealer } = useSelector(chosenDealerRetriever);
+  const { targetCars } = useSelector(targetCarsRetriever);
+  const [chosenDealerId, setChosenDealerId] = useState<string>(dealer_id);
+  const refs: any = useRef([]);
+  const history = useHistory();
+  const [targetProductSearchObj, setTargetProductSearchObj] =
+    useState<CarSearchObj>({
+      page: 1,
+      limit: 6,
+      order: "createdAt",
+      dealer_mb_id: dealer_id,
+    });
+  const [productRebuild, setProductRebuild] = useState<Date>(new Date());
+  useEffect(() => {
+    const dealerService = new DealerApiService();
+    dealerService
+      .getChosenDealer(chosenDealerId)
+      .then((data) => setChosenDealer(data))
+      .catch((err) => console.log(err));
+    const carService = new CarApiService();
+    carService
+      .getTargetCars(targetProductSearchObj)
+      .then((data) => setTargetCars(data))
+      .catch((err) => console.log(err));
+  }, [targetProductSearchObj, productRebuild]);
+  const targetLikeCar = async (e: any, id: string) => {
+    try {
+      assert.ok(localStorage.getItem("member_data"), Definer.auth_err1);
+
+      const memberService = new MemberApiService(),
+        like_result = await memberService.memberLikeTarget({
+          like_ref_id: id,
+          group_type: "car",
+        });
+      assert.ok(like_result, Definer.general_err1);
+
+      if (like_result.like_status > 0) {
+        e.target.style.fill = "red";
+        refs.current[like_result.like_ref_id].innerHTML++;
+      } else {
+        e.target.style.fill = "white";
+        refs.current[like_result.like_ref_id].innerHTML--;
+      }
+
+      await sweetTopSmallSuccessAlert("success", 700, false);
+      setProductRebuild(new Date());
+    } catch (err: any) {
+      console.log("targetLikeCar, ERROR:", err);
+      sweetErrorHandling(err).then();
+    }
+  };
   const handleChange = (
     event: React.SyntheticEvent | null,
     newValue: string | null
@@ -92,11 +190,14 @@ export function OneDealer() {
   const handlePrice = (_: Event, newValue: number | number[]) => {
     setVal(newValue as number);
   };
+  const chosenCarHandler = (id: string) => {
+    history.push(`/dealer/cars/${id}`);
+  };
   return (
     <div className="one_dealer">
       <Container>
         <Stack flexDirection={"column"}>
-          <div className="dealer_page_title">West Covina Motors</div>
+          <div className="dealer_page_title">{chosenDealer?.mb_nick}</div>
           <Stack flexDirection={"row"} alignItems={"center"}>
             <img
               src="/icons/map_icon.svg"
@@ -110,7 +211,7 @@ export function OneDealer() {
             <Stack flexDirection={"column"}>
               <div className="big_image">
                 <img
-                  src="/dealer/dealer_image4.jpg"
+                  src={`${serverApi}/${chosenDealer?.mb_image}`}
                   style={{ width: "100%", height: "100%" }}
                 />
               </div>
@@ -121,7 +222,9 @@ export function OneDealer() {
                   </div>
                   <Box flexDirection={"column"}>
                     <div className="dealer_names">Phone Number</div>
-                    <div className="dealer_phones">+821056817724</div>
+                    <div className="dealer_phones">
+                      {chosenDealer?.mb_phone}
+                    </div>
                   </Box>
                 </Stack>
                 <Stack flexDirection={"row"} sx={{ marginRight: "10px" }}>
@@ -163,17 +266,17 @@ export function OneDealer() {
 
                 <Select
                   showSearch
-                  style={{ width: 200,marginTop:"20px",marginRight:"20px" }}
-                  placeholder="Search to Select"
+                  style={{ width: 200, marginTop: "20px", marginRight: "20px" }}
+                  placeholder="Select"
                   optionFilterProp="children"
-                  filterOption={(input, option) =>
-                    (option?.label ?? "").includes(input)
-                  }
-                  filterSort={(optionA, optionB) =>
-                    (optionA?.label ?? "")
-                      .toLowerCase()
-                      .localeCompare((optionB?.label ?? "").toLowerCase())
-                  }
+                  // filterOption={(input, option) =>
+                  //   (option?.label ?? "").includes(input)
+                  // }
+                  // filterSort={(optionA, optionB) =>
+                  //   (optionA?.label ?? "")
+                  //     .toLowerCase()
+                  //     .localeCompare((optionB?.label ?? "").toLowerCase())
+                  // }
                   options={[
                     {
                       value: "1",
@@ -192,15 +295,22 @@ export function OneDealer() {
               </Stack>
               <div className="invent_line"></div>
               <Stack className="all_invent_box">
-                <CssVarsProvider>
-                  {order_list.map((ele) => {
-                    return (
+                {targetCars.map((car: Car) => {
+                  const image_path_0 = `${serverApi}/${car.car_images[0]}`;
+                  const image_path_1 = `${serverApi}/${car.car_images[1]}`;
+                  const image_path_2 = `${serverApi}/${car.car_images[2]}`;
+                  const image_path_3 = `${serverApi}/${car.car_images[3]}`;
+                  const image_path_4 = `${serverApi}/${car.car_images[4]}`;
+
+                  const car_desc = `${car.car_description.slice(0, 35)}`;
+                  return (
+                    <CssVarsProvider key={car._id}>
                       <Card
                         variant="outlined"
                         sx={{
                           height: "auto",
-                          maxWidth: "auto",
-                          mr: "10px",
+                          width: "295px",
+                          mr: "30px",
                           mb: "10px",
                         }}
                       >
@@ -214,26 +324,26 @@ export function OneDealer() {
                               modules={[EffectFlip, Pagination, Navigation]}
                               className="mySwiper"
                             >
-                              {car_list.map((ele, index) => {
-                                return (
-                                  <SwiperSlide
-                                    className="car_img"
-                                    style={{
-                                      backgroundImage: `url(/cars/top_car.webp)`,
-                                      cursor: "pointer",
-                                    }}
-                                  >
-                                    <div className="view_btn">
-                                      View Details{" "}
-                                      <img
-                                        src="/icons/arrow-right.svg"
-                                        style={{ marginLeft: "9px" }}
-                                      />
-                                    </div>
-                                    <div className="view_btn">Add to Cart </div>
-                                  </SwiperSlide>
-                                );
-                              })}
+                              <SwiperSlide
+                                className="car_img"
+                                style={{
+                                  backgroundImage: `url(${image_path_0})`,
+                                  backgroundSize: "cover",
+                                  cursor: "pointer",
+                                }}
+                              >
+                                <div
+                                  className="view_btn"
+                                  onClick={() => chosenCarHandler(car._id)}
+                                >
+                                  View Details{" "}
+                                  <img
+                                    src="/icons/arrow-right.svg"
+                                    style={{ marginLeft: "9px" }}
+                                  />
+                                </div>
+                                <div className="view_btn">Add to Cart </div>
+                              </SwiperSlide>
                             </Swiper>
                           </AspectRatio>
                           <IconButton
@@ -250,34 +360,43 @@ export function OneDealer() {
                               transform: "translateY(50%)",
                               color: "rgba(0,0,0,.4)",
                             }}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                            }}
                           >
-                            <Favorite style={{ color: "white" }} />
+                            <Favorite
+                              onClick={(e) => targetLikeCar(e, car._id)}
+                              style={{
+                                fill:
+                                  car?.me_liked && car?.me_liked[0]?.my_favorite //i should check here
+                                    ? "red"
+                                    : "white",
+                              }}
+                            />
                           </IconButton>
                         </CardOverflow>
                         <Typography level="h3" fontSize="sm" mt="1">
-                          Sedan
+                          {car.car_type}
                         </Typography>
                         <Typography level="h2" fontSize="md" mt="0.5">
-                          Chevrolet Suburban 2021
+                          {car.car_brand} {car.car_name} {car.produced_year}
                         </Typography>
                         <Typography level="body-sm">
-                          <Link textColor="neutral.700">
-                            15 years raising standarts
-                          </Link>
+                          <Link textColor="neutral.700">{car_desc}...</Link>
                         </Typography>
                         <Typography level="body-sm">
                           <Link
                             startDecorator={<LocalGasStationIcon />}
                             textColor="#000"
                           >
-                            15/100
+                            {car.petrol_consumption}/100
                           </Link>
                           <Link
                             startDecorator={<SpeedIcon />}
                             textColor="#000"
                             sx={{ ml: "7px" }}
                           >
-                            1500cc
+                            {car.acceleration}cc
                           </Link>
                           <Link textColor="#000" sx={{ ml: "7px" }}>
                             <img
@@ -289,7 +408,7 @@ export function OneDealer() {
                               }}
                               alt=""
                             />{" "}
-                            manual
+                            {car.car_transmission}
                           </Link>
                         </Typography>
                         <CardOverflow
@@ -319,7 +438,11 @@ export function OneDealer() {
                                 display: "flex",
                               }}
                             >
-                              $112000
+                              $
+                              {Math.round(
+                                car.car_price -
+                                  car.car_price * (car.car_discount / 100)
+                              )}
                             </Typography>
                             <Typography
                               level="body-sm"
@@ -332,7 +455,7 @@ export function OneDealer() {
                                 display: "flex",
                               }}
                             >
-                              $112000
+                              ${car.car_price}
                             </Typography>
                             <Stack flexDirection={"row"}>
                               <Typography
@@ -344,7 +467,7 @@ export function OneDealer() {
                                   display: "flex",
                                 }}
                               >
-                                100{" "}
+                                {car.car_views}{" "}
                                 <VisibilityIcon
                                   sx={{ fontsize: 20, marginLeft: "5px" }}
                                 />
@@ -359,7 +482,13 @@ export function OneDealer() {
                                   display: "flex",
                                 }}
                               >
-                                <div>50</div>
+                                <div
+                                  ref={(element) =>
+                                    (refs.current[car._id] = element)
+                                  }
+                                >
+                                  {car.car_likes}
+                                </div>
                                 <Favorite
                                   sx={{ fontSize: 20, marginLeft: "5px" }}
                                 />
@@ -368,9 +497,9 @@ export function OneDealer() {
                           </Stack>
                         </CardOverflow>
                       </Card>
-                    );
-                  })}
-                </CssVarsProvider>
+                    </CssVarsProvider>
+                  );
+                })}
               </Stack>
             </Stack>
           </Stack>
@@ -490,7 +619,9 @@ export function OneDealer() {
                   </Selects>
                 </FormControl>
                 <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                  <InputLabel id="demo-select-small-label">Transmission</InputLabel>
+                  <InputLabel id="demo-select-small-label">
+                    Transmission
+                  </InputLabel>
                   <Selects
                     labelId="demo-select-small-label"
                     id="demo-select-small"
@@ -503,11 +634,12 @@ export function OneDealer() {
                     </MenuItem>
                     <MenuItem value={1}>AutoMative</MenuItem>
                     <MenuItem value={2}>Manual</MenuItem>
-                    
                   </Selects>
                 </FormControl>
                 <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                  <InputLabel id="demo-select-small-label">Petrol Type</InputLabel>
+                  <InputLabel id="demo-select-small-label">
+                    Petrol Type
+                  </InputLabel>
                   <Selects
                     labelId="demo-select-small-label"
                     id="demo-select-small"
@@ -560,7 +692,9 @@ export function OneDealer() {
                   </Selects>
                 </FormControl>
                 <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                  <InputLabel id="demo-select-small-label">Body Type</InputLabel>
+                  <InputLabel id="demo-select-small-label">
+                    Body Type
+                  </InputLabel>
                   <Selects
                     labelId="demo-select-small-label"
                     id="demo-select-small"
@@ -582,32 +716,32 @@ export function OneDealer() {
                 <div className="line_near">By Price</div>
               </Stack>
               <Box sx={{ width: 250 }}>
-      <Slider
-        marks={marks}
-        step={10}
-        value={val}
-        valueLabelDisplay="auto"
-        min={MIN}
-        max={MAX}
-        onChange={handlePrice}
-      />
-      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Typographys
-          variant="body2"
-          onClick={() => setVal(MIN)}
-          sx={{ cursor: 'pointer' }}
-        >
-          {MIN} min
-        </Typographys>
-        <Typographys
-          variant="body2"
-          onClick={() => setVal(MAX)}
-          sx={{ cursor: 'pointer' }}
-        >
-          {MAX} max
-        </Typographys>
-      </Box>
-    </Box>
+                <Slider
+                  marks={marks}
+                  step={10}
+                  value={val}
+                  valueLabelDisplay="auto"
+                  min={MIN}
+                  max={MAX}
+                  onChange={handlePrice}
+                />
+                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                  <Typographys
+                    variant="body2"
+                    onClick={() => setVal(MIN)}
+                    sx={{ cursor: "pointer" }}
+                  >
+                    {MIN} min
+                  </Typographys>
+                  <Typographys
+                    variant="body2"
+                    onClick={() => setVal(MAX)}
+                    sx={{ cursor: "pointer" }}
+                  >
+                    {MAX} max
+                  </Typographys>
+                </Box>
+              </Box>
             </Stack>
           </Stack>
         </Stack>

@@ -96,6 +96,7 @@ line-height: 20px; /* 136.364% */
   flex-direction: column;
   align-items: center;
   margin-top: 10px;
+  margin-bottom: 30px;
 }
 .brand_red_text {
   color: #d01818;
@@ -504,4 +505,67 @@ line-height: 20px; /* 136.364% */
   font-weight: 600;
   /* 461.111% */
   text-transform: capitalize;
+}
+
+/* ARTICLES */
+.article_con {
+  display: flex;
+  flex-direction: column;
+}
+.article_con h4 {
+  color: #0D1637;
+
+text-align: center;
+font-family: "Plus Jakarta Sans";
+font-size: 35px;
+font-style: normal;
+font-weight: 700;
+line-height: 40px; /* 119.231% */
+text-transform: capitalize;
+}
+.article_con .member_posts {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin-top: 50px;
+  margin-bottom: 30px;
+  margin-left: 45px;
+}
+
+.member_posts .post_card {
+  height: 500px;
+  width: 411px;
+  flex-direction: column;
+  display: flex;
+  margin-bottom: 15px;
+  margin-right: 15px;
+}
+.member_posts .read_button {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  margin-left: 70px;
+  width: 240px;
+  height: 32px;
+border: 1px;
+  cursor: pointer;
+  background: #F3F5F7;
+  padding-left: 16px;
+  padding-right: 9px;
+}
+.read_button .read_icon {
+  color: #000;
+
+font-family: "Plus Jakarta Sans";
+font-size: 11px;
+font-style: normal;
+font-weight: 500;
+line-height: 16px; /* 206.667% */
+text-transform: uppercase;
+}
+.read_button img {
+  width: 33px;
+  height: 16px;
 }

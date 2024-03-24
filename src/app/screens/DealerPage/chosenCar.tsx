@@ -1,5 +1,5 @@
 import { Container, Stack } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/scrollbar";
@@ -9,10 +9,92 @@ import { Keyboard, Scrollbar, Navigation, Pagination } from "swiper/modules";
 import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import Typography from "@mui/material/Typography";
+import { useParams } from "react-router-dom";
+import { Car } from "../../../types/car";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  retrieveChosenCar,
+  retrieveChosenDealer,
+} from "../DealerPage/selector";
+import { createSelector } from "reselect";
+import { Dealer } from "../../../types/user";
+import { serverApi } from "../../lib/config";
+import { Dispatch } from "@reduxjs/toolkit";
+import { setChosenDealer, setChosenCar } from "../../screens/DealerPage/slice";
+import { useEffect } from "react";
+import CarApiService from "../../apiServices/carApiService";
+import DealerApiService from "../../apiServices/dealerApiService";
+import assert from "assert";
+import { Definer } from "../../lib/Definer";
+import MemberApiService from "../../apiServices/memberApiService";
+import {
+  sweetErrorHandling,
+  sweetTopSmallSuccessAlert,
+} from "../../lib/sweetAlert";
+// REDUX SLICE
+const actionDispatch = (dispach: Dispatch) => ({
+  setChosenCar: (data: Car) => dispach(setChosenCar(data)),
+  setChosenDealer: (data: Dealer) => dispach(setChosenDealer(data)),
+});
+// REDUX SELECTOR
+const chosenCarRetriever = createSelector(retrieveChosenCar, (chosenCar) => ({
+  chosenCar,
+}));
+const chosenDealerRetriever = createSelector(
+  retrieveChosenDealer,
+  (chosenDealer) => ({
+    chosenDealer,
+  })
+);
 
 const order_list = Array.from(Array(5).keys());
 
 export function ChosenCar() {
+  /**INITIALIZATIONS */
+  let { car_id } = useParams<{ car_id: string }>();
+  const { setChosenCar, setChosenDealer } = actionDispatch(useDispatch());
+  const { chosenCar } = useSelector(chosenCarRetriever);
+  const { chosenDealer } = useSelector(chosenDealerRetriever);
+  const label = { inputProps: { "aria-label": "Checkbox demo" } };
+  const [productRebuild, setProductRebuild] = useState<Date>(new Date());
+
+  const carRelatedProcess = async () => {
+    try {
+      const carService = new CarApiService();
+      const car: Car = await carService.getChosenCar(car_id);
+      setChosenCar(car);
+
+      const dealerService = new DealerApiService();
+      const dealer = await dealerService.getChosenDealer(car.dealer_mb_id);
+      setChosenDealer(dealer);
+    } catch (err) {
+      console.log("carRelatedProcess, ERROR:", err);
+    }
+  };
+  useEffect(() => {
+    carRelatedProcess().then();
+  }, [productRebuild]);
+
+  /**HANDLERS */
+  const targetLikeProduct = async (e: any) => {
+    try {
+      assert.ok(localStorage.getItem("member_data"), Definer.auth_err1);
+
+      const memberService = new MemberApiService(),
+        like_result = await memberService.memberLikeTarget({
+          like_ref_id: e.target.id,
+          group_type: "car",
+        });
+      assert.ok(like_result, Definer.general_err1);
+
+      await sweetTopSmallSuccessAlert("success", 700, false);
+      setProductRebuild(new Date());
+    } catch (err: any) {
+      console.log("targetLikeProduct, ERROR:", err);
+      sweetErrorHandling(err).then();
+    }
+  };
+
   const [value, setValue] = React.useState<number | null>(4);
   return (
     <div className="chosen_car">
@@ -41,10 +123,11 @@ export function ChosenCar() {
               modules={[Keyboard, Scrollbar, Navigation, Pagination]}
               className="mySwiper"
             >
-              {order_list.map((ele) => {
+              {chosenCar?.car_images.map((ele: string) => {
+                const image_path = `${serverApi}/${ele}`;
                 return (
                   <SwiperSlide>
-                    <img src="/home/super_car.jpg" />
+                    <img src={image_path} />
                   </SwiperSlide>
                 );
               })}
@@ -52,11 +135,14 @@ export function ChosenCar() {
           </Box>
           <Stack className="car_description">
             <Stack className="car_main_title">
-              <h2 className="car_title">2007 FORD MUSTANG DELUXE</h2>
-              <div className="sale_off">-34%</div>
+              <h2 className="car_title">
+                {chosenCar?.produced_year} {chosenCar?.car_brand}{" "}
+                {chosenCar?.car_name} {chosenCar?.car_model}
+              </h2>
+              <div className="sale_off">-{chosenCar?.car_discount?? 0 > 0 ? chosenCar?.car_discount : null}%</div>
             </Stack>
             <Stack className="car_brand">
-              <div className="car_toyota">Brand: Toyota</div>
+              <div className="car_toyota">Brand: {chosenCar?.car_brand}</div>
               <Stack flexDirection={"row"}>
                 <Box
                   sx={{
@@ -68,31 +154,27 @@ export function ChosenCar() {
                 <span>(2reviews)</span>
               </Stack>
             </Stack>
-            <p className="car_para">
-              There are many variations of passages of Lorem Ipsum available,
-              but majority have suffered teration in some form, by injected
-              humour, or randomised words which don't look even slight
-              believable. If you are going to use a passa There are many
-              variations of passages of Lorem Ipsum available, but majority have
-              suffered teration in some form, by injected humour, or randomised
-            </p>
-            <p className="car_model">
-              Model: Flores 3-Lite-Diamond 8/0 E-01-1SL
-            </p>
+            <p className="car_para">{chosenCar?.car_description}</p>
+            <p className="car_model">Model: {chosenCar?.car_model}</p>
             <Stack className="con_trans">
               <Box marginRight={"40px"}>
                 <p>Condition</p>
-                <div className="con_div">Used</div>
+                <div className="con_div">New</div>
               </Box>
               <Box>
                 <p>Transmission</p>
-                <div className="con_div">Automatic Transmission</div>
+                <div className="con_div">
+                  {chosenCar?.car_transmission} Transmission
+                </div>
               </Box>
             </Stack>
             <Stack className="car_price">
               <Stack className="price_old">
                 <p>
-                  $46000 <span style={{ marginLeft: "10px" }}>$49000</span>
+                  $
+                  {Math.round((chosenCar?.car_price ?? 0) - ((chosenCar?.car_price ?? 0) * ((chosenCar?.car_discount ?? 0) / 100)))}
+{" "}
+                  <span style={{ marginLeft: "10px" }}>$49000</span>
                 </p>
               </Stack>
               <Stack flexDirection={"row"}>
@@ -103,7 +185,7 @@ export function ChosenCar() {
             </Stack>
             <Stack flexDirection={"row"} style={{ marginBottom: "80px" }}>
               <img src="/icons/location.svg" alt="" />
-              <span className="boston_address">Boston, MA, United States</span>
+              <span className="boston_address">Seoul, South Korea</span>
             </Stack>
           </Stack>
           <Stack className="car_overview">
@@ -113,19 +195,19 @@ export function ChosenCar() {
                 <Stack className="overview_line">
                   <img src="/icons/small_car.svg" alt="" />
                   <p>
-                    Body Type: <span>Sedan</span>
+                    Body Type: <span>{chosenCar?.car_type}</span>
                   </p>
                 </Stack>
                 <Stack className="overview_line">
                   <img src="/icons/transmission.svg" alt="" />
                   <p>
-                    Transmission: <span>Auto</span>
+                    Transmission: <span>{chosenCar?.car_transmission}</span>
                   </p>
                 </Stack>
                 <Stack className="overview_line">
                   <img src="/icons/date_range.svg" alt="" />
                   <p>
-                    Year: <span>2021</span>
+                    Year: <span>{chosenCar?.produced_year}</span>
                   </p>
                 </Stack>
               </Box>
@@ -133,13 +215,13 @@ export function ChosenCar() {
                 <Stack className="overview_line">
                   <img src="/icons/color_fill.svg" alt="" />
                   <p>
-                    Exterior Color: <span>Red</span>
+                    Exterior Color: <span>{chosenCar?.car_color}</span>
                   </p>
                 </Stack>
                 <Stack className="overview_line">
                   <img src="/icons/fuel.svg" alt="" />
                   <p>
-                    Fuel Type: <span>Gasoline</span>
+                    Fuel Type: <span>{chosenCar?.car_engine_type}</span>
                   </p>
                 </Stack>
                 <Stack className="overview_line">
@@ -153,7 +235,7 @@ export function ChosenCar() {
                 <Stack className="overview_line">
                   <img src="/icons/color_fill.svg" alt="" />
                   <p>
-                    Interior-Color: <span>Red</span>
+                    Interior-Color: <span>N/A</span>
                   </p>
                 </Stack>
                 <Stack className="overview_line">
@@ -250,13 +332,13 @@ export function ChosenCar() {
           </Stack>
           <h3>Car Location</h3>
           <Box className="location_car">
-          <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d2089.7382483609517!2d127.72038899545637!3d34.96428111004859!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1suz!2skr!4v1708086906249!5m2!1suz!2skr"
-                  width="100%"
-                  height="490"
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                ></iframe>
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d2089.7382483609517!2d127.72038899545637!3d34.96428111004859!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1suz!2skr!4v1708086906249!5m2!1suz!2skr"
+              width="100%"
+              height="490"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            ></iframe>
           </Box>
         </Stack>
       </Container>

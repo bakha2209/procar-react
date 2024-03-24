@@ -55,11 +55,11 @@ export function TopBrands() {
                 height: "auto",
                 flexDirection: "row",
                 justifyContent: "center",
-                marginTop: "40px",
+                marginTop: "40px", 
               }}
             >
               <button className="brand_button" onClick={toggleView}>
-                see all
+                see more
               </button>
             </Stack>
           </Stack>
@@ -76,19 +76,20 @@ export function TopBrands() {
               })}
             </Box>
 
-            <Box
+            <Stack
               style={{
                 width: "100%",
                 height: "auto",
                 flexDirection: "row",
                 justifyContent: "center",
+              
                 marginTop: "40px",
               }}
             >
               <button className="brand_button" onClick={toggleView}>
                 see top models
               </button>
-            </Box>
+            </Stack>
           </Stack>
         )}
       </Container>

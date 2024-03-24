@@ -12,7 +12,7 @@ export function DealerPage() {
   return (
     <div className="dealer_page">
       <Switch>
-        <Route path={`${dealer.path}/car/:car_id`}>
+        <Route path={`${dealer.path}/cars/:car_id`}>
           <ChosenCar />
         </Route>
         <Route path={`${dealer.path}/cars`}>

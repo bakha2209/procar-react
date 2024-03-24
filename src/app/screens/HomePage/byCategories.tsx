@@ -13,22 +13,22 @@ interface VehicleType {
 }
 
 const vehicleTypesData: VehicleType[] = [
-  { name: "CONVERTIBLE", image: "/vehicle_type/1.1.jpg" },
-  { name: "SUV", image: "/vehicle_type/1.2.jpg" },
-  { name: "PICKUP", image: "/vehicle_type/1.3.png" },
-  { name: "STATION WAGON", image: "/vehicle_type/1.4.jpg" },
-  { name: "SUPERCAR", image: "/vehicle_type/1.5.png" },
-  { name: "ROADSTER", image: "/vehicle_type/1.6.png" },
-  { name: "COUPE", image: "/vehicle_type/1.7.png" },
-  { name: "SEDAN", image: "/vehicle_type/1.8.png" },
-  { name: "CROSSOVER", image: "/vehicle_type/1.9.png" },
-  { name: "MPV", image: "/vehicle_type/1.10.png" },
-  { name: "LIMOUSINE", image: "/vehicle_type/1.11.png" },
-  { name: "4x4", image: "/vehicle_type/1.12.png" },
-  { name: "HATCHBACK", image: "/vehicle_type/1.13.png" },
-  { name: "SPORTS CAR", image: "/vehicle_type/1.14.png" },
-  { name: "MINIVAN", image: "/vehicle_type/1.15.png" },
-  { name: "CITY CAR", image: "/vehicle_type/1.16.png" },
+  { name: "CONVERTIBLE", image: "/vehicle_type/2.1.jpg" },
+  { name: "SUV", image: "/vehicle_type/2.2.jpg" },
+  { name: "PICKUP", image: "/vehicle_type/2.3.jpg" },
+  { name: "STATION WAGON", image: "/vehicle_type/2.17.jpg" },
+  { name: "SUPERCAR", image: "/vehicle_type/2.5.jpg" },
+  { name: "ROADSTER", image: "/vehicle_type/2.6.jpg" },
+  { name: "COUPE", image: "/vehicle_type/2.7.jpg" },
+  { name: "SEDAN", image: "/vehicle_type/2.8.jpg" },
+  { name: "CROSSOVER", image: "/vehicle_type/2.9.jpg" },
+  { name: "MPV", image: "/vehicle_type/2.10.jpg" },
+  { name: "LIMOUSINE", image: "/vehicle_type/2.18.jpg" },
+  { name: "4x4", image: "/vehicle_type/2.12.jpg" },
+  { name: "HATCHBACK", image: "/vehicle_type/2.13.jpg" },
+  { name: "SPORTS CAR", image: "/vehicle_type/2.14.jpg" },
+  { name: "MINIVAN", image: "/vehicle_type/2.15.jpg" },
+  { name: "CITY CAR", image: "/vehicle_type/2.16.jpg" },
 ];
 
 export function ByCategories() {
