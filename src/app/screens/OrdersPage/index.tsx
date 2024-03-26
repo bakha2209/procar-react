@@ -9,10 +9,33 @@ import TabList from "@mui/lab/TabList";
 import PausedOrders from "./pausedOrders";
 import ProcessOrders from "./processOrders";
 import FinishedOrders from "./finishedOrders";
+import { Order } from "../../../types/order";
+//REDUX
+import { useDispatch, useSelector } from "react-redux";
+import { createSelector } from "reselect";
+import { serverApi } from "../../lib/config";
+import { Dispatch } from "@reduxjs/toolkit";
+import {
+  setPausedOrders,
+  setProcessOrders,
+  setFinishedOrders,
+} from "../OrdersPage/slice";
+import { useHistory, useParams } from "react-router-dom";
+// REDUX SLICE
+const actionDispatch = (dispach: Dispatch) => ({
+  setPausedOrders: (data: Order[]) => dispach(setPausedOrders(data)),
+  setProcessOrders: (data: Order[]) => dispach(setProcessOrders(data)),
+  setFinishedOrders: (data: Order[]) => dispach(setFinishedOrders(data)),
+});
 
 export function OrdersPage() {
   // INITIALIZATIONS
   const [value, setValue] = useState("1");
+  const { setPausedOrders, setProcessOrders, setFinishedOrders } =
+  actionDispatch(useDispatch());
+
+useEffect(()=> {}, [])  
+
 
   // HANDLERS
   const handleChange = (event: any, newValue: string) => {

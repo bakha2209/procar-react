@@ -32,7 +32,7 @@ const marks = [
 
 const car_list = Array.from(Array(5).keys());
 
-export function AllCars() {
+export function AllCars(props: any) {
   const [make, setMake] = React.useState("");
 
   const handleClick = (event: SelectChangeEvent) => {

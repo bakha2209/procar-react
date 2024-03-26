@@ -1,6 +1,24 @@
 import { TabPanel } from "@mui/lab";
 import { Box, Button, Stack } from "@mui/material";
 import React from "react";
+//REDUX
+import { useSelector } from "react-redux";
+import {
+  retrievePausedOrders,
+} from "../../screens/OrdersPage/selector";
+import { createSelector } from "reselect";
+import { Dealer } from "../../../types/user";
+import { serverApi } from "../../lib/config";
+import { Dispatch } from "@reduxjs/toolkit";
+import { useHistory, useParams } from "react-router-dom";
+
+// REDUX SELECTOR
+const pausedOrdersRetriever = createSelector(
+  retrievePausedOrders,
+  (pausedOrders) => ({
+    pausedOrders,
+  })
+);
 
 const pausedOrders = Array.from(Array(3).keys());
 

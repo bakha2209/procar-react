@@ -49,7 +49,7 @@ const chosenDealerRetriever = createSelector(
 
 const order_list = Array.from(Array(5).keys());
 
-export function ChosenCar() {
+export function ChosenCar(props:any) {
   /**INITIALIZATIONS */
   let { car_id } = useParams<{ car_id: string }>();
   const { setChosenCar, setChosenDealer } = actionDispatch(useDispatch());
@@ -174,7 +174,7 @@ export function ChosenCar() {
                   $
                   {Math.round((chosenCar?.car_price ?? 0) - ((chosenCar?.car_price ?? 0) * ((chosenCar?.car_discount ?? 0) / 100)))}
 {" "}
-                  <span style={{ marginLeft: "10px" }}>$49000</span>
+                  <span style={{ marginLeft: "10px" }}>${chosenCar?.car_price}</span>
                 </p>
               </Stack>
               <Stack flexDirection={"row"}>

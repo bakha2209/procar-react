@@ -21,3 +21,12 @@ export interface MemberLiken {
     limit: number;
     order: string;
   }
+  export interface CartItem {
+    _id: string,
+    brand: string,
+    name: string,
+    produced_year:number,
+    discount:number,
+    price: number,
+    image: string,
+  }

@@ -14,6 +14,7 @@ import {
 import React from "react";
 import { NavLink } from "react-router-dom";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import Basket from "./basket";
 
 export function NavbarDealer(props: any) {
   return (
@@ -43,11 +44,13 @@ export function NavbarDealer(props: any) {
                 Dealers
               </NavLink>
             </Box>
-            <Box className="hover-line" onClick={props.setPath}>
-              <NavLink to={"/orders"} activeClassName="underline">
-                Order
-              </NavLink>
-            </Box>
+            {props.verifiedMemberData ? (
+              <Box className="hover-line" onClick={props.setPath}>
+                <NavLink to={"/orders"} activeClassName="underline">
+                  Order
+                </NavLink>
+              </Box>
+            ) : null}
             <Box className="hover-line" onClick={props.setPath}>
               <NavLink to={"/community"} activeClassName="underline">
                 Community
@@ -66,8 +69,12 @@ export function NavbarDealer(props: any) {
               </NavLink>
             </Box>
             <Box className="hover-line">
-              <IconButton color="secondary" aria-label="add to shopping cart">
-                <AddShoppingCartIcon />
+              <IconButton color="primary" aria-label="add to shopping cart">
+                <Basket
+                  cartItems={props.cartItems}
+                  onAdd={props.onAdd}
+                  onDelete={props.onDelete}
+                />
               </IconButton>
             </Box>
             {!props.verifiedMemberData ? (

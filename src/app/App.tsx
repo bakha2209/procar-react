@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../css/App.css";
 import "../css/navbar.css";
 import "../css/footer.css";
-import { Box, Button, Container, Stack, Typography } from "@mui/material";
+import { Alert, Box, Button, Container, Stack, Typography } from "@mui/material";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { DealerPage } from "./screens/DealerPage";
 import { CommunityPage } from "./screens/CommunityPage";
@@ -18,10 +18,15 @@ import { Footer } from "./components/footer";
 import AuthenticationModal from "./components/auth";
 import { Member } from "../types/user";
 import { serverApi } from "./lib/config";
-import { sweetFailureProvider, sweetTopSmallSuccessAlert } from "./lib/sweetAlert";
+import {
+  sweetFailureProvider,
+  sweetTopSmallSuccessAlert,
+} from "./lib/sweetAlert";
 import { Definer } from "./lib/Definer";
 import MemberApiService from "./apiServices/memberApiService";
-import "../app/apiServices/verify"
+import "../app/apiServices/verify";
+import { CartItem } from "../types/others";
+import { Car } from "../types/car";
 
 function App() {
   /**INITIALIZATION */
@@ -35,6 +40,9 @@ function App() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
+  const cartJson: any = localStorage.getItem("cart_data");
+  const current_cart: CartItem[] = JSON.parse(cartJson) ?? [];
+  const [cartItems, setCartItems] = useState<CartItem[]>(current_cart);
 
   useEffect(() => {
     console.log("=== useEffect: App ===");
@@ -46,7 +54,7 @@ function App() {
       member_data.mb_image = member_data.mb_image
         ? `${serverApi}/${member_data.mb_image}`
         : "/auth/13.jpg";
-      setVerifiedMemberData(member_data)  
+      setVerifiedMemberData(member_data);
     }
   }, [signUpOpen, loginOpen]);
 
@@ -66,14 +74,47 @@ function App() {
   };
   const handleLogOutRequest = async () => {
     try {
-      const memberApiService = new MemberApiService()
-      await memberApiService.logOutRequest()
-      await sweetTopSmallSuccessAlert("success", 700, true)
+      const memberApiService = new MemberApiService();
+      await memberApiService.logOutRequest();
+      await sweetTopSmallSuccessAlert("success", 700, true);
     } catch (err: any) {
-      console.log(err)
-      sweetFailureProvider(Definer.general_err1)
+      console.log(err);
+      sweetFailureProvider(Definer.general_err1);
     }
-  }
+  };
+
+  const onAdd = (car: Car) => {
+    const exist: any = cartItems?.find(
+      (item: CartItem) => item._id === car._id
+    );
+    if (exist) {
+      alert("The item is already in your basket")
+    } else {
+      const new_item: CartItem = {
+        _id: car._id,
+        name: car.car_name,
+        price: car.car_price,
+        image: car.car_images[0],
+        brand: car.car_brand,
+        discount: car.car_discount,
+        produced_year: car.produced_year,
+      };
+      const cart_updated = [...cartItems, { ...new_item }];
+      setCartItems(cart_updated);
+      localStorage.setItem("cart_data", JSON.stringify(cart_updated));
+    }
+  };
+
+  const onDelete = (item: CartItem) => {
+    const cart_updated = cartItems.filter(
+      (ele: CartItem) => ele._id !== item._id
+    );
+    setCartItems(cart_updated);
+    localStorage.setItem("cart_data", JSON.stringify(cart_updated));
+  };
+  const onRemove = () => {};
+  
+  const onDeleteAll = () => {};
 
   return (
     <Router>
@@ -87,7 +128,10 @@ function App() {
           handleLogOutClick={handleLogOutClick}
           handleCloseLogOut={handleCloseLogOut}
           handleLogOutRequest={handleLogOutRequest}
-          verifiedMemberData = {verifiedMemberData}
+          verifiedMemberData={verifiedMemberData}
+          cartItems={cartItems}
+          onAdd={onAdd}
+          onDelete = {onDelete}
         />
       ) : main_path.includes("/dealer") ? (
         <NavbarDealer
@@ -99,7 +143,10 @@ function App() {
           handleLogOutClick={handleLogOutClick}
           handleCloseLogOut={handleCloseLogOut}
           handleLogOutRequest={handleLogOutRequest}
-          verifiedMemberData = {verifiedMemberData}
+          verifiedMemberData={verifiedMemberData}
+          cartItems={cartItems}
+          onAdd={onAdd}
+          onDelete={onDelete}
         />
       ) : (
         <NavbarOthers
@@ -111,13 +158,16 @@ function App() {
           handleLogOutClick={handleLogOutClick}
           handleCloseLogOut={handleCloseLogOut}
           handleLogOutRequest={handleLogOutRequest}
-          verifiedMemberData = {verifiedMemberData}
+          verifiedMemberData={verifiedMemberData}
+          cartItems={cartItems}
+          onAdd={onAdd}
+          onDelete = {onDelete}
         />
       )}
 
       <Switch>
         <Route path="/dealer">
-          <DealerPage />
+          <DealerPage onAdd={onAdd} />
         </Route>
         <Route path="/community">
           <CommunityPage />

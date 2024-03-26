@@ -1,6 +1,20 @@
 import { TabPanel } from "@mui/lab";
 import { Box, Button, Stack } from "@mui/material";
 import React from "react";
+//REDUX
+import { useSelector } from "react-redux";
+import {
+  retrieveFinishedOrders,
+} from "../../screens/OrdersPage/selector";
+import { createSelector } from "reselect";
+
+// REDUX SELECTOR
+const finishedOrdersRetriever = createSelector(
+  retrieveFinishedOrders,
+  (finishedOrders) => ({
+    finishedOrders,
+  })
+);
 
 const finishedOrders = Array.from(Array(3).keys());
 

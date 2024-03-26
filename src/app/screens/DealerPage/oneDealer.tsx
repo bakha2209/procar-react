@@ -120,7 +120,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 const order_list = Array.from(Array(6).keys());
 const car_list = Array.from(Array(5).keys());
 
-export function OneDealer() {
+export function OneDealer(props: any) {
   /**INITIALIZATIONS */
   let { dealer_id } = useParams<{ dealer_id: string }>();
   const { setChosenDealer, setTargetCars } = actionDispatch(useDispatch());
@@ -342,7 +342,15 @@ export function OneDealer() {
                                     style={{ marginLeft: "9px" }}
                                   />
                                 </div>
-                                <div className="view_btn">Add to Cart </div>
+                                <div
+                                  className="view_btn"
+                                  onClick={(e) => {
+                                    props.onAdd(car);
+                                    e.stopPropagation();
+                                  }}
+                                >
+                                  Add to Cart{" "}
+                                </div>
                               </SwiperSlide>
                             </Swiper>
                           </AspectRatio>

@@ -1,10 +1,12 @@
 import { BoArticle } from "./boArticle";
 import { Car } from "./car";
 import { Dealer } from "./user";
+import { Order } from "./order";
 
 export interface AppRootState {
     homePage: HomePageState;
-    dealerPage: DealerPageState
+    dealerPage: DealerPageState;
+    ordersPage: OrdersPageState
 }
 
 // HOMEPAGE
@@ -23,3 +25,9 @@ export interface DealerPageState {
     targetCars: Car[],
     chosenCar: Car | null
 }
+/**ORDERS PAGE */
+export interface OrdersPageState {
+    pausedOrders: Order[],
+    processOrders: Order[],
+    finishedOrders: Order[]
+  }

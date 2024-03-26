@@ -6,20 +6,20 @@
   background-size: cover;
 }
 .format_dealer.home_navbar {
-    width: 100%;
-    height: 500px;
-    display: flex;
-    background: url("/public/dealer/car.avif");
-    background-size: cover;  
-  }
-  
-  .format_others.home_navbar {
-    width: 100%;
-    height: 500px;
-    display: flex;
-    background: url("/public/dealer/car.avif");
-    background-size: cover;  
-  }
+  width: 100%;
+  height: 500px;
+  display: flex;
+  background: url("/public/dealer/car.avif");
+  background-size: cover;
+}
+
+.format_others.home_navbar {
+  width: 100%;
+  height: 500px;
+  display: flex;
+  background: url("/public/dealer/car.avif");
+  background-size: cover;
+}
 
 .home_navbar .navbar_config {
   width: 1244.69px;
@@ -105,7 +105,6 @@
   line-height: 30px;
   color: #d5d5d5;
 }
-
 
 .login-button {
   background-color: #149746;
@@ -208,4 +207,146 @@
   font-weight: 600;
   line-height: 100%; /* 20px */
   text-transform: uppercase;
+}
+
+/* START BASKET */
+
+.basket_frame {
+  position: relative;
+  padding: 10px 4px 0px 4px;
+  width: 400px;
+  height: auto;
+
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border-radius: 16px;
+}
+.basket_frame .false_frame {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 20px 10px 20px;
+}
+.basket_frame .false_frame img {
+  width: 120px;
+  height: 140px;
+}
+.basket_frame .false_frame .empty_desc {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 30px;
+  width: 70%;
+}
+.basket_frame .false_frame .empty_shop {
+  margin-top: 15px;
+  background: #f0bc04;
+  color: #fff;
+  padding: 5px 10px;
+  leading-trim: both;
+
+  text-edge: cap;
+  font-family: "Plus Jakarta Sans";
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 28px; /* 175% */
+  text-transform: capitalize;
+}
+.basket_frame .true_frame {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  padding: 20px 15px 10px 15px;
+}
+.basket_frame .true_frame .donut_image {
+  max-width: 45px;
+  max-height: 45px;
+  margin-bottom: 15px;
+}
+.basket_frame .true_frame .wish_name {
+  color: #000;
+
+  font-family: "Plus Jakarta Sans";
+  font-size: 25px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 26px; /* 104% */
+}
+.basket_frame .true_frame .orders_wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+.basket_frame .true_frame .basket_info_box {
+  position: relative;
+  margin-top: 6px;
+  width: 100%;
+  height: auto;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.true_frame .basket_info_box .car_img {
+  max-width: 90px;
+  max-height: 90px;
+  filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.25));
+  
+}
+.true_frame .basket_info_box .product_name {
+  margin-left: 11px;
+  width: 230px;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 550;
+  font-size: 20px;
+  line-height: 30px;
+  color: #000000;
+}
+.true_frame .basket_info_box .product_price {
+  width: 80px;
+  margin-left: 11px;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 22px;
+  color: #ae0000;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.true_frame .to_order_box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  border-top: 1px solid rgba(0, 0, 0, 0.5);
+  margin-top: 25px;
+}
+.to_order_box .price_text {
+  margin-left: 27px;
+  margin-right: 10px;
+  width: 250px;
+  display: flex;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 30px;
+  color: #000000;
+}
+.to_order_box .purchase_btn {
+  width:200px;
+  justify-content: center;
+  margin-top: 15px;
 }
