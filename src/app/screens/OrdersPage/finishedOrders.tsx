@@ -7,6 +7,9 @@ import {
   retrieveFinishedOrders,
 } from "../../screens/OrdersPage/selector";
 import { createSelector } from "reselect";
+import { Order } from "../../../types/order";
+import { Car } from "../../../types/car";
+import { serverApi } from "../../lib/config";
 
 // REDUX SELECTOR
 const finishedOrdersRetriever = createSelector(
@@ -16,25 +19,37 @@ const finishedOrdersRetriever = createSelector(
   })
 );
 
-const finishedOrders = Array.from(Array(3).keys());
+
 
 export default function FinishedOrders(props: any) {
+   /**INITIALIZATIONS */
+   const { finishedOrders } = useSelector(finishedOrdersRetriever);
   return (
     <TabPanel value={"3"}>
       <Stack>
-        {finishedOrders?.map((order) => {
+        {finishedOrders?.map((order:Order) => {
           return (
-            <Stack className="wish_box">
-              <img src="/home/super_car.jpg" alt="" />
+            <React.Fragment key={order._id}>
+              {order.order_items.map((item)=> {
+                const car: Car | undefined = order.car_data.find((ele) => ele._id === item.car_id);
+                if (!car) return null; // Handle case where car is not found
+                const image_path = car.car_images.length > 0 ? `${serverApi}/${car.car_images[0]}` : "";
+                return (
+                  <Stack key={item.car_id} className="wish_box">
+              <img src={image_path} alt="" />
               <Stack className="car_desc">
                 <Box height={"75px"}>
-                  <span>Brand: Volvo</span>
-                  <div className="car_name">Chevrolet Suburban 2023</div>
-                  <span className="car_price">$27000</span>
+                  <span>Brand: {car?.car_brand}</span>
+                  <div className="car_name">{car?.car_name} {car?.car_type} {car?.produced_year}</div>
+                  <span className="car_price">${car?.car_price - (car?.car_price * car?.car_discount) / 100}</span>
                 </Box>
                 
               </Stack>
             </Stack>
+                )
+              })}
+            </React.Fragment>
+            
           );
         })}
       </Stack>

@@ -10,6 +10,7 @@ import PausedOrders from "./pausedOrders";
 import ProcessOrders from "./processOrders";
 import FinishedOrders from "./finishedOrders";
 import { Order } from "../../../types/order";
+import { Member, Dealer } from "../../../types/user";
 //REDUX
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
@@ -21,6 +22,7 @@ import {
   setFinishedOrders,
 } from "../OrdersPage/slice";
 import { useHistory, useParams } from "react-router-dom";
+import OrderApiService from "../../apiServices/orderApiService";
 // REDUX SLICE
 const actionDispatch = (dispach: Dispatch) => ({
   setPausedOrders: (data: Order[]) => dispach(setPausedOrders(data)),
@@ -28,13 +30,26 @@ const actionDispatch = (dispach: Dispatch) => ({
   setFinishedOrders: (data: Order[]) => dispach(setFinishedOrders(data)),
 });
 
-export function OrdersPage() {
+export function OrdersPage(props: any) {
   // INITIALIZATIONS
   const [value, setValue] = useState("1");
   const { setPausedOrders, setProcessOrders, setFinishedOrders } =
   actionDispatch(useDispatch());
+  const verifiedMemberData: Member | null = props.verifiedMemberData;
 
-useEffect(()=> {}, [])  
+useEffect(()=> {const orderService = new OrderApiService();
+  orderService
+    .getMyOrders("paused")
+    .then((data) => setPausedOrders(data))
+    .catch((err) => console.log(err));
+  orderService
+    .getMyOrders("process")
+    .then((data) => setProcessOrders(data))
+    .catch((err) => console.log(err));
+  orderService
+    .getMyOrders("finished")
+    .then((data) => setFinishedOrders(data))
+    .catch((err) => console.log(err));}, [props.orderRebuild])  
 
 
   // HANDLERS
@@ -65,9 +80,9 @@ useEffect(()=> {}, [])
               </Box>
             </Box>
             <Stack className="order_main_content">
-              <PausedOrders />
-              <ProcessOrders />
-              <FinishedOrders />
+              <PausedOrders setOrderRebuild={props.setOrderRebuild}/>
+              <ProcessOrders setOrderRebuild={props.setOrderRebuild}/>
+              <FinishedOrders setOrderRebuild={props.setOrderRebuild}/>
             </Stack>
           </TabContext>
         </Stack>
@@ -80,16 +95,16 @@ useEffect(()=> {}, [])
               alignItems={"center"}
             >
               <div className="order_user_img">
-                <img src="/home/super_car.jpg" className="order_user_avatar" />
+                <img src={verifiedMemberData?.mb_image ? verifiedMemberData?.mb_image : "/home/super_car.jpg"} className="order_user_avatar" />
 
                 
               </div>
-              <h1 className="order_user_name">Bakha_sila</h1>
-              <span className="order_user_prof">User</span>
+              <h1 className="order_user_name">{verifiedMemberData?.mb_nick}</h1>
+              <span className="order_user_prof">{verifiedMemberData?.mb_type ?? "User"}</span>
               
               <Box className={"order_user_address"}>
-                <img src="/icons/location.svg" alt="" />
-                <p className="spec_address_text">Seoul</p>
+                <img src="/icons/location.svg" color="#FFF" />
+                <p className="spec_address_text">{verifiedMemberData?.mb_address ?? "Seoul, South Korea"}</p>
               </Box>
             </Box>
           </Box>
@@ -100,7 +115,7 @@ useEffect(()=> {}, [])
               <div className="card_half_input">07/24</div>
               <div className="card_half_input">CVV:010</div>
             </Box>
-            <div className="card_input">Lutfullaev Bakhodir</div>
+            <div className="card_input">{verifiedMemberData?.mb_nick}</div>
             <Box display={"flex"} flexDirection={"row"} alignItems={"center"}>
               <Box
                 display={"flex"}

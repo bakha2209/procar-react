@@ -23,6 +23,7 @@ export interface MemberLiken {
   }
   export interface CartItem {
     _id: string,
+    quantity: number,
     brand: string,
     name: string,
     produced_year:number,

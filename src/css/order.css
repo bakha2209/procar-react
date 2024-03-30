@@ -101,7 +101,7 @@ text-transform: capitalize;
   flex-direction: row;
 }
 
-.order_page .order_info_box .spec_address_txt {
+.order_page .order_info_box .spec_address_text {
   margin-left: 5px;
   font-family: "DM Sans";
   font-style: normal;
@@ -109,6 +109,7 @@ text-transform: capitalize;
   font-size: 16px;
   line-height: 24px;
   color: #616164;
+  width: 100%;
 }
 .order_page .payment_box {
   display: flex;

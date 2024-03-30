@@ -108,6 +108,8 @@ export function NavbarHome(props: any) {
                   cartItems={props.cartItems}
                   onAdd={props.onAdd}
                   onDelete={props.onDelete}
+                  onDeleteAll={props.onDeleteAll}
+                  setOrderRebuild={props.setOrderRebuild}
                 />
               </IconButton>
             </Box>

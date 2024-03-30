@@ -74,6 +74,8 @@ export function NavbarDealer(props: any) {
                   cartItems={props.cartItems}
                   onAdd={props.onAdd}
                   onDelete={props.onDelete}
+                  onDeleteAll={props.onDeleteAll}
+                  setOrderRebuild={props.setOrderRebuild}
                 />
               </IconButton>
             </Box>

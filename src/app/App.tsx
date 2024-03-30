@@ -2,7 +2,14 @@ import React, { useEffect, useState } from "react";
 import "../css/App.css";
 import "../css/navbar.css";
 import "../css/footer.css";
-import { Alert, Box, Button, Container, Stack, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  Container,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { DealerPage } from "./screens/DealerPage";
 import { CommunityPage } from "./screens/CommunityPage";
@@ -39,6 +46,7 @@ function App() {
   const [loginOpen, setLoginOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const [orderRebuild, setOrderRebuild] = useState<Date>(new Date());
 
   const cartJson: any = localStorage.getItem("cart_data");
   const current_cart: CartItem[] = JSON.parse(cartJson) ?? [];
@@ -88,10 +96,11 @@ function App() {
       (item: CartItem) => item._id === car._id
     );
     if (exist) {
-      alert("The item is already in your basket")
+      alert("The item is already in your basket");
     } else {
       const new_item: CartItem = {
         _id: car._id,
+        quantity: 1,
         name: car.car_name,
         price: car.car_price,
         image: car.car_images[0],
@@ -112,9 +121,11 @@ function App() {
     setCartItems(cart_updated);
     localStorage.setItem("cart_data", JSON.stringify(cart_updated));
   };
-  const onRemove = () => {};
-  
-  const onDeleteAll = () => {};
+
+  const onDeleteAll = () => {
+    setCartItems([]);
+    localStorage.removeItem("cart_data");
+  };
 
   return (
     <Router>
@@ -131,7 +142,9 @@ function App() {
           verifiedMemberData={verifiedMemberData}
           cartItems={cartItems}
           onAdd={onAdd}
-          onDelete = {onDelete}
+          onDelete={onDelete}
+          onDeleteAll={onDeleteAll}
+          setOrderRebuild={setOrderRebuild}
         />
       ) : main_path.includes("/dealer") ? (
         <NavbarDealer
@@ -147,6 +160,8 @@ function App() {
           cartItems={cartItems}
           onAdd={onAdd}
           onDelete={onDelete}
+          onDeleteAll={onDeleteAll}
+          setOrderRebuild={setOrderRebuild}
         />
       ) : (
         <NavbarOthers
@@ -161,7 +176,9 @@ function App() {
           verifiedMemberData={verifiedMemberData}
           cartItems={cartItems}
           onAdd={onAdd}
-          onDelete = {onDelete}
+          onDelete={onDelete}
+          onDeleteAll={onDeleteAll}
+          setOrderRebuild={setOrderRebuild}
         />
       )}
 
@@ -173,7 +190,11 @@ function App() {
           <CommunityPage />
         </Route>
         <Route path="/orders">
-          <OrdersPage />
+          <OrdersPage
+            orderRebuild={orderRebuild}
+            setOrderRebuild={setOrderRebuild}
+            verifiedMemberData={verifiedMemberData}
+          />
         </Route>
         <Route path="/member-page">
           <MemberPage />

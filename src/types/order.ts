@@ -4,6 +4,7 @@ export interface OrderItem {
   _id: string;
   item_quantity: number;
   item_price: number;
+  item_discount: number;
   order_id: string;
   car_id: string;
   createdAt: Date;

@@ -10,13 +10,19 @@ import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import { sweetErrorHandling } from "../../lib/sweetAlert";
 import assert from "assert";
 import { Definer } from "../../lib/Definer";
+import OrderApiService from "../../apiServices/orderApiService";
+import { useHistory } from "react-router-dom";
 
 export default function Basket(props: any) {
   /** INITIALIZATIONS **/
+  const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const { cartItems, onAdd, onDelete } = props;
-  const itemsPrice = cartItems?.reduce((a: any, c: CartItem) => a + c.price, 0);
+  const { cartItems, onDelete, onDeleteAll } = props;
+  const itemsPrice = cartItems?.reduce(
+    (a: any, c: CartItem) => a + (c.price - (c.price*c.discount/100)) * c.quantity,
+    0
+  );
 
   /** HANDLERS **/
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -29,6 +35,14 @@ export default function Basket(props: any) {
   const processOrderHandler = async () => {
     try {
       assert.ok(localStorage.getItem("member_data"), Definer.auth_err1);
+      const order = new OrderApiService();
+      await order.createOrder(cartItems);
+
+      onDeleteAll();
+      handleClose();
+
+      props.setOrderRebuild(new Date());
+      history.push("/orders");
     } catch (err: any) {
       console.log(err);
       sweetErrorHandling(err).then();
@@ -44,7 +58,7 @@ export default function Basket(props: any) {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
-        <Badge badgeContent={1} color="secondary">
+        <Badge badgeContent={cartItems.length} color="secondary">
           <AddShoppingCartIcon color="primary" />
         </Badge>
       </IconButton>
@@ -84,7 +98,7 @@ export default function Basket(props: any) {
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         <Stack className="basket_frame">
-          {false ? (
+          {cartItems.length < 1 ? (
             <Box className="false_frame">
               <img src="/home/buy.png" alt="" />
               <div className="empty_desc">
@@ -112,7 +126,7 @@ export default function Basket(props: any) {
                           </div>
                           <span className="product_price">
                             <MonetizationOnIcon fontSize="small" />
-                            {item?.price - (item?.price * item?.discount) / 100}
+                            {(item?.price - (item?.price * item?.discount) / 100)*item.quantity}
                           </span>
                         </Box>
                       </Stack>
