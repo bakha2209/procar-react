@@ -4,6 +4,7 @@ import reduxLogger from "redux-logger"
 import DealerPageReducer from './screens/DealerPage/slice';
 import OrdersPageReducer from './screens/OrdersPage/slice';
 import CommunityPageReducer from './screens/CommunityPage/slice';
+import MemberPageReducer from './screens/MemberPage/slice';
 
 
 export const store = configureStore({
@@ -12,7 +13,8 @@ export const store = configureStore({
     homePage: HomePageReducer,
     dealerPage: DealerPageReducer,
     ordersPage: OrdersPageReducer,
-    communityPage: CommunityPageReducer
+    communityPage: CommunityPageReducer,
+    memberPage: MemberPageReducer
   },
 });
 

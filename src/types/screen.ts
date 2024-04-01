@@ -1,13 +1,15 @@
 import { BoArticle } from "./boArticle";
 import { Car } from "./car";
-import { Dealer } from "./user";
+import { Dealer, Member } from "./user";
 import { Order } from "./order";
+import { Follower, Following } from "./follow";
 
 export interface AppRootState {
   homePage: HomePageState;
   dealerPage: DealerPageState;
   ordersPage: OrdersPageState;
   communityPage: CommunityPageState;
+  memberPage: MemberPageState
 }
 
 // HOMEPAGE
@@ -35,4 +37,13 @@ export interface OrdersPageState {
 /**COMMUNITY PAGE */
 export interface CommunityPageState {
   targetBoArticles: BoArticle[];
+}
+
+/**MEMBER PAGE */
+export interface MemberPageState {
+  chosenMember: Member | null;
+  chosenMemberBoArticles: BoArticle[];
+  chosenSingleBoArticle: BoArticle | null;
+  memberFollowers: Follower[];
+  memberFollowings: Following[];
 }
