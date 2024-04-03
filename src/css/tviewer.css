@@ -1,0 +1,116 @@
+.main_view {
+  display: flex;
+  flex-direction: column;
+  padding: 80px 60px 20px 60px;
+}
+.main_view .central_view {
+  display: flex;
+  flex-direction: row;
+}
+.central_view .central_left {
+  display: flex;
+  flex-direction: column;
+  width: 574px;
+  height: auto;
+  margin-right: 40px;
+}
+.post_type {
+  width: 90px;
+  height: 25px;
+  margin: 14px;
+  background: #d01818;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: right;
+  font-family: "Plus Jakarta Sans";
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 14px; /* 157.143% */
+  letter-spacing: 1.89px;
+  text-transform: uppercase;
+}
+.card_image .like_btn {
+  position: relative;
+  display: flex;
+  margin-left: 230px;
+  margin-right: 20px;
+  margin-top: 10px;
+
+  width: 45px;
+  height: 45px;
+  background: #1f1f1f91;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  justify-content: center;
+  align-items: center;
+}
+.card_image:hover .like_btn {
+  opacity: 1;
+}
+.post_desc {
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.post_desc img {
+  margin-right: 7px;
+  height: 11px;
+}
+.central_left p {
+  color: #000;
+
+  font-family: "Plus Jakarta Sans";
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 22px; /* 138.125% */
+}
+.central_left span {
+  color: #83827f;
+
+  font-family: "Plus Jakarta Sans";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px; /* 183.333% */
+}
+.central_left .image_quote {
+  width: 100%;
+  height: 140px;
+  background-image: url("/public/auth/des.jpg");
+  background-size: cover;
+  margin-top: 30px;
+  margin-bottom: 14px;
+  padding: 25px 21px 22px 24px;
+  display: flex;
+  flex-direction: column;
+}
+.image_quote .quote_desc {
+  color: #fff;
+
+  font-family: "Plus Jakarta Sans";
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 25px; /* 179.167% */
+}
+.image_quote span {
+  color: #fff;
+
+  font-family: "Plus Jakarta Sans";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-left: 7px;
+}

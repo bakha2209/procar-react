@@ -7,7 +7,8 @@ import {
   Stack,
   styled,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { Dispatch, createSelector } from "@reduxjs/toolkit";
 import moment from "moment";
 import Checkbox from "@mui/material/Checkbox";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
@@ -16,12 +17,76 @@ import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import SearchIcon from "@mui/icons-material/Search";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-
-
+import { BoArticle, SearchArticlesObj } from "../../../types/boArticle";
+import { serverApi } from "../../lib/config";
+import assert from "assert";
+import { Definer } from "../../lib/Definer";
+import MemberApiService from "../../apiServices/memberApiService";
+import {
+  sweetErrorHandling,
+  sweetTopSmallSuccessAlert,
+} from "../../lib/sweetAlert";
+import { setTargetBoArticles } from "../CommunityPage/slice";
+import { retrieveTargetBoArticles } from "../CommunityPage/selector";
+import CommunityApiService from "../../apiServices/communityApiService";
+import { useDispatch, useSelector } from "react-redux";
+// REDUX SLICE
+const actionDispatch = (dispach: Dispatch) => ({
+  setTargetBoArticles: (data: BoArticle[]) =>
+    dispach(setTargetBoArticles(data)),
+});
+// REDUX SELECTOR
+const targetBoArticlesRetriever = createSelector(
+  retrieveTargetBoArticles,
+  (targetBoArticles) => ({
+    targetBoArticles,
+  })
+);
 
 const story_list = Array.from(Array(3).keys());
-export function MemberPosts() {
-  const [cartChange, setCartChange] = useState<number>(-1);
+export function MemberPosts(props: any) {
+  const { setTargetBoArticles } = actionDispatch(useDispatch());
+  const { targetBoArticles } = useSelector(targetBoArticlesRetriever);
+  const {
+    renderChosenArticleHandler,
+    chosenMemberBoArticles,
+    setArticlesRebuild,
+    articlesRebuild,
+    handleArticleChange,
+  } = props;
+  const [searchArticlesObj, setSearchArticlesObj] = useState<SearchArticlesObj>(
+    { bo_id: "all", page: 1, limit: 3, order: "updatedAt" }
+  );
+  useEffect(() => {
+    const communityService = new CommunityApiService();
+    communityService
+      .getTargetArticles(searchArticlesObj)
+      .then((data) => setTargetBoArticles(data))
+      .catch((err) => console.log(err));
+  }, [searchArticlesObj, articlesRebuild]);
+
+  const refs: any = useRef([]);
+
+  /**HANDLERS */
+  const targetLikeHandler = async (e: any, id: string) => {
+    try {
+      e.stopPropagation();
+      assert.ok(localStorage.getItem("member_data"), Definer.auth_err1);
+
+      const memberService = new MemberApiService();
+      const like_result = await memberService.memberLikeTarget({
+        like_ref_id: id,
+        group_type: "community",
+      });
+      assert.ok(like_result, Definer.general_err1);
+      await sweetTopSmallSuccessAlert("success", 700, false);
+      setArticlesRebuild(new Date());
+    } catch (err: any) {
+      console.log(err);
+      sweetErrorHandling(err).then();
+    }
+  };
+
   return (
     <Container>
       <Stack
@@ -31,9 +96,16 @@ export function MemberPosts() {
         sx={{ background: "FFF" }}
       >
         <div className="member_posts">
-          {story_list.map((ele) => {
+          {chosenMemberBoArticles.map((article: BoArticle) => {
+            const image_path = article.art_image
+              ? `${serverApi}/${article.art_image}`
+              : "/home/super_car.jpg";
             return (
-              <Stack className="post_card">
+              <Stack
+                className="post_card"
+                sx={{ cursor: "pointer" }}
+                onClick={() => renderChosenArticleHandler(article?._id)}
+              >
                 <Box
                   className="card_image"
                   flexDirection={"row"}
@@ -42,28 +114,35 @@ export function MemberPosts() {
                   style={{
                     width: "100%",
                     height: "305px",
-                    backgroundImage: `url(/home/super_car.jpg)`,
+                    backgroundImage: `url(${image_path})`,
                     backgroundSize: "cover",
                     marginBottom: "12px",
                   }}
                 >
-                  <div className="post_type">Evaluation</div>
+                  <div className="post_type">{article.bo_id}</div>
                   <Box
-                    className={
-                      "like_btn"
-                    }
+                    className={"like_btn"}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
                   >
                     <FavoriteIcon
                       className="card_img"
                       fontSize="medium"
-                      sx={{ fill: "white" }}
+                      onClick={(e) => targetLikeHandler(e, article._id)}
+                      sx={{
+                        fill:
+                          article?.me_liked && article?.me_liked[0]?.my_favorite
+                            ? "#FF3040"
+                            : "white",
+                      }}
                     />
                   </Box>
                 </Box>
                 <Box className="post_desc">
                   <Stack flexDirection={"row"} alignItems={"center"}>
                     <img src="/icons/user2.svg" />
-                    <span>Bakha_Sila /</span>
+                    <span>{article?.member_data?.mb_nick} /</span>
                     <div style={{ flexDirection: "row", cursor: "pointer" }}>
                       <img src="/icons/comment.svg" alt="" />
                       <span>(03)</span>
@@ -81,28 +160,23 @@ export function MemberPosts() {
                       flexDirection: "row",
                     }}
                   >
-                    <Checkbox
-                      sx={{ ml: "10px" }}
-                      icon={<Favorite fontSize="small" />}
-                      checkedIcon={<Favorite style={{ color: "red" }} />}
-                      checked={false}
-                    />
-                    <span >100</span>
+                    <FavoriteIcon fontSize="small" sx={{ fill: "grey" }} />
+                    <span
+                      ref={(element) => (refs.current[article?._id] = element)}
+                    >
+                      {article?.art_likes}
+                    </span>
                     <RemoveRedEyeIcon
                       fontSize="small"
                       style={{ color: "red" }}
                     />
-                    <span style={{ marginLeft: "5px" }}>1000</span>
+                    <span style={{ marginLeft: "5px" }}>
+                      {article?.art_views}
+                    </span>
                   </Box>
                 </Box>
-                <p>The whimsically named Egg Canvas brainch</p>
-                <span>
-                  There are many variations of passages of Lorem Ipsum
-                  available, but majority have suffered teration in some form,
-                  by injected humour, or randomised words which don't look even
-                  slight believable. If you are going to use a passage of Lorem
-                  Ipsum.
-                </span>
+                <p>{article?.art_subject}</p>
+                <span>{article?.art_content}</span>
                 <div style={{ flexDirection: "row", cursor: "pointer" }}>
                   <span className="read_icon">Read More</span>
                   <img src="/icons/direction.svg" alt="" />
@@ -136,14 +210,13 @@ export function MemberPosts() {
               <div className="line_name">Recent Blog</div>
             </Stack>
             <Stack className="inner_blogs">
-              {story_list.map((ele) => {
+              {targetBoArticles.map((articles: BoArticle) => {
+                const images_path = articles.art_image
+                  ? `${serverApi}/${articles.art_image}`
+                  : "/home/super_car.jpg";
                 return (
                   <Box className="item_blog">
-                    <img
-                      src="/dealer/dealer_ads.webp"
-                      className="item_image"
-                      alt=""
-                    />
+                    <img src={images_path} className="item_image" alt="" />
                     <Box flexDirection={"column"} height={"56px"}>
                       <Stack
                         flexDirection={"row"}
@@ -154,11 +227,9 @@ export function MemberPosts() {
                           fontSize="small"
                           style={{ color: "red" }}
                         />
-                        <span>{moment().format("LL")}</span>
+                        <span>{moment(articles.createdAt).format("LL")}</span>
                       </Stack>
-                      <div className="item_topic">
-                        Budget Issues Force The Our To Become
-                      </div>
+                      <div className="item_topic">{articles.art_subject}</div>
                     </Box>
                   </Box>
                 );
@@ -170,19 +241,31 @@ export function MemberPosts() {
                 <div className="line_name">Catagories</div>
               </Stack>
               <Stack className="inner_cat">
-                <Box className="cat_box">
+                <Box
+                  className="cat_box"
+                  onClick={() => handleArticleChange("all")}
+                >
                   <span>All</span>
                   <span>03</span>
                 </Box>
-                <Box className="cat_box">
+                <Box
+                  className="cat_box"
+                  onClick={() => handleArticleChange("evaluation")}
+                >
                   <span>Evaluation</span>
                   <span>03</span>
                 </Box>
-                <Box className="cat_box">
+                <Box
+                  className="cat_box"
+                  onClick={() => handleArticleChange("celebrity")}
+                >
                   <span>Celebrities</span>
                   <span>03</span>
                 </Box>
-                <Box className="cat_box">
+                <Box
+                  className="cat_box"
+                  onClick={() => handleArticleChange("story")}
+                >
                   <span>Story</span>
                   <span>03</span>
                 </Box>

@@ -244,7 +244,7 @@ export function CommunityPage() {
                             fontSize="small"
                             style={{ color: "red" }}
                           />
-                          <span>{moment().format("LL")}</span>
+                          <span>{moment(articles.createdAt).format("LL")}</span>
                         </Stack>
                         <div className="item_topic">
                           {articles?.art_subject}

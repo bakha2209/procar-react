@@ -1,6 +1,6 @@
 import { Box, Container, Stack } from "@mui/material";
 import Button from "@mui/material/Button";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TabContext from "@mui/lab/TabContext";
 import Tab from "@mui/material/Tab";
 import Tablist from "@mui/lab/TabList";
@@ -17,16 +17,141 @@ import { MySettings } from "./mySettings";
 import { GiShadowFollower } from "react-icons/gi";
 import { TuiEditor } from "../../components/tuiEditor/TuiEditor";
 import TViewer from "../../components/tuiEditor/TViewer";
+//REDUX
+import { useDispatch, useSelector } from "react-redux";
+import {
+  retrieveChosenMember,
+  retrieveChosenSingleBoArticle,
+  retrieveChosenMemberBoArticles,
+} from "./selector";
+import { createSelector } from "reselect";
+import { Member } from "../../../types/user";
+import { serverApi } from "../../lib/config";
+import {
+  sweetErrorHandling,
+  sweetFailureProvider,
+  sweetTopSmallSuccessAlert,
+} from "../../lib/sweetAlert";
+import assert from "assert";
+import { Definer } from "../../lib/Definer";
+import MemberApiService from "../../apiServices/memberApiService";
+import { useHistory } from "react-router-dom";
+import { Dispatch } from "@reduxjs/toolkit";
+import {
+  setChosenMember,
+  setChosenMemberBoArticles,
+  setChosenSingleBoArticle,
+} from "./slice";
+import {
+  BoArticle,
+  SearchArticlesObj,
+  SearchMemberArticlesObj,
+} from "../../../types/boArticle";
+import CommunityApiService from "../../apiServices/communityApiService";
+
+// REDUX SLICE
+const actionDispatch = (dispach: Dispatch) => ({
+  setChosenMember: (data: Member) => dispach(setChosenMember(data)),
+  setChosenMemberBoArticles: (data: BoArticle[]) =>
+    dispach(setChosenMemberBoArticles(data)),
+  setChosenSingleBoArticle: (data: BoArticle) =>
+    dispach(setChosenSingleBoArticle(data)),
+});
+
+// REDUX SELECTOR
+const chosenMemberRetriever = createSelector(
+  retrieveChosenMember,
+  (chosenMember) => ({
+    chosenMember,
+  })
+);
+const chosenMemberBoArticlesRetriever = createSelector(
+  retrieveChosenMemberBoArticles,
+  (chosenMemberBoArticles) => ({
+    chosenMemberBoArticles,
+  })
+);
+const chosenSingleBoArticlesRetriever = createSelector(
+  retrieveChosenSingleBoArticle,
+  (chosenSingleBoArticles) => ({
+    chosenSingleBoArticles,
+  })
+);
 
 const follower = 2;
 
 export function VisitMyPage(props: any) {
   //INITIALIZIATION
+  const { verifiedMemberData } = props;
+  const {
+    setChosenMember,
+    setChosenMemberBoArticles,
+    setChosenSingleBoArticle,
+  } = actionDispatch(useDispatch());
+  const { chosenMember } = useSelector(chosenMemberRetriever);
+  const { chosenMemberBoArticles } = useSelector(
+    chosenMemberBoArticlesRetriever
+  );
+  const { chosenSingleBoArticles } = useSelector(
+    chosenSingleBoArticlesRetriever
+  );
   const [value, setValue] = useState("1");
+  const [articlesRebuild, setArticlesRebuild] = useState<Date>(new Date());
+  const [memberArticleSearchObj, setMemberArticleSearchObj] =
+    useState<SearchMemberArticlesObj>({
+      mb_id: "none",
+      page: 1,
+      limit: 1,
+      bo_id: "all",
+    });
+
+  useEffect(() => {
+    if (!localStorage.getItem("member_data")) {
+      sweetFailureProvider("Please login first", true, true);
+    }
+
+    const communityService = new CommunityApiService();
+    const memberService = new MemberApiService();
+
+    communityService
+      .getMemberCommunityArticles(memberArticleSearchObj)
+      .then((data) => setChosenMemberBoArticles(data))
+      .catch((err) => console.log(err));
+
+    memberService
+      .getChosenMember(verifiedMemberData?._id)
+      .then((data) => setChosenMember(data))
+      .catch((err) => console.log(err));
+  }, [memberArticleSearchObj, articlesRebuild]);
 
   // HANDLERS
   const handleChange = (event: any, newValue: string) => {
     setValue(newValue);
+  };
+  const handleArticleChange = (category: string) => {
+    memberArticleSearchObj.page = 1;
+    memberArticleSearchObj.bo_id = category;
+    setMemberArticleSearchObj({ ...memberArticleSearchObj });
+  };
+  const handlePaginationChange = (event: any, value: number) => {
+    memberArticleSearchObj.page = value;
+    setMemberArticleSearchObj({ ...memberArticleSearchObj });
+  };
+
+  const renderChosenArticleHandler = async (art_id: string) => {
+    try {
+      const communityService = new CommunityApiService();
+      communityService
+        .getChosenArticle(art_id)
+        .then((data) => {
+          setChosenSingleBoArticle(data);
+          setValue("5");
+        })
+        .catch((err) => console.log(err));
+    } catch (err: any) {
+      console.log(err);
+      sweetErrorHandling(err).then();
+    }
   };
   return (
     <div className="my_page">
@@ -161,7 +286,13 @@ export function VisitMyPage(props: any) {
                 <TabPanel value="1">
                   <Box className="menu_name">My Stories</Box>
                   <Box className="menu_content">
-                    <MemberPosts />
+                    <MemberPosts
+                      chosenMemberBoArticles={chosenMemberBoArticles}
+                      renderChosenArticleHandler={renderChosenArticleHandler}
+                      setArticlesRebuild={setArticlesRebuild}
+                      articlesRebuild={articlesRebuild}
+                      handleArticleChange={handleArticleChange}
+                    />
                     <Stack
                       sx={{ my: "40px" }}
                       direction={"row"}
@@ -169,8 +300,8 @@ export function VisitMyPage(props: any) {
                     >
                       <Box className={"bottom_box"}>
                         <Pagination
-                          count={3}
-                          page={1}
+                          count={memberArticleSearchObj.limit}
+                          page={memberArticleSearchObj.page}
                           renderItem={(item) => (
                             <PaginationItem
                               components={{
@@ -181,6 +312,7 @@ export function VisitMyPage(props: any) {
                               color="secondary"
                             />
                           )}
+                          onChange={handlePaginationChange}
                         />
                       </Box>
                     </Stack>
@@ -210,7 +342,7 @@ export function VisitMyPage(props: any) {
                 <TabPanel value={"5"}>
                   <Box className={"menu_name"}>Chosen Story</Box>
                   <Box className={"menu_content"}>
-                    <TViewer />
+                    <TViewer chosenSingleBoArticles={chosenSingleBoArticles}/>
                   </Box>
                 </TabPanel>
 

@@ -183,7 +183,7 @@
   width: 100%;
   flex-direction: column;
   display: flex;
-  
+
   margin-bottom: 15px;
 }
 .card_image .like_btn {
@@ -280,15 +280,15 @@
 .post_card .read_more {
   display: flex;
   flex-direction: row;
-  cursor:pointer;
-width: 120px;
+  cursor: pointer;
+  width: 120px;
 }
 .post_card .read_more:hover {
   background-color: #d01818;
-  color:#cbcbcb
+  color: #cbcbcb;
 }
 .post_card .read_more:hover span {
-  color:#cbcbcb
+  color: #cbcbcb;
 }
 .member_right {
   display: flex;
@@ -443,7 +443,7 @@ width: 120px;
   margin-right: 9px;
   margin-bottom: 9px;
   color: #83827f;
-
+  cursor: pointer;
   text-align: center;
   leading-trim: both;
 
