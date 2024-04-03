@@ -96,7 +96,7 @@ export function MemberPosts(props: any) {
         sx={{ background: "FFF" }}
       >
         <div className="member_posts">
-          {chosenMemberBoArticles.map((article: BoArticle) => {
+          {chosenMemberBoArticles?.map((article: BoArticle) => {
             const image_path = article.art_image
               ? `${serverApi}/${article.art_image}`
               : "/home/super_car.jpg";

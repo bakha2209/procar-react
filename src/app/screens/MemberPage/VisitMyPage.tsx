@@ -96,6 +96,7 @@ export function VisitMyPage(props: any) {
     chosenSingleBoArticlesRetriever
   );
   const [value, setValue] = useState("1");
+  const [followRebuild, setFollowRebuild] = useState<boolean>(false);
   const [articlesRebuild, setArticlesRebuild] = useState<Date>(new Date());
   const [memberArticleSearchObj, setMemberArticleSearchObj] =
     useState<SearchMemberArticlesObj>({
@@ -122,7 +123,7 @@ export function VisitMyPage(props: any) {
       .getChosenMember(verifiedMemberData?._id)
       .then((data) => setChosenMember(data))
       .catch((err) => console.log(err));
-  }, [memberArticleSearchObj, articlesRebuild]);
+  }, [memberArticleSearchObj, articlesRebuild, followRebuild]);
 
   // HANDLERS
   const handleChange = (event: any, newValue: string) => {
@@ -159,9 +160,9 @@ export function VisitMyPage(props: any) {
         <Stack className="my_page_frame">
           <TabContext value={value}>
             <Stack className="my_page_left">
-              <img src="/home/super_car.jpg" className="profile_img" alt="" />
-              <div className="full_name">Mehedil Mohammad</div>
-              <span>User</span>
+              <img src={chosenMember?.mb_image ?? "/home/super_car.jpg"} className="profile_img" alt="" />
+              <div className="full_name">{chosenMember?.mb_nick}</div>
+              <span>{chosenMember?.mb_type}</span>
               <Box display={"flex"} justifyContent={"center"}>
                 <Tablist
                   onChange={handleChange}
@@ -244,7 +245,7 @@ export function VisitMyPage(props: any) {
                   justifyContent={"center"}
                 >
                   <div className="phone_div">Phone:</div>
-                  <span>+821056817724</span>
+                  <span>{chosenMember?.mb_phone}</span>
                 </Box>
               </Box>
 
@@ -260,9 +261,9 @@ export function VisitMyPage(props: any) {
                 <span style={{ fontSize: "13px" }}>
                   bakhodir2209@gmail.com <br />
                   <br />
-                  <span>followers: {follower}</span>
+                  <span>followers: {chosenMember?.mb_follow_cnt}</span>
                   <br />
-                  <span>followings: {follower}</span>
+                  <span>followings: {chosenMember?.mb_subscriber_cnt}</span>
                 </span>
                 <Box
                   flexDirection={"row"}
@@ -300,7 +301,11 @@ export function VisitMyPage(props: any) {
                     >
                       <Box className={"bottom_box"}>
                         <Pagination
-                          count={memberArticleSearchObj.limit}
+                          count={
+                            memberArticleSearchObj.page >= 3
+                              ? memberArticleSearchObj.page + 1
+                              : 3
+                          }
                           page={memberArticleSearchObj.page}
                           renderItem={(item) => (
                             <PaginationItem
@@ -321,14 +326,24 @@ export function VisitMyPage(props: any) {
                 <TabPanel value={"2"}>
                   <Box className={"menu_name"}>Followers</Box>
                   <Box className={"menu_content"}>
-                    <MemberFollowers actions_enabled={true} />
+                    <MemberFollowers
+                      actions_enabled={true}
+                      followRebuild={followRebuild}
+                      setFollowRebuild={setFollowRebuild}
+                      mb_id={props.verifiedMemberData?._id}
+                    />
                   </Box>
                 </TabPanel>
 
                 <TabPanel value={"3"}>
                   <Box className={"menu_name"}>Following</Box>
                   <Box className={"menu_content"}>
-                    <MemberFollowing actions_enabled={true} />
+                    <MemberFollowing
+                      actions_enabled={true}
+                      followRebuild={followRebuild}
+                      setFollowRebuild={setFollowRebuild}
+                      mb_id={props.verifiedMemberData?._id}
+                    />
                   </Box>
                 </TabPanel>
 
@@ -342,7 +357,7 @@ export function VisitMyPage(props: any) {
                 <TabPanel value={"5"}>
                   <Box className={"menu_name"}>Chosen Story</Box>
                   <Box className={"menu_content"}>
-                    <TViewer chosenSingleBoArticles={chosenSingleBoArticles}/>
+                    <TViewer chosenSingleBoArticles={chosenSingleBoArticles} />
                   </Box>
                 </TabPanel>
 

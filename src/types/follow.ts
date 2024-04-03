@@ -17,10 +17,16 @@ export interface Follower {
 }
 
 export interface Following {
-    _id: string;
-    follow_id: string;
-    subscriber_id: string;
-    createdAt: Date;
-    updatedAt: Date;
-    follow_member_data: Member
-  }
+  _id: string;
+  follow_id: string;
+  subscriber_id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  follow_member_data: Member;
+}
+
+export interface FollowSearchObj {
+  page: number;
+  limit: number;
+  mb_id: string;
+}
