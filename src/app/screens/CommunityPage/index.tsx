@@ -28,6 +28,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { verifiedMemberData } from "../../apiServices/verify";
+import "../../../css/community.css"
 // REDUX SLICE
 const actionDispatch = (dispach: Dispatch) => ({
   setTargetBoArticles: (data: BoArticle[]) =>
@@ -42,9 +43,9 @@ const targetBoArticlesRetriever = createSelector(
   })
 );
 
-
 export function CommunityPage() {
   // INITIALIZATIONS
+  const history = useHistory();
   const { setTargetBoArticles } = actionDispatch(useDispatch());
   const { targetBoArticles } = useSelector(targetBoArticlesRetriever);
   const [value, setValue] = React.useState("1");
@@ -97,8 +98,11 @@ export function CommunityPage() {
     searchArticlesObj.page = value;
     setSearchArticlesObj({ ...searchArticlesObj });
   };
+  const goarticleHandler = (mb_id: string, article_id: string) =>
+    history.push(`/member-page/other?mb_id=${mb_id}&art_id=${article_id}`);
   const quantity_article = targetBoArticles.length;
-    return (
+
+  return (
     <Container>
       <h3 className="com_heading">Community Blogs</h3>
       <Stack display={"flex"} flexDirection={"column"} height={"auto"}>
@@ -117,7 +121,14 @@ export function CommunityPage() {
                 ? `${serverApi}/${article.art_image}`
                 : "/cars/top_car.webp";
               return (
-                <Stack className="post_card">
+                <Stack
+                  className="post_card"
+                  onClick={() =>
+                    history.push(
+                      `/member-page/other?mb_id=${article.mb_id}&art_id=${article._id}`
+                    )
+                  }
+                >
                   <Box
                     className="card_image"
                     flexDirection={"row"}
@@ -127,7 +138,7 @@ export function CommunityPage() {
                       width: "100%",
                       height: "305px",
                       backgroundImage: `url(${art_image_url})`,
-                      backgroundSize: "cover",
+                      backgroundSize: "100% 100%",
                       marginBottom: "12px",
                     }}
                   >
@@ -191,7 +202,7 @@ export function CommunityPage() {
                     </Box>
                   </Box>
                   <p>{article?.art_subject}</p>
-                  <span>{article.art_content}</span>
+                  
                   <div
                     style={{ flexDirection: "row", cursor: "pointer" }}
                     className="read_more"

@@ -79,7 +79,7 @@ const chosenSingleBoArticlesRetriever = createSelector(
   })
 );
 
-const follower = 2;
+
 
 export function VisitMyPage(props: any) {
   //INITIALIZIATION
@@ -161,7 +161,7 @@ export function VisitMyPage(props: any) {
         <Stack className="my_page_frame">
           <TabContext value={value}>
             <Stack className="my_page_left">
-              <img src={chosenMember?.mb_image ?? "/home/super_car.jpg"} className="profile_img" alt="" />
+              <img src={verifiedMemberData?.mb_image ?? "/home/super_car.jpg"} className="profile_img" alt="" />
               <div className="full_name">{chosenMember?.mb_nick}</div>
               <span>{chosenMember?.mb_type}</span>
               <Box display={"flex"} justifyContent={"center"}>

@@ -85,8 +85,8 @@ export function MySettings(props: any) {
           height={"100px"}
         />
         <div className="media_change_box">
-          <span>Rasm Yuklash</span>
-          <p>JPG,JPEG,PNG rasmlarini yuklay olasiz!</p>
+          <span>Upload an image</span>
+          <p>JPG,JPEG,PNG are allowed only!</p>
           <div className="up_del_box">
             <Button
               component="label"
@@ -101,19 +101,19 @@ export function MySettings(props: any) {
       </Box>
       <Box className="input_frame">
         <div className="long_input">
-          <label className="spec_label">Ism</label>
+          <label className="spec_label">Name</label>
           <input
             type="text"
             className="spec_input mb_nick"
             name="mb_nick"
-            placeholder="{verifiedMemberData?.mb_nick}"
+            placeholder={verifiedMemberData?.mb_nick}
             onChange={changeMemberNickHandler}
           />
         </div>
       </Box>
       <Box className="input_frame">
         <div className="short_input">
-          <label className="spec_label">Telefon Raqam</label>
+          <label className="spec_label">Phone Number</label>
           <input
             type="text"
             className="spec_input mb_phone"
@@ -123,13 +123,13 @@ export function MySettings(props: any) {
           />
         </div>
         <div className="short_input">
-          <label className="spec_label">Manzil</label>
+          <label className="spec_label">Address</label>
           <input
             type="text"
             className="spec_input mb_address"
             name="mb_address"
             placeholder={
-              verifiedMemberData?.mb_address ?? "manzil kiritilmagan"
+              verifiedMemberData?.mb_address ?? "no input address"
             }
             onChange={changeMemberAddressHandler}
           />
