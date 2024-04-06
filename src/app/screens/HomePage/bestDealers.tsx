@@ -49,6 +49,7 @@ import {
   sweetErrorHandling,
   sweetTopSmallSuccessAlert,
 } from "../../lib/sweetAlert";
+import { verifiedMemberData } from "../../apiServices/verify";
 //others
 
 // REDUX SLICE
@@ -96,7 +97,7 @@ export function BestDealers() {
 
   const targetLikeCar = async (e: any, id: string) => {
     try {
-      assert.ok(localStorage.getItem("member_data"), Definer.auth_err1);
+      assert.ok(verifiedMemberData, Definer.auth_err1);
 
       const memberService = new MemberApiService(),
         like_result = await memberService.memberLikeTarget({

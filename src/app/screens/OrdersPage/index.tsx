@@ -23,6 +23,7 @@ import {
 } from "../OrdersPage/slice";
 import { useHistory, useParams } from "react-router-dom";
 import OrderApiService from "../../apiServices/orderApiService";
+import { verifiedMemberData } from "../../apiServices/verify";
 // REDUX SLICE
 const actionDispatch = (dispach: Dispatch) => ({
   setPausedOrders: (data: Order[]) => dispach(setPausedOrders(data)),
@@ -35,7 +36,7 @@ export function OrdersPage(props: any) {
   const [value, setValue] = useState("1");
   const { setPausedOrders, setProcessOrders, setFinishedOrders } =
   actionDispatch(useDispatch());
-  const verifiedMemberData: Member | null = props.verifiedMemberData;
+  
 
 useEffect(()=> {const orderService = new OrderApiService();
   orderService

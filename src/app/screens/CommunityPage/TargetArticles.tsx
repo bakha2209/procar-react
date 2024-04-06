@@ -32,13 +32,14 @@ import Checkbox from "@mui/joy/Checkbox";
 import { Switch } from "@mui/joy";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { verifiedMemberData } from "../../apiServices/verify";
 
 export function TargetArticles(props: any) {
   const refs: any = useRef([]);
   /**HANDLERS */
   const targetLikeHandler = async (e: any) => {
     try {
-      assert.ok(localStorage.getItem("member_data"), Definer.auth_err1);
+      assert.ok(verifiedMemberData, Definer.auth_err1);
 
       const memberService = new MemberApiService();
       const like_result = await memberService.memberLikeTarget({

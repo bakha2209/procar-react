@@ -38,6 +38,7 @@ import {
 import { SearchObj } from "../../../types/others";
 import DealerApiService from "../../apiServices/dealerApiService";
 import { useHistory } from "react-router-dom";
+import { verifiedMemberData } from "../../apiServices/verify";
 
 const options = [
   { name: "Recently Added", order: "createdAt" },
@@ -105,7 +106,7 @@ export function AllDealers() {
   };
   const targetLikeHandler = async (e: any, id: string) => {
     try {
-      assert.ok(localStorage.getItem("member_data"), Definer.auth_err1);
+      assert.ok(verifiedMemberData, Definer.auth_err1);
 
       const memberService = new MemberApiService(),
         like_result = await memberService.memberLikeTarget({

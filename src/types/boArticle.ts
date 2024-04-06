@@ -29,3 +29,9 @@ export interface SearchMemberArticlesObj {
    mb_id: string;
    bo_id?:string | null
 }
+export interface BoArticleInput {
+   art_subject: string;
+   art_content: string;
+   art_image: string;
+   bo_id: string
+}

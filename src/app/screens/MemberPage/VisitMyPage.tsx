@@ -48,6 +48,7 @@ import {
   SearchMemberArticlesObj,
 } from "../../../types/boArticle";
 import CommunityApiService from "../../apiServices/communityApiService";
+import { verifiedMemberData } from "../../apiServices/verify";
 
 // REDUX SLICE
 const actionDispatch = (dispach: Dispatch) => ({
@@ -82,7 +83,7 @@ const follower = 2;
 
 export function VisitMyPage(props: any) {
   //INITIALIZIATION
-  const { verifiedMemberData } = props;
+  
   const {
     setChosenMember,
     setChosenMemberBoArticles,
@@ -102,12 +103,12 @@ export function VisitMyPage(props: any) {
     useState<SearchMemberArticlesObj>({
       mb_id: "none",
       page: 1,
-      limit: 1,
+      limit: 3,
       bo_id: "all",
     });
 
   useEffect(() => {
-    if (!localStorage.getItem("member_data")) {
+    if (!verifiedMemberData) {
       sweetFailureProvider("Please login first", true, true);
     }
 
@@ -350,7 +351,7 @@ export function VisitMyPage(props: any) {
                 <TabPanel value={"4"}>
                   <Box className={"menu_name"}>Make Story</Box>
                   <Box className={"write_content"}>
-                    <TuiEditor />
+                    <TuiEditor setValue={setValue} setArticlesRebuild={setArticlesRebuild}/>
                   </Box>
                 </TabPanel>
 

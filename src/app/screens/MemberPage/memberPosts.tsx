@@ -30,6 +30,7 @@ import { setTargetBoArticles } from "../CommunityPage/slice";
 import { retrieveTargetBoArticles } from "../CommunityPage/selector";
 import CommunityApiService from "../../apiServices/communityApiService";
 import { useDispatch, useSelector } from "react-redux";
+import { verifiedMemberData } from "../../apiServices/verify";
 // REDUX SLICE
 const actionDispatch = (dispach: Dispatch) => ({
   setTargetBoArticles: (data: BoArticle[]) =>
@@ -71,7 +72,7 @@ export function MemberPosts(props: any) {
   const targetLikeHandler = async (e: any, id: string) => {
     try {
       e.stopPropagation();
-      assert.ok(localStorage.getItem("member_data"), Definer.auth_err1);
+      assert.ok(verifiedMemberData, Definer.auth_err1);
 
       const memberService = new MemberApiService();
       const like_result = await memberService.memberLikeTarget({
@@ -115,7 +116,7 @@ export function MemberPosts(props: any) {
                     width: "100%",
                     height: "305px",
                     backgroundImage: `url(${image_path})`,
-                    backgroundSize: "cover",
+                    backgroundSize: "100% 100%",
                     marginBottom: "12px",
                   }}
                 >
@@ -176,7 +177,6 @@ export function MemberPosts(props: any) {
                   </Box>
                 </Box>
                 <p>{article?.art_subject}</p>
-                <span>{article?.art_content}</span>
                 <div style={{ flexDirection: "row", cursor: "pointer" }}>
                   <span className="read_icon">Read More</span>
                   <img src="/icons/direction.svg" alt="" />
