@@ -248,7 +248,7 @@
   color: #fff;
   padding: 5px 10px;
   leading-trim: both;
-
+cursor: pointer;
   text-edge: cap;
   font-family: "Plus Jakarta Sans";
   font-size: 24px;

@@ -823,6 +823,7 @@ cursor: pointer;
   flex-direction: column;
   margin-left: 20px;
   height: 165px;
+  width: 100%;
 }
 .right_desc .right_above {
   position: relative;
@@ -834,7 +835,7 @@ cursor: pointer;
 }
 .right_above h4 {
   color: #26232a;
-
+width: 140px;
   font-family: "Plus Jakarta Sans";
   font-size: 18px;
   font-style: normal;
@@ -911,6 +912,10 @@ cursor: pointer;
   line-height: normal;
   letter-spacing: 0.42px;
   text-transform: uppercase;
+}
+.right_bottom .detail_button:hover {
+  background: #d01818;
+  color: #fff;
 }
 
 .whole_stack .bottom_box {

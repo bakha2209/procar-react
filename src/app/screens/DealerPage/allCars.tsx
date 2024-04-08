@@ -1,5 +1,7 @@
-import { Box, Button, Container, Stack } from "@mui/material";
-import React from "react";
+import { Box, Container, Stack } from "@mui/material";
+import Button from "@mui/material/Button";
+import ButtonGroup from "@mui/material/ButtonGroup";
+import React, { useEffect, useRef, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import { Select } from "antd";
 import { StyledEngineProvider } from "@mui/material/styles";
@@ -9,13 +11,45 @@ import FormControl from "@mui/material/FormControl";
 import Selects, { SelectChangeEvent } from "@mui/material/Select";
 import Slider from "@mui/material/Slider";
 import Typographys from "@mui/material/Typography";
-import { Favorite } from "@mui/icons-material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { Typography } from "@mui/joy";
 import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { Car } from "../../../types/car";
+import { createSelector } from "@reduxjs/toolkit";
+import { Dispatch } from "@reduxjs/toolkit";
+import { setTargetCars } from "./slice";
+import { retrieveTargetCars } from "./selector";
+import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { CarSearchObj, SearchObj } from "../../../types/others";
+import CarApiService from "../../apiServices/carApiService";
+import { serverApi } from "../../lib/config";
+import Checkbox from "@mui/material/Checkbox";
+import { Favorite, FavoriteBorder } from "@mui/icons-material";
+import assert from "assert";
+import { verifiedMemberData } from "../../apiServices/verify";
+import { Definer } from "../../lib/Definer";
+import MemberApiService from "../../apiServices/memberApiService";
+import {
+  sweetErrorHandling,
+  sweetTopSmallSuccessAlert,
+} from "../../lib/sweetAlert";
+
+// REDUX SLICE
+const actionDispatch = (dispach: Dispatch) => ({
+  setTargetCars: (data: Car[]) => dispach(setTargetCars(data)),
+});
+
+// REDUX SELECTOR
+const targetCarsRetriever = createSelector(
+  retrieveTargetCars,
+  (targetCars) => ({
+    targetCars,
+  })
+);
 
 const MAX = 100;
 const MIN = 0;
@@ -33,8 +67,58 @@ const marks = [
 const car_list = Array.from(Array(5).keys());
 
 export function AllCars(props: any) {
-  const [make, setMake] = React.useState("");
+  /**INITIALIZATIONS */
+  const history = useHistory();
+  const { setTargetCars } = actionDispatch(useDispatch());
+  const { targetCars } = useSelector(targetCarsRetriever);
+  const [targetSearchObject, setTargetSearchObject] = useState<CarSearchObj>({
+    page: 1,
+    limit: 5,
+    order: "createdAt",
+  });
+  const [carRebuild, setCarRebuild] = useState<Date>(new Date());
+  useEffect(() => {
+    const carService = new CarApiService();
+    carService
+      .getTargetCars(targetSearchObject)
+      .then((data) => setTargetCars(data))
+      .catch((err) => console.log(err));
+  }, [targetSearchObject, carRebuild]);
+  const [clicked, setClicked] = useState(false);
+  /**HANDLERS */
+  const chosenCarHandler = (id: string) => {
+    history.push(`/dealer/cars/${id}`);
+  };
+  const searchHandler = (category: string) => {
+    targetSearchObject.page = 1;
+    targetSearchObject.order = category;
+    setTargetSearchObject({ ...targetSearchObject });
+  };
+  const handlePaginationChange = (event: any, value: number) => {
+    targetSearchObject.page = value;
+    setTargetSearchObject({ ...targetSearchObject });
+  };
+  const targetLikeProduct = async (e: any) => {
+    try {
+      assert.ok(verifiedMemberData, Definer.auth_err1);
 
+      const memberService = new MemberApiService(),
+        like_result = await memberService.memberLikeTarget({
+          like_ref_id: e.target.id,
+          group_type: "car",
+        });
+      assert.ok(like_result, Definer.general_err1);
+
+      await sweetTopSmallSuccessAlert("success", 700, false);
+      setCarRebuild(new Date());
+    } catch (err: any) {
+      console.log("targetLikeProduct, ERROR:", err);
+      sweetErrorHandling(err).then();
+    }
+  };
+  const refs: any = useRef([]);
+  const [make, setMake] = React.useState("");
+  const label = { inputProps: { "aria-label": "Checkbox demo" } };
   const handleClick = (event: SelectChangeEvent) => {
     setMake(event.target.value);
   };
@@ -67,34 +151,37 @@ export function AllCars(props: any) {
                 ></Button>
               </form>
             </Box>
-            <Select
-              showSearch
-              style={{ width: 200, marginTop: "20px", marginRight: "20px" }}
-              placeholder="Search to Select"
-              optionFilterProp="children"
-              filterOption={(input, option) =>
-                (option?.label ?? "").includes(input)
-              }
-              filterSort={(optionA, optionB) =>
-                (optionA?.label ?? "")
-                  .toLowerCase()
-                  .localeCompare((optionB?.label ?? "").toLowerCase())
-              }
-              options={[
-                {
-                  value: "1",
-                  label: "Recently",
-                },
-                {
-                  value: "2",
-                  label: "Most Viewed",
-                },
-                {
-                  value: "3",
-                  label: "Most Liked",
-                },
-              ]}
-            />
+            <Box marginTop={"20px"}>
+              <ButtonGroup
+                variant="outlined"
+                aria-label="outlined button group"
+              >
+                <Button
+                  style={{
+                    backgroundColor: clicked ? "red" : "white",
+                  }}
+                  onClick={() => searchHandler("car_views")}
+                >
+                  Popular
+                </Button>
+                <Button
+                  style={{
+                    backgroundColor: clicked ? "red" : "white",
+                  }}
+                  onClick={() => searchHandler("createdAt")}
+                >
+                  Recent
+                </Button>
+                <Button
+                  style={{
+                    backgroundColor: clicked ? "red" : "white",
+                  }}
+                  onClick={() => searchHandler("car_likes")}
+                >
+                  Most Liked
+                </Button>
+              </ButtonGroup>
+            </Box>
           </Stack>
           <Stack className="center_cars">
             <Stack className="car_filtering">
@@ -245,45 +332,79 @@ export function AllCars(props: any) {
                 </Box>
               </Box>
             </Stack>
-            <Stack flexDirection={"column"} sx={{width:"100%"}}>
-              {car_list.map((ele) => {
+            <Stack flexDirection={"column"} sx={{ width: "100%" }}>
+              {targetCars.map((car: Car) => {
+                const image_path = `${serverApi}/${car.car_images[0]}`;
                 return (
                   <Stack className="car_box">
                     <Box
                       className="car_size"
-                      sx={{ backgroundImage: `url(/cars/top_car.webp)` }}
+                      sx={{ backgroundImage: `url(${image_path})` }}
                     >
-                        <div className="car_condition">Featured</div>
+                      <div className="car_condition">
+                        {car.car_discount > 0 ? -car.car_discount : "Featured"}
+                      </div>
                     </Box>
                     <Stack className="right_desc">
-                        <div className="right_above">
-                            <h4>Toyota Highlander 2000</h4>
-                            <Box className="serdechka">
-                                <img src="/icons/heart.svg" style={{fill:"red"}} alt="" />
-                            </Box>
-                            <p>$54,000</p>
-                        </div>
-                        <Stack className="all_feature">
-                            <Stack className="every_aspect">
-                                <img src="/icons/gasoline.svg" alt="" />
-                                <p>18/100</p>
-                            </Stack>
-                            <Stack className="every_aspect">
-                                <img src="/icons/dashboard.svg" alt="" />
-                                <p>1500cc</p>
-                            </Stack>
-                            <Stack className="every_aspect">
-                                <img src="/icons/gearbox.svg" alt="" />
-                                <p>Manual</p>
-                            </Stack>
-                            <Stack className="every_aspect">
-                                <img src="/icons/location.svg" alt="" />
-                                <p>Manchester</p>
-                            </Stack>
+                      <div className="right_above">
+                        <h4>
+                          {car.car_brand} {car.car_name} {car.car_model}
+                        </h4>
+                        <Checkbox
+                          {...label}
+                          icon={<FavoriteBorder />}
+                          checkedIcon={<Favorite style={{ color: "red" }} />}
+                          id={car?._id}
+                          onClick={targetLikeProduct}
+                          checked={
+                            car?.me_liked && car?.me_liked[0]?.my_favorite
+                              ? true
+                              : false
+                          }
+                        />
+                        <p>
+                          $
+                          {Math.round(
+                            car.car_price -
+                              car.car_price * (car.car_discount / 100)
+                          )}
+                        </p>
+                      </div>
+                      <Stack className="all_feature">
+                        <Stack className="every_aspect">
+                          <img src="/icons/gasoline.svg" alt="" />
+                          <p>{car.petrol_consumption}/100</p>
                         </Stack>
-                        <Stack className="right_bottom">
-                            <div className="detail_button" >View in Detail</div>
-                            <Stack flexDirection={"row"}>
+                        <Stack className="every_aspect">
+                          <img src="/icons/dashboard.svg" alt="" />
+                          <p>{car.acceleration}cc</p>
+                        </Stack>
+                        <Stack className="every_aspect">
+                          <img src="/icons/gearbox.svg" alt="" />
+                          <p>{car.car_transmission}</p>
+                        </Stack>
+                        <Stack className="every_aspect">
+                          <img src="/icons/location.svg" alt="" />
+                          <p>Seoul</p>
+                        </Stack>
+                      </Stack>
+                      <Stack className="right_bottom">
+                        <div
+                          className="detail_button"
+                          onClick={() => chosenCarHandler(car._id)}
+                        >
+                          View in Detail
+                        </div>
+                        <div
+                          className="detail_button"
+                          onClick={(e) => {
+                            props.onAdd(car);
+                            e.stopPropagation();
+                          }}
+                        >
+                          Add to Cart
+                        </div>
+                        <Stack flexDirection={"row"}>
                           <Typography
                             level="body-sm"
                             sx={{
@@ -293,7 +414,7 @@ export function AllCars(props: any) {
                               display: "flex",
                             }}
                           >
-                            100{" "}
+                            {car.car_views}{" "}
                             <VisibilityIcon
                               sx={{ fontsize: 20, marginLeft: "5px" }}
                             />
@@ -308,13 +429,13 @@ export function AllCars(props: any) {
                               display: "flex",
                             }}
                           >
-                            <div>50</div>
+                            <div>{car.car_likes}</div>
                             <Favorite
                               sx={{ fontSize: 20, marginLeft: "5px" }}
                             />
                           </Typography>
                         </Stack>
-                        </Stack>
+                      </Stack>
                     </Stack>
                   </Stack>
                 );
@@ -322,10 +443,11 @@ export function AllCars(props: any) {
             </Stack>
           </Stack>
           <Stack className="bottom_box">
-            
             <Pagination
-              count={3}
-              page={1}
+              count={
+                targetSearchObject.page >= 3 ? targetSearchObject.page + 1 : 3
+              }
+              page={targetSearchObject.page}
               renderItem={(item) => (
                 <PaginationItem
                   components={{
@@ -336,8 +458,8 @@ export function AllCars(props: any) {
                   color={"primary"}
                 />
               )}
+              onChange={handlePaginationChange}
             />
-            
           </Stack>
         </Stack>
       </Container>

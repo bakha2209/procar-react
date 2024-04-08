@@ -21,7 +21,8 @@ export default function Basket(props: any) {
   const open = Boolean(anchorEl);
   const { cartItems, onDelete, onDeleteAll } = props;
   const itemsPrice = cartItems?.reduce(
-    (a: any, c: CartItem) => a + (c.price - (c.price*c.discount/100)) * c.quantity,
+    (a: any, c: CartItem) =>
+      a + (c.price - (c.price * c.discount) / 100) * c.quantity,
     0
   );
 
@@ -31,6 +32,14 @@ export default function Basket(props: any) {
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const goCarsHandler = () => {
+    handleClose();
+    history.push("/dealer/cars");
+    window.scrollBy({
+      top: 500,
+      behavior: "smooth",
+    });
   };
 
   const processOrderHandler = async () => {
@@ -105,7 +114,9 @@ export default function Basket(props: any) {
               <div className="empty_desc">
                 Empty cart. Let's fill it with some great finds!
               </div>
-              <div className="empty_shop">Shop Now</div>
+              <div className="empty_shop" onClick={goCarsHandler}>
+                Shop Now
+              </div>
             </Box>
           ) : (
             <Box className="true_frame">
@@ -127,7 +138,9 @@ export default function Basket(props: any) {
                           </div>
                           <span className="product_price">
                             <MonetizationOnIcon fontSize="small" />
-                            {(item?.price - (item?.price * item?.discount) / 100)*item.quantity}
+                            {(item?.price -
+                              (item?.price * item?.discount) / 100) *
+                              item.quantity}
                           </span>
                         </Box>
                       </Stack>

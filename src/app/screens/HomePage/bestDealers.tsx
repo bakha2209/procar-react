@@ -93,7 +93,7 @@ export function BestDealers() {
     bestDealerSearchObj.order = order;
     setBestDealerSearchObj({ ...bestDealerSearchObj });
   };
-  const goCarsHandler = () => history.push("/cars")
+  const goCarsHandler = () => history.push("/dealer/cars")
 
   const targetLikeCar = async (e: any, id: string) => {
     try {

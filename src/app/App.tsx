@@ -34,6 +34,8 @@ import MemberApiService from "./apiServices/memberApiService";
 import "../app/apiServices/verify";
 import { CartItem } from "../types/others";
 import { Car } from "../types/car";
+import {CommunityChats} from "./components/communityChats";
+
 
 function App() {
   /**INITIALIZATION */
@@ -97,6 +99,10 @@ function App() {
       const cart_updated = [...cartItems, { ...new_item }];
       setCartItems(cart_updated);
       localStorage.setItem("cart_data", JSON.stringify(cart_updated));
+      window.scrollBy({
+        top: -1200,
+        behavior: "smooth",
+      });
     }
   };
 
@@ -195,6 +201,7 @@ function App() {
           <HomePage />
         </Route>
       </Switch>
+      
       <Footer />
       <AuthenticationModal
         loginOpen={loginOpen}
@@ -204,7 +211,9 @@ function App() {
         handleSignUpOpen={handleSignUpOpen}
         handleSignUpClose={handleSignUpClose}
       />
+      <CommunityChats/>
     </Router>
+    
   );
 }
 
