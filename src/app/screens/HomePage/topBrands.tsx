@@ -1,13 +1,23 @@
 import { Box, Container, Stack } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../../css/homepage.css";
+import { Dispatch, createSelector } from "@reduxjs/toolkit";
+import { setTargetCars } from "../DealerPage/slice";
+import { retrieveTargetCars } from "../DealerPage/selector";
+import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { CarSearchObj } from "../../../types/others";
+import CarApiService from "../../apiServices/carApiService";
+import { Car } from "../../../types/car";
+import { CategoryCont } from "../context/Category";
 
-interface Car {
+
+interface Caren {
   image: string;
   model: string;
 }
 
-const carData: Car[] = [
+const carData: Caren[] = [
   { model: "BMW", image: "/logos/1.png" },
   { model: "AUDI", image: "/logos/2.jpg" },
   { model: "FORD", image: "/logos/3.png" },
@@ -21,14 +31,34 @@ const carData: Car[] = [
   { model: "CHEVROLET", image: "/logos/11.jpg" },
 ];
 
+// REDUX SLICE
+const actionDispatch = (dispach: Dispatch) => ({
+  setTargetCars: (data: Car[]) => dispach(setTargetCars(data)),
+});
+
+// REDUX SELECTOR
+const targetCarsRetriever = createSelector(
+  retrieveTargetCars,
+  (targetCars) => ({
+    targetCars,
+  })
+);
+
 const brand_list = Array.from(Array(6).keys());
 
-export function TopBrands() {
+export function TopBrands(props:any) {
+  /**INITIALIZATIONS */
+  // const [category, setCategory] = CategoryCont();
+
+  const history = useHistory()
+  
   const [showTopBrands, setShowTopBrands] = useState(true);
 
   const toggleView = () => {
     setShowTopBrands(!showTopBrands);
   };
+  /**HANDLERS */
+ 
   return (
     <div className="top_brand">
       <Container>
@@ -41,7 +71,7 @@ export function TopBrands() {
             <Box className="model_inc">
               {carData.slice(0, 5).map((ele, index) => {
                 return (
-                  <Box className="brand_box">
+                  <Box className="brand_box" >
                     <img src={`${ele.image}`} alt="" />
                     <p>{ele.model}</p>
                   </Box>

@@ -10,7 +10,7 @@ import { Car } from "../../types/car";
 class CarApiService {
     private readonly path: string;
 
-    constructor() {
+      constructor() {
         this.path=serverApi
     }
 
@@ -29,7 +29,7 @@ class CarApiService {
           const cars: Car[] = result.data.data;
           return cars;
         } catch (err: any) {
-          console.log(`ERROR ::: getTargetProducts ${err.message}`);
+          console.log(`ERROR ::: getTargetCars ${err.message}`);
           throw err;
         }
       }

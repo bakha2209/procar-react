@@ -37,6 +37,13 @@ import {
   sweetErrorHandling,
   sweetTopSmallSuccessAlert,
 } from "../../lib/sweetAlert";
+import {
+  car_brands,
+  car_colors,
+  car_types,
+  car_year,
+  petrol_types,
+} from "../../components/filter_configs";
 
 // REDUX SLICE
 const actionDispatch = (dispach: Dispatch) => ({
@@ -51,8 +58,8 @@ const targetCarsRetriever = createSelector(
   })
 );
 
-const MAX = 100;
-const MIN = 0;
+const MAX = 150000;
+const MIN = 1000;
 const marks = [
   {
     value: MIN,
@@ -69,12 +76,27 @@ const car_list = Array.from(Array(5).keys());
 export function AllCars(props: any) {
   /**INITIALIZATIONS */
   const history = useHistory();
+  const refs: any = useRef([]);
+  const [make, setMake] = React.useState("");
+  const [transmission, setTransmission] = React.useState("");
+  const [petrol, setPetrol] = React.useState("");
+  const [color, setColor] = React.useState("");
+  const [year, setYear] = React.useState();
+  const [type, setType] = React.useState("");
+  const [price, setPrice] = React.useState<number>(MIN);
   const { setTargetCars } = actionDispatch(useDispatch());
   const { targetCars } = useSelector(targetCarsRetriever);
   const [targetSearchObject, setTargetSearchObject] = useState<CarSearchObj>({
     page: 1,
     limit: 5,
     order: "createdAt",
+    car_brand: "",
+    car_transmission: "",
+    car_color: "",
+    car_engine_type: "",
+    car_type: "",
+    produced_year: undefined,
+    car_price: undefined
   });
   const [carRebuild, setCarRebuild] = useState<Date>(new Date());
   useEffect(() => {
@@ -89,9 +111,48 @@ export function AllCars(props: any) {
   const chosenCarHandler = (id: string) => {
     history.push(`/dealer/cars/${id}`);
   };
-  const searchHandler = (category: string) => {
+  const searchHandler = (e: any) => {
     targetSearchObject.page = 1;
-    targetSearchObject.order = category;
+    targetSearchObject.car_brand = e.target.value;
+
+    setMake(e.target.value);
+
+    setTargetSearchObject({ ...targetSearchObject });
+  };
+  const searchHandler_trans = (e: any) => {
+    targetSearchObject.page = 1;
+    targetSearchObject.car_transmission = e.target.value;
+    setTransmission(e.target.value);
+    setTargetSearchObject({ ...targetSearchObject });
+  };
+  const searchHandler_color = (e: any) => {
+    targetSearchObject.page = 1;
+    targetSearchObject.car_color = e.target.value;
+    setColor(e.target.value);
+    setTargetSearchObject({ ...targetSearchObject });
+  };
+  const searchHandler_engine = (e: any) => {
+    targetSearchObject.page = 1;
+    targetSearchObject.car_engine_type = e.target.value;
+    setPetrol(e.target.value);
+    setTargetSearchObject({ ...targetSearchObject });
+  };
+  const searchHandler_type = (e: any) => {
+    targetSearchObject.page = 1;
+    targetSearchObject.car_type = e.target.value;
+    setType(e.target.value);
+    setTargetSearchObject({ ...targetSearchObject });
+  };
+  const searchHandler_year = (e: any) => {
+    targetSearchObject.page = 1;
+    targetSearchObject.produced_year = e.target.value;
+    setYear(e.target.value);
+    setTargetSearchObject({ ...targetSearchObject });
+  };
+  const searchHandler_price = (e: any, value: any) => {
+    targetSearchObject.page = 1;
+    targetSearchObject.car_price = value;
+    setPrice(value);
     setTargetSearchObject({ ...targetSearchObject });
   };
   const handlePaginationChange = (event: any, value: number) => {
@@ -116,8 +177,7 @@ export function AllCars(props: any) {
       sweetErrorHandling(err).then();
     }
   };
-  const refs: any = useRef([]);
-  const [make, setMake] = React.useState("");
+
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
   const handleClick = (event: SelectChangeEvent) => {
     setMake(event.target.value);
@@ -197,14 +257,18 @@ export function AllCars(props: any) {
                     id="demo-select-small"
                     value={make}
                     label="Make"
-                    onChange={handleClick}
+                    onChange={searchHandler}
                   >
                     <MenuItem value="">
                       <em>All</em>
                     </MenuItem>
-                    <MenuItem value={10}>BMW</MenuItem>
-                    <MenuItem value={20}>Audi</MenuItem>
-                    <MenuItem value={30}>KIA</MenuItem>
+                    {car_brands.map((brand: string) => {
+                      return (
+                        <MenuItem key={brand} value={brand}>
+                          {brand}
+                        </MenuItem>
+                      );
+                    })}
                   </Selects>
                 </FormControl>
                 <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
@@ -214,15 +278,16 @@ export function AllCars(props: any) {
                   <Selects
                     labelId="demo-select-small-label"
                     id="demo-select-small"
-                    value={make}
-                    label="Make"
-                    onChange={handleClick}
+                    value={transmission}
+                    label="Transmission"
+                    onChange={searchHandler_trans}
                   >
                     <MenuItem value="">
                       <em>All</em>
                     </MenuItem>
-                    <MenuItem value={1}>AutoMative</MenuItem>
-                    <MenuItem value={2}>Manual</MenuItem>
+
+                    <MenuItem value="AUTOMATIC">AutoMatic</MenuItem>
+                    <MenuItem value="MANUAL">Manual</MenuItem>
                   </Selects>
                 </FormControl>
                 <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
@@ -232,18 +297,16 @@ export function AllCars(props: any) {
                   <Selects
                     labelId="demo-select-small-label"
                     id="demo-select-small"
-                    value={make}
-                    label="Make"
-                    onChange={handleClick}
+                    value={petrol}
+                    label="Petrol Type"
+                    onChange={searchHandler_engine}
                   >
                     <MenuItem value="">
                       <em>All</em>
                     </MenuItem>
-                    <MenuItem value={3}>Gasoline</MenuItem>
-                    <MenuItem value={4}>Dizel</MenuItem>
-                    <MenuItem value={5}>Gas</MenuItem>
-                    <MenuItem value={6}>Hybrid</MenuItem>
-                    <MenuItem value={7}>Electric</MenuItem>
+                    {petrol_types.map((ele: string) => {
+                      return <MenuItem value={ele}>{ele}</MenuItem>;
+                    })}
                   </Selects>
                 </FormControl>
                 <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
@@ -251,16 +314,16 @@ export function AllCars(props: any) {
                   <Selects
                     labelId="demo-select-small-label"
                     id="demo-select-small"
-                    value={make}
-                    label="Make"
-                    onChange={handleClick}
+                    value={color}
+                    label="Color"
+                    onChange={searchHandler_color}
                   >
                     <MenuItem value="">
                       <em>All</em>
                     </MenuItem>
-                    <MenuItem value={8}>White</MenuItem>
-                    <MenuItem value={9}>Black</MenuItem>
-                    <MenuItem value={11}>Red</MenuItem>
+                    {car_colors.map((ele) => {
+                      return <MenuItem value={ele}>{ele}</MenuItem>;
+                    })}
                   </Selects>
                 </FormControl>
                 <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
@@ -268,16 +331,20 @@ export function AllCars(props: any) {
                   <Selects
                     labelId="demo-select-small-label"
                     id="demo-select-small"
-                    value={make}
-                    label="Make"
-                    onChange={handleClick}
+                    value={year}
+                    label="Year(above)"
+                    onChange={searchHandler_year}
                   >
                     <MenuItem value="">
                       <em>All</em>
                     </MenuItem>
-                    <MenuItem value={12}>2024</MenuItem>
-                    <MenuItem value={13}>2023</MenuItem>
-                    <MenuItem value={14}>2022</MenuItem>
+                    {car_year.map((ele:number)=> {
+                      return (
+                        <MenuItem value={ele}>{ele}</MenuItem>
+                      )
+                    })}
+                    
+                    
                   </Selects>
                 </FormControl>
                 <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
@@ -287,16 +354,16 @@ export function AllCars(props: any) {
                   <Selects
                     labelId="demo-select-small-label"
                     id="demo-select-small"
-                    value={make}
-                    label="Make"
-                    onChange={handleClick}
+                    value={type}
+                    label="Body Type"
+                    onChange={searchHandler_type}
                   >
                     <MenuItem value="">
                       <em>All</em>
                     </MenuItem>
-                    <MenuItem value={15}>Sedan</MenuItem>
-                    <MenuItem value={16}>SUV</MenuItem>
-                    <MenuItem value={17}>CrossOver</MenuItem>
+                    {car_types.map((ele: string) => {
+                      return <MenuItem value={ele}>{ele}</MenuItem>;
+                    })}
                   </Selects>
                 </FormControl>
               </StyledEngineProvider>
@@ -308,23 +375,23 @@ export function AllCars(props: any) {
                 <Slider
                   marks={marks}
                   step={10}
-                  value={val}
+                  value={price}
                   valueLabelDisplay="auto"
                   min={MIN}
                   max={MAX}
-                  onChange={handlePrice}
+                  onChange={searchHandler_price}
                 />
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                   <Typographys
                     variant="body2"
-                    onClick={() => setVal(MIN)}
+                    onClick={() => setPrice(MIN)}
                     sx={{ cursor: "pointer" }}
                   >
                     {MIN} min
                   </Typographys>
                   <Typographys
                     variant="body2"
-                    onClick={() => setVal(MAX)}
+                    onClick={() => setPrice(MAX)}
                     sx={{ cursor: "pointer" }}
                   >
                     {MAX} max

@@ -13,7 +13,9 @@ export interface MemberLiken {
     car_type?: string;
     car_engine_type?:string;
     car_color?:string;
-    car_transmission?:string
+    car_transmission?:string;
+    produced_year?:number | undefined;
+    car_price?:number | undefined
   } 
 
   export interface SearchObj {

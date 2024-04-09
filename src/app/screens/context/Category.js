@@ -4,7 +4,7 @@ export const CategoryCont = () => useContext(CategoryContext);
 const CategoryItem = ({ children }) => {
   // for Category Page
 
-  const [category, setCategory] = useState("all");
+  const [category, setCategory] = useState();
 
   return (
     <CategoryContext.Provider value={[category, setCategory]}>
