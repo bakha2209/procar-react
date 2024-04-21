@@ -7,6 +7,9 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import zIndex from "@mui/material/styles/zIndex";
+import { carData } from "../brands&&car_types";
+
+const carDatas= carData.slice(0,6)
 
 export function Footer() {
   return (
@@ -79,12 +82,12 @@ export function Footer() {
           <Stack flexDirection={"column"}>
             <div className="middle_heading">Recent Post</div>
             <Box className={"image_wrap"}>
-              <img className={"images_in_foot"} src="/logos/acura.png" alt="" />
-              <img className={"images_in_foot"} src="/logos/acura.png" alt="" />
-              <img className={"images_in_foot"} src="/logos/acura.png" alt="" />
-              <img className={"images_in_foot"} src="/logos/acura.png" alt="" />
-              <img className={"images_in_foot"} src="/logos/acura.png" alt="" />
-              <img className={"images_in_foot"} src="/logos/acura.png" alt="" />
+              {carDatas.map((ele)=>{
+                const image_path = ele.image
+                return (
+                  <img className={"images_in_foot"} src={image_path} alt="" />
+                )
+              })}
             </Box>
             <Stack flexDirection={"row"}>
               <svg

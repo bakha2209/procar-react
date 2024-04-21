@@ -71,7 +71,7 @@ const marks = [
   },
 ];
 
-const car_list = Array.from(Array(5).keys());
+
 
 export function AllCars(props: any) {
   /**INITIALIZATIONS */
@@ -96,7 +96,7 @@ export function AllCars(props: any) {
     car_engine_type: "",
     car_type: "",
     produced_year: undefined,
-    car_price: undefined
+    car_price: undefined,
   });
   const [carRebuild, setCarRebuild] = useState<Date>(new Date());
   useEffect(() => {
@@ -111,12 +111,15 @@ export function AllCars(props: any) {
   const chosenCarHandler = (id: string) => {
     history.push(`/dealer/cars/${id}`);
   };
-  const searchHandler = (e: any) => {
+  const searchHandler = (category:string) => {
+    targetSearchObject.page = 1;
+    targetSearchObject.order=category
+    setTargetSearchObject({ ...targetSearchObject });
+  };
+  const searchHandler_make = (e: any) => {
     targetSearchObject.page = 1;
     targetSearchObject.car_brand = e.target.value;
-
     setMake(e.target.value);
-
     setTargetSearchObject({ ...targetSearchObject });
   };
   const searchHandler_trans = (e: any) => {
@@ -257,7 +260,7 @@ export function AllCars(props: any) {
                     id="demo-select-small"
                     value={make}
                     label="Make"
-                    onChange={searchHandler}
+                    onChange={searchHandler_make}
                   >
                     <MenuItem value="">
                       <em>All</em>
@@ -338,13 +341,9 @@ export function AllCars(props: any) {
                     <MenuItem value="">
                       <em>All</em>
                     </MenuItem>
-                    {car_year.map((ele:number)=> {
-                      return (
-                        <MenuItem value={ele}>{ele}</MenuItem>
-                      )
+                    {car_year.map((ele: number) => {
+                      return <MenuItem value={ele}>{ele}</MenuItem>;
                     })}
-                    
-                    
                   </Selects>
                 </FormControl>
                 <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
@@ -496,7 +495,7 @@ export function AllCars(props: any) {
                               display: "flex",
                             }}
                           >
-                            <div>{car.car_likes}</div>
+                            <div ref={(element) => (refs.current[car._id] = element)}>{car.car_likes}</div>
                             <Favorite
                               sx={{ fontSize: 20, marginLeft: "5px" }}
                             />
@@ -509,7 +508,7 @@ export function AllCars(props: any) {
               })}
             </Stack>
           </Stack>
-          <Stack className="bottom_box">
+          <Stack className="bottom_box" sx={{marginBottom:"1px"}}>
             <Pagination
               count={
                 targetSearchObject.page >= 3 ? targetSearchObject.page + 1 : 3

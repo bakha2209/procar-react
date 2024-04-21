@@ -1,4 +1,4 @@
-import { Container, Stack } from "@mui/material";
+import { Container, Stack, Link } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import Box from "@mui/joy/Box";
 import PaginationItem from "@mui/material/PaginationItem";
@@ -28,11 +28,15 @@ import SearchIcon from "@mui/icons-material/Search";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { verifiedMemberData } from "../../apiServices/verify";
-import "../../../css/community.css"
+import "../../../css/community.css";
+import { setChosenSingleBoArticle } from "../MemberPage/slice";
+import { retrieveChosenSingleBoArticle } from "../MemberPage/selector";
 // REDUX SLICE
 const actionDispatch = (dispach: Dispatch) => ({
   setTargetBoArticles: (data: BoArticle[]) =>
     dispach(setTargetBoArticles(data)),
+  setChosenSingleBoArticle: (data: BoArticle) =>
+    dispach(setChosenSingleBoArticle(data)),
 });
 
 // REDUX SELECTOR
@@ -42,12 +46,21 @@ const targetBoArticlesRetriever = createSelector(
     targetBoArticles,
   })
 );
+const chosenSingleBoArticlesRetriever = createSelector(
+  retrieveChosenSingleBoArticle,
+  (chosenSingleBoArticles) => ({
+    chosenSingleBoArticles,
+  })
+);
 
 export function CommunityPage() {
   // INITIALIZATIONS
   const history = useHistory();
-  const { setTargetBoArticles } = actionDispatch(useDispatch());
+  const { setTargetBoArticles, setChosenSingleBoArticle} = actionDispatch(useDispatch());
   const { targetBoArticles } = useSelector(targetBoArticlesRetriever);
+  const { chosenSingleBoArticles } = useSelector(
+    chosenSingleBoArticlesRetriever
+  );
   const [value, setValue] = React.useState("1");
   const [searchArticlesObj, setSearchArticlesObj] = useState<SearchArticlesObj>(
     { bo_id: "all", page: 1, limit: 3, order: "updatedAt" }
@@ -100,6 +113,23 @@ export function CommunityPage() {
   };
   const goarticleHandler = (mb_id: string, article_id: string) =>
     history.push(`/member-page/other?mb_id=${mb_id}&art_id=${article_id}`);
+
+    const renderChosenArticleHandler = async (art_id: string) => {
+      try {
+        const communityService = new CommunityApiService();
+        communityService
+          .getChosenArticle(art_id)
+          .then((data) => {
+            setChosenSingleBoArticle(data);
+            setValue("5");
+            history.push(`/member-page/${art_id}`)
+          })
+          .catch((err) => console.log(err));
+      } catch (err: any) {
+        console.log(err);
+        sweetErrorHandling(err).then();
+      }
+    };
   const quantity_article = targetBoArticles.length;
 
   return (
@@ -123,11 +153,7 @@ export function CommunityPage() {
               return (
                 <Stack
                   className="post_card"
-                  onClick={() =>
-                    history.push(
-                      `/member-page/other?mb_id=${article.mb_id}&art_id=${article._id}`
-                    )
-                  }
+                  
                 >
                   <Box
                     className="card_image"
@@ -202,14 +228,17 @@ export function CommunityPage() {
                     </Box>
                   </Box>
                   <p>{article?.art_subject}</p>
-                  
-                  <div
+                        <Link href={`/member-page/${article._id}`}><div
                     style={{ flexDirection: "row", cursor: "pointer" }}
                     className="read_more"
+                    // onClick={() =>
+                    //   renderChosenArticleHandler(article._id)
+                    // }
                   >
                     <span className="read_icon">Read More</span>
                     <img src="/icons/direction.svg" alt="" />
-                  </div>
+                  </div></Link>
+                  
                 </Stack>
               );
             })}

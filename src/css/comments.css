@@ -1,0 +1,163 @@
+.post_author {
+  width: 665px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+}
+.post_author h3 {
+  color: #121416;
+
+  font-family: 'DM Sans';
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 26px; /* 107.143% */
+  margin-bottom: 25px;
+}
+.post_author .each_comment {
+  display: flex;
+  width: 100%;
+  height: auto;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.each_comment .inner_comment {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 24px;
+  width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+}
+.inner_comment .post_image {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+}
+
+.inner_comment .auth_inform {
+  display: flex;
+  position: relative;
+  flex-direction: row;
+  align-items: center;
+  height: 17px;
+}
+.inner_comment .auth_informs {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 25px;
+  margin-top: 10px;
+}
+
+.auth_inform p {
+  margin-right: 10px;
+  color: #121416;
+
+  font-family: 'Plus Jakarta Sans';
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 16px; /* 156.25% */
+}
+.auth_informs p {
+  margin-left: 10px;
+  color: #121416;
+
+  font-family: 'Plus Jakarta Sans';
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 16px; /* 156.25% */
+}
+.auth_inform span {
+  color: #949392;
+
+  font-family: 'Plus Jakarta Sans';
+  font-size: 8px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 16px; /* 241.667% */
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.inner_comment .comment_text {
+  color: #949392;
+  width: 100%;
+  font-family: Inter;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+}
+
+.leave_comment {
+  display: flex;
+  flex-direction: column;
+  width: 661px;
+  height: auto;
+  border-radius: 10px;
+  background: #f8f8f8;
+  padding: 48px 32px;
+  margin-bottom: 45px;
+}
+.leave_comment span {
+  color: #000;
+
+  font-family: 'Plus Jakarta Sans';
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 10px; /* 62.5% */
+}
+.leave_comment .rating_box {
+  width: 180px;
+  height: 57px;
+  border-radius: 8px;
+  border: 1px solid #efeff2;
+  background: #fff;
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.leave_comment .review_box {
+  width: 460px;
+  border-radius: 8px;
+  border: 1px solid #efeff2;
+  margin-top: 12px;
+  background: #fff;
+  margin-bottom: 30px;
+}
+.leave_comment .submit_button {
+  width: 128px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  background-color: #d01818;
+  color: #fff;
+
+  text-align: center;
+  leading-trim: both;
+
+  text-edge: cap;
+  font-family: 'Plus Jakarta Sans';
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  text-transform: capitalize;
+}
+.leave_comment .submit_button:hover {
+    background-color: aqua;
+    color: #d01818;
+    font-weight: 700;
+}

@@ -62,19 +62,17 @@ const chosenMemberRetriever = createSelector(
   })
 );
 const chosenMemberBoArticlesRetriever = createSelector(
-  retrieveChosenSingleBoArticle,
+  retrieveChosenMemberBoArticles,
   (chosenMemberBoArticles) => ({
     chosenMemberBoArticles,
   })
 );
 const chosenSingleBoArticlesRetriever = createSelector(
-  retrieveChosenMemberBoArticles,
+  retrieveChosenSingleBoArticle,
   (chosenSingleBoArticles) => ({
     chosenSingleBoArticles,
   })
 );
-
-const follower = 2;
 
 export function VisitOtherPage(props: any) {
   //INITIALIZIATION
@@ -95,21 +93,22 @@ export function VisitOtherPage(props: any) {
   const [value, setValue] = useState("1");
 
   // HANDLERS
-  const handleChange = (event: any, newValue: string) => {
+  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
-  const handlePaginationChange = (event: any, value: number) => {
-    memberArticleSearchObj.page = value;
-    setMemberArticleSearchObj({ ...memberArticleSearchObj });
-  };
+
   const [articlesRebuild, setArticlesRebuild] = useState<Date>(new Date());
   const [followRebuild, setFollowRebuild] = useState<boolean>(false);
   const [memberArticleSearchObj, setMemberArticleSearchObj] =
     useState<SearchMemberArticlesObj>({
       mb_id: chosen_mb_id,
       page: 1,
-      limit: 1,
+      limit: 3,
     });
+  const handlePaginationChange = (event: any, value: number) => {
+    memberArticleSearchObj.page = value;
+    setMemberArticleSearchObj({ ...memberArticleSearchObj });
+  };
 
   useEffect(() => {
     if (chosen_mb_id === verifiedMemberData?._id) {
@@ -159,12 +158,12 @@ export function VisitOtherPage(props: any) {
     }
   };
 
-  const subscribeHandler = async (e: any) => {
+  const subscribeHandler = async (event: any) => {
     try {
       assert.ok(verifiedMemberData, Definer.auth_err1);
 
       const followService = new FollowApiService();
-      await followService.subscribe(e.target.value);
+      await followService.subscribe(event.target.value);
 
       await sweetTopSmallSuccessAlert("subscribed successfully", 700, false);
       setFollowRebuild(!followRebuild);
@@ -173,12 +172,12 @@ export function VisitOtherPage(props: any) {
       sweetErrorHandling(err).then();
     }
   };
-  const unsubscribeHandler = async (e: any) => {
+  const unsubscribeHandler = async (event: any) => {
     try {
       assert.ok(verifiedMemberData, Definer.auth_err1);
 
       const followService = new FollowApiService();
-      await followService.unsubscribe(e.target.value);
+      await followService.unsubscribe(event.target.value);
 
       await sweetTopSmallSuccessAlert("unsubscribed successfully", 700, false);
       setFollowRebuild(!followRebuild);
@@ -201,13 +200,14 @@ export function VisitOtherPage(props: any) {
                   onChange={handleChange}
                   aria-label="lab API tabs example"
                 >
-                  {chosenMember?.me_followed && chosenMember?.me_followed[0]?.my_following ? (
+                  {chosenMember?.me_followed &&
+                  chosenMember?.me_followed[0]?.my_following ? (
                     <Tab
                       style={{ flexDirection: "column" }}
                       value={"4"}
                       component={() => (
                         <Button
-                        value={chosenMember?._id}
+                          value={chosenMember?._id}
                           variant="contained"
                           style={{ backgroundColor: "#f70909b8" }}
                           onClick={unsubscribeHandler}
@@ -222,7 +222,7 @@ export function VisitOtherPage(props: any) {
                       value={"4"}
                       component={() => (
                         <Button
-                        value={chosenMember?._id}
+                          value={chosenMember?._id}
                           variant="contained"
                           style={{ backgroundColor: "#30945e" }}
                           onClick={subscribeHandler}
@@ -333,9 +333,11 @@ export function VisitOtherPage(props: any) {
                 <TabPanel value="1">
                   <Box className="menu_name">Stories</Box>
                   <Box className="menu_content">
-                    <MemberPosts chosenMemberBoArticles={chosenMemberBoArticles}
+                    <MemberPosts
+                      chosenMemberBoArticles={chosenMemberBoArticles}
                       renderChosenArticleHandler={renderChosenArticleHandler}
-                      setArticlesRebuild={setArticlesRebuild}/>
+                      setArticlesRebuild={setArticlesRebuild}
+                    />
                     <Stack
                       sx={{ my: "40px" }}
                       direction={"row"}
@@ -343,9 +345,11 @@ export function VisitOtherPage(props: any) {
                     >
                       <Box className={"bottom_box"}>
                         <Pagination
-                          count={memberArticleSearchObj.page >= 3
-                            ? memberArticleSearchObj.page + 1
-                            : 3}
+                          count={
+                            memberArticleSearchObj.page >= 3
+                              ? memberArticleSearchObj.page + 1
+                              : 3
+                          }
                           page={memberArticleSearchObj.page}
                           renderItem={(item) => (
                             <PaginationItem
@@ -366,25 +370,31 @@ export function VisitOtherPage(props: any) {
                 <TabPanel value={"2"}>
                   <Box className={"menu_name"}>Followers</Box>
                   <Box className={"menu_content"}>
-                    <MemberFollowers actions_enabled={false} followRebuild={followRebuild}
+                    <MemberFollowers
+                      actions_enabled={false}
+                      followRebuild={followRebuild}
                       setFollowRebuild={setFollowRebuild}
-                      mb_id={chosen_mb_id} />
+                      mb_id={chosen_mb_id}
+                    />
                   </Box>
                 </TabPanel>
 
                 <TabPanel value={"3"}>
                   <Box className={"menu_name"}>Following</Box>
                   <Box className={"menu_content"}>
-                    <MemberFollowing actions_enabled={false} followRebuild={followRebuild}
+                    <MemberFollowing
+                      actions_enabled={false}
+                      followRebuild={followRebuild}
                       setFollowRebuild={setFollowRebuild}
-                      mb_id={chosen_mb_id}/>
+                      mb_id={chosen_mb_id}
+                    />
                   </Box>
                 </TabPanel>
 
                 <TabPanel value={"4"}>
                   <Box className={"menu_name"}>Chosen Story</Box>
                   <Box className={"menu_content"}>
-                    <TViewer chosenSingleBoArticles={chosenSingleBoArticles}/>
+                    <TViewer chosenSingleBoArticles={chosenSingleBoArticles} />
                   </Box>
                 </TabPanel>
               </Box>

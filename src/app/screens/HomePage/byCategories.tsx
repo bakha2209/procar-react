@@ -4,32 +4,8 @@ import React, { useState } from "react";
 import "../../../css/homepage.css";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { vehicleTypesData } from "../../components/brands&&car_types";
 
-const category_list = Array.from(Array(6).keys());
-
-interface VehicleType {
-  name: string;
-  image: string;
-}
-
-const vehicleTypesData: VehicleType[] = [
-  { name: "CONVERTIBLE", image: "/vehicle_type/2.1.jpg" },
-  { name: "SUV", image: "/vehicle_type/2.2.jpg" },
-  { name: "PICKUP", image: "/vehicle_type/2.3.jpg" },
-  { name: "STATION WAGON", image: "/vehicle_type/2.17.jpg" },
-  { name: "SUPERCAR", image: "/vehicle_type/2.5.jpg" },
-  { name: "ROADSTER", image: "/vehicle_type/2.6.jpg" },
-  { name: "COUPE", image: "/vehicle_type/2.7.jpg" },
-  { name: "SEDAN", image: "/vehicle_type/2.8.jpg" },
-  { name: "CROSSOVER", image: "/vehicle_type/2.9.jpg" },
-  { name: "MPV", image: "/vehicle_type/2.10.jpg" },
-  { name: "LIMOUSINE", image: "/vehicle_type/2.18.jpg" },
-  { name: "4x4", image: "/vehicle_type/2.12.jpg" },
-  { name: "HATCHBACK", image: "/vehicle_type/2.13.jpg" },
-  { name: "SPORTS CAR", image: "/vehicle_type/2.14.jpg" },
-  { name: "MINIVAN", image: "/vehicle_type/2.15.jpg" },
-  { name: "CITY CAR", image: "/vehicle_type/2.16.jpg" },
-];
 
 export function ByCategories() {
   

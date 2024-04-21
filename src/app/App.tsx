@@ -100,7 +100,7 @@ function App() {
       setCartItems(cart_updated);
       localStorage.setItem("cart_data", JSON.stringify(cart_updated));
       window.scrollBy({
-        top: -1200,
+        top: -2000,
         behavior: "smooth",
       });
     }

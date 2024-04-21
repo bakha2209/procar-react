@@ -55,6 +55,18 @@ import {
 } from "../../lib/sweetAlert";
 import DealerApiService from "../../apiServices/dealerApiService";
 import { verifiedMemberData } from "../../apiServices/verify";
+import {
+  car_brands,
+  car_colors,
+  car_types,
+  car_year,
+  petrol_types,
+} from "../../components/filter_configs";
+import Paginations from "@mui/material/Pagination";
+import PaginationItem from "@mui/material/PaginationItem";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+
 //others
 
 // REDUX SLICE
@@ -76,8 +88,8 @@ const targetCarsRetriever = createSelector(
   })
 );
 
-const MAX = 100;
-const MIN = 0;
+const MAX = 150000;
+const MIN = 1000;
 const marks = [
   {
     value: MIN,
@@ -118,9 +130,6 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
-const order_list = Array.from(Array(6).keys());
-const car_list = Array.from(Array(5).keys());
-
 export function OneDealer(props: any) {
   /**INITIALIZATIONS */
   let { dealer_id } = useParams<{ dealer_id: string }>();
@@ -130,13 +139,27 @@ export function OneDealer(props: any) {
   const [chosenDealerId, setChosenDealerId] = useState<string>(dealer_id);
   const refs: any = useRef([]);
   const history = useHistory();
-  const [targetProductSearchObj, setTargetProductSearchObj] =
-    useState<CarSearchObj>({
-      page: 1,
-      limit: 6,
-      order: "createdAt",
-      dealer_mb_id: dealer_id,
-    });
+  const [make, setMake] = React.useState("");
+  const [transmission, setTransmission] = React.useState("");
+  const [petrol, setPetrol] = React.useState("");
+  const [color, setColor] = React.useState("");
+  const [year, setYear] = React.useState();
+  const [type, setType] = React.useState("");
+  const [search, setSearch] = React.useState("");
+  const [price, setPrice] = React.useState<number>(MIN);
+  const [targetSearchObject, setTargetSearchObject] = useState<CarSearchObj>({
+    page: 1,
+    limit: 6,
+    order: "createdAt",
+    dealer_mb_id: dealer_id,
+    car_brand: "",
+    car_transmission: "",
+    car_color: "",
+    car_engine_type: "",
+    car_type: "",
+    produced_year: undefined,
+    car_price: undefined,
+  });
   const [productRebuild, setProductRebuild] = useState<Date>(new Date());
   useEffect(() => {
     const dealerService = new DealerApiService();
@@ -146,10 +169,11 @@ export function OneDealer(props: any) {
       .catch((err) => console.log(err));
     const carService = new CarApiService();
     carService
-      .getTargetCars(targetProductSearchObj)
+      .getTargetCars(targetSearchObject)
       .then((data) => setTargetCars(data))
       .catch((err) => console.log(err));
-  }, [targetProductSearchObj, productRebuild]);
+  }, [targetSearchObject, productRebuild]);
+  /**HANDLERS */
   const targetLikeCar = async (e: any, id: string) => {
     try {
       assert.ok(verifiedMemberData, Definer.auth_err1);
@@ -179,10 +203,55 @@ export function OneDealer(props: any) {
   const handleChange = (
     event: React.SyntheticEvent | null,
     newValue: string | null
-  ) => {
-    alert(`You chose "${newValue}"`);
+  ) => {};
+  const searchHandler = (category: string) =>
+    setTargetSearchObject((prevState) => ({
+      ...prevState,
+      page: 1,
+      order: category,
+    }));
+  const searchHandler_make = (e: any) => {
+    targetSearchObject.page = 1;
+    targetSearchObject.car_brand = e.target.value;
+    setMake(e.target.value);
+    setTargetSearchObject({ ...targetSearchObject });
   };
-  const [make, setMake] = React.useState("");
+  const searchHandler_trans = (e: any) => {
+    targetSearchObject.page = 1;
+    targetSearchObject.car_transmission = e.target.value;
+    setTransmission(e.target.value);
+    setTargetSearchObject({ ...targetSearchObject });
+  };
+  const searchHandler_color = (e: any) => {
+    targetSearchObject.page = 1;
+    targetSearchObject.car_color = e.target.value;
+    setColor(e.target.value);
+    setTargetSearchObject({ ...targetSearchObject });
+  };
+  const searchHandler_engine = (e: any) => {
+    targetSearchObject.page = 1;
+    targetSearchObject.car_engine_type = e.target.value;
+    setPetrol(e.target.value);
+    setTargetSearchObject({ ...targetSearchObject });
+  };
+  const searchHandler_type = (e: any) => {
+    targetSearchObject.page = 1;
+    targetSearchObject.car_type = e.target.value;
+    setType(e.target.value);
+    setTargetSearchObject({ ...targetSearchObject });
+  };
+  const searchHandler_year = (e: any) => {
+    targetSearchObject.page = 1;
+    targetSearchObject.produced_year = e.target.value;
+    setYear(e.target.value);
+    setTargetSearchObject({ ...targetSearchObject });
+  };
+  const searchHandler_price = (e: any, value: any) => {
+    targetSearchObject.page = 1;
+    targetSearchObject.car_price = value;
+    setPrice(value);
+    setTargetSearchObject({ ...targetSearchObject });
+  };
 
   const handleClick = (event: SelectChangeEvent) => {
     setMake(event.target.value);
@@ -194,9 +263,14 @@ export function OneDealer(props: any) {
   const chosenCarHandler = (id: string) => {
     history.push(`/dealer/cars/${id}`);
   };
+  const handlePaginationChange = (event: any, value: number) => {
+    targetSearchObject.page = value;
+    setTargetSearchObject({ ...targetSearchObject });
+  };
   return (
     <div className="one_dealer">
       <Container>
+
         <Stack flexDirection={"column"}>
           <div className="dealer_page_title">{chosenDealer?.mb_nick}</div>
           <Stack flexDirection={"row"} alignItems={"center"}>
@@ -264,12 +338,35 @@ export function OneDealer(props: any) {
             <Stack className="inventory_sec">
               <Stack flexDirection={"row"} justifyContent={"space-between"}>
                 <h2 style={{ color: "#000" }}>Dealer Inventory</h2>
-
-                <Select
+                <StyledEngineProvider injectFirst>
+                  <FormControl
+                    style={{
+                      width: 200,
+                      marginTop: "20px",
+                      marginRight: "20px",
+                    }}
+                    size="small"
+                  >
+                    <InputLabel id="demo-select-small-label">Search</InputLabel>
+                    <Selects
+                      labelId="demo-select-small-label"
+                      id="demo-select-small"
+                      value={targetSearchObject.order}
+                      label="Search"
+                      onChange={(event: SelectChangeEvent<string>) => searchHandler(event.target.value)}
+                    >
+                      <MenuItem value="createdAt">Recently</MenuItem>
+                      <MenuItem value="car_views">Most Viewed</MenuItem>
+                      <MenuItem value="car_likes">Most Liked</MenuItem>
+                    </Selects>
+                  </FormControl>
+                </StyledEngineProvider>
+                {/* <Select
                   showSearch
                   style={{ width: 200, marginTop: "20px", marginRight: "20px" }}
                   placeholder="Select"
                   optionFilterProp="children"
+                  onChange={()=>searchHandler}
                   // filterOption={(input, option) =>
                   //   (option?.label ?? "").includes(input)
                   // }
@@ -280,19 +377,19 @@ export function OneDealer(props: any) {
                   // }
                   options={[
                     {
-                      value: "1",
+                      value: "createdAt",
                       label: "Recently",
                     },
                     {
-                      value: "2",
+                      value: "car_views",
                       label: "Most Viewed",
                     },
                     {
-                      value: "3",
+                      value: "car_likes",
                       label: "Most Liked",
                     },
                   ]}
-                />
+                /> */}
               </Stack>
               <div className="invent_line"></div>
               <Stack className="all_invent_box">
@@ -617,14 +714,18 @@ export function OneDealer(props: any) {
                     id="demo-select-small"
                     value={make}
                     label="Make"
-                    onChange={handleClick}
+                    onChange={searchHandler_make}
                   >
                     <MenuItem value="">
                       <em>All</em>
                     </MenuItem>
-                    <MenuItem value={10}>BMW</MenuItem>
-                    <MenuItem value={20}>Audi</MenuItem>
-                    <MenuItem value={30}>KIA</MenuItem>
+                    {car_brands.map((brand: string) => {
+                      return (
+                        <MenuItem key={brand} value={brand}>
+                          {brand}
+                        </MenuItem>
+                      );
+                    })}
                   </Selects>
                 </FormControl>
                 <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
@@ -634,15 +735,15 @@ export function OneDealer(props: any) {
                   <Selects
                     labelId="demo-select-small-label"
                     id="demo-select-small"
-                    value={make}
-                    label="Make"
-                    onChange={handleClick}
+                    value={transmission}
+                    label="Transmission"
+                    onChange={searchHandler_trans}
                   >
                     <MenuItem value="">
                       <em>All</em>
                     </MenuItem>
-                    <MenuItem value={1}>AutoMative</MenuItem>
-                    <MenuItem value={2}>Manual</MenuItem>
+                    <MenuItem value="AUTOMATIC">AutoMative</MenuItem>
+                    <MenuItem value="MANUAL">Manual</MenuItem>
                   </Selects>
                 </FormControl>
                 <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
@@ -652,18 +753,16 @@ export function OneDealer(props: any) {
                   <Selects
                     labelId="demo-select-small-label"
                     id="demo-select-small"
-                    value={make}
-                    label="Make"
-                    onChange={handleClick}
+                    value={petrol}
+                    label="Petrol Type"
+                    onChange={searchHandler_engine}
                   >
                     <MenuItem value="">
                       <em>All</em>
                     </MenuItem>
-                    <MenuItem value={3}>Gasoline</MenuItem>
-                    <MenuItem value={4}>Dizel</MenuItem>
-                    <MenuItem value={5}>Gas</MenuItem>
-                    <MenuItem value={6}>Hybrid</MenuItem>
-                    <MenuItem value={7}>Electric</MenuItem>
+                    {petrol_types.map((ele: string) => {
+                      return <MenuItem value={ele}>{ele}</MenuItem>;
+                    })}
                   </Selects>
                 </FormControl>
                 <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
@@ -671,16 +770,16 @@ export function OneDealer(props: any) {
                   <Selects
                     labelId="demo-select-small-label"
                     id="demo-select-small"
-                    value={make}
-                    label="Make"
-                    onChange={handleClick}
+                    value={color}
+                    label="Color"
+                    onChange={searchHandler_color}
                   >
                     <MenuItem value="">
                       <em>All</em>
                     </MenuItem>
-                    <MenuItem value={8}>White</MenuItem>
-                    <MenuItem value={9}>Black</MenuItem>
-                    <MenuItem value={11}>Red</MenuItem>
+                    {car_colors.map((ele) => {
+                      return <MenuItem value={ele}>{ele}</MenuItem>;
+                    })}
                   </Selects>
                 </FormControl>
                 <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
@@ -688,16 +787,16 @@ export function OneDealer(props: any) {
                   <Selects
                     labelId="demo-select-small-label"
                     id="demo-select-small"
-                    value={make}
-                    label="Make"
-                    onChange={handleClick}
+                    value={year}
+                    label="Year(above)"
+                    onChange={searchHandler_year}
                   >
                     <MenuItem value="">
                       <em>All</em>
                     </MenuItem>
-                    <MenuItem value={12}>2024</MenuItem>
-                    <MenuItem value={13}>2023</MenuItem>
-                    <MenuItem value={14}>2022</MenuItem>
+                    {car_year.map((ele: number) => {
+                      return <MenuItem value={ele}>{ele}</MenuItem>;
+                    })}
                   </Selects>
                 </FormControl>
                 <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
@@ -707,16 +806,16 @@ export function OneDealer(props: any) {
                   <Selects
                     labelId="demo-select-small-label"
                     id="demo-select-small"
-                    value={make}
-                    label="Make"
-                    onChange={handleClick}
+                    value={type}
+                    label="Body Type"
+                    onChange={searchHandler_type}
                   >
                     <MenuItem value="">
                       <em>All</em>
                     </MenuItem>
-                    <MenuItem value={15}>Sedan</MenuItem>
-                    <MenuItem value={16}>SUV</MenuItem>
-                    <MenuItem value={17}>CrossOver</MenuItem>
+                    {car_types.map((ele: string) => {
+                      return <MenuItem value={ele}>{ele}</MenuItem>;
+                    })}
                   </Selects>
                 </FormControl>
               </StyledEngineProvider>
@@ -728,11 +827,11 @@ export function OneDealer(props: any) {
                 <Slider
                   marks={marks}
                   step={10}
-                  value={val}
+                  value={price}
                   valueLabelDisplay="auto"
                   min={MIN}
                   max={MAX}
-                  onChange={handlePrice}
+                  onChange={searchHandler_price}
                 />
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                   <Typographys
@@ -754,6 +853,25 @@ export function OneDealer(props: any) {
             </Stack>
           </Stack>
         </Stack>
+        <Stack className="bottom_box">
+            <Paginations
+              count={
+                targetSearchObject.page >= 3 ? targetSearchObject.page + 1 : 3
+              }
+              page={targetSearchObject.page}
+              renderItem={(item) => (
+                <PaginationItem
+                  components={{
+                    previous: ArrowBackIcon,
+                    next: ArrowForwardIcon,
+                  }}
+                  {...item}
+                  color={"primary"}
+                />
+              )}
+              onChange={handlePaginationChange}
+            />
+          </Stack>
       </Container>
     </div>
   );

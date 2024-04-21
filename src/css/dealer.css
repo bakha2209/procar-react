@@ -484,8 +484,10 @@ cursor: pointer;
 }
 .car_description .car_brand {
   flex-direction: row;
-  width: 40%;
+  width: 80%;
+  height: 20px;
   justify-content: space-between;
+  align-items: center;
 }
 .car_description .car_brand .car_toyota {
   color: #000;
@@ -918,8 +920,9 @@ width: 140px;
   color: #fff;
 }
 
-.whole_stack .bottom_box {
+ .bottom_box {
   margin-top: 40px;
+  margin-bottom: 20px;
   flex-direction: row;
   align-items: center;
   justify-content: center;

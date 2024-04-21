@@ -99,10 +99,13 @@ const TViewer = (props: any) => {
                 width: "574px",
                 height: "305px",
                 backgroundImage: `url(${
-                  `${serverApi}/${props.chosenSingleBoArticles?.art_image}` ??
-                  "/cars/top_car.webp"
-                })`,
+                  props.chosenSingleBoArticles && props.chosenSingleBoArticles.art_image
+                    ? `${serverApi}/${props.chosenSingleBoArticles.art_image}`
+                    : "/cars/top_car.webp"
+                })`
+                ,
                 backgroundSize: "100% 100%",
+                backgroundPosition:"center",
                 marginBottom: "12px",
               }}
             >
@@ -169,7 +172,6 @@ const TViewer = (props: any) => {
               </Box>
             </Box>
             <p>{props.chosenSingleBoArticles?.art_subject}</p>
-            //{" "}
             <Stack
               sx={{ background: "white", mt: "30px", borderRadius: "10px" }}
             >

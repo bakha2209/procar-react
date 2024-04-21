@@ -83,7 +83,7 @@ const chosenSingleBoArticlesRetriever = createSelector(
 
 export function VisitMyPage(props: any) {
   //INITIALIZIATION
-  
+  const history = useHistory()
   const {
     setChosenMember,
     setChosenMemberBoArticles,
@@ -148,6 +148,7 @@ export function VisitMyPage(props: any) {
         .then((data) => {
           setChosenSingleBoArticle(data);
           setValue("5");
+          
         })
         .catch((err) => console.log(err));
     } catch (err: any) {

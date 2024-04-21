@@ -44,7 +44,6 @@ const targetBoArticlesRetriever = createSelector(
   })
 );
 
-const story_list = Array.from(Array(3).keys());
 export function MemberPosts(props: any) {
   const { setTargetBoArticles } = actionDispatch(useDispatch());
   const { targetBoArticles } = useSelector(targetBoArticlesRetriever);
@@ -102,11 +101,9 @@ export function MemberPosts(props: any) {
               ? `${serverApi}/${article.art_image}`
               : "/home/super_car.jpg";
             return (
-              <Stack
-                className="post_card"
-                sx={{ cursor: "pointer" }}
-                onClick={() => renderChosenArticleHandler(article?._id)}
-              >
+              <Stack className="post_card" sx={{ cursor: "pointer" }} onClick={(e) => {
+                e.stopPropagation();
+              }}>
                 <Box
                   className="card_image"
                   flexDirection={"row"}
@@ -177,7 +174,10 @@ export function MemberPosts(props: any) {
                   </Box>
                 </Box>
                 <p>{article?.art_subject}</p>
-                <div style={{ flexDirection: "row", cursor: "pointer" }}>
+                <div
+                  style={{ flexDirection: "row", cursor: "pointer" }}
+                  onClick={() => renderChosenArticleHandler(article?._id)}
+                >
                   <span className="read_icon">Read More</span>
                   <img src="/icons/direction.svg" alt="" />
                 </div>

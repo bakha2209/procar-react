@@ -3,6 +3,7 @@ import { Car } from "./car";
 import { Dealer, Member } from "./user";
 import { Order } from "./order";
 import { Follower, Following } from "./follow";
+import {Event} from "./others"
 
 export interface AppRootState {
   homePage: HomePageState;
@@ -18,6 +19,7 @@ export interface HomePageState {
   byCategories: Car[];
   bestDealers: Car[];
   bestBoArticles: BoArticle[];
+  events: Event[]
 }
 
 // DEALER'S PAGE

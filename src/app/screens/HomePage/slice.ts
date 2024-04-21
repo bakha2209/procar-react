@@ -6,6 +6,7 @@ const initialState: HomePageState = {
   byCategories: [],
   bestDealers: [],
   bestBoArticles: [],
+  events:[],
 };
 
 const HomePageSlice = createSlice({
@@ -24,6 +25,9 @@ const HomePageSlice = createSlice({
     setBestBoArticles: (state, action) => {
       state.bestBoArticles = action.payload;
     },
+    setEvents: (state, action) => {
+      state.events = action.payload
+    }
   },
 });
 
@@ -32,6 +36,7 @@ export const {
   setByCategories,
   setBestDealers,
   setBestBoArticles,
+  setEvents,
 } = HomePageSlice.actions;
 
 const HomePageReducer = HomePageSlice.reducer;

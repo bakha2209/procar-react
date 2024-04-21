@@ -18,3 +18,7 @@ export const retrieveBestBoArticles = createSelector(
     selectHomePage,
     (HomePage) => HomePage.bestBoArticles
 );
+export const retrieveEvents = createSelector(
+    selectHomePage,
+    (HomePage) => HomePage.events
+);

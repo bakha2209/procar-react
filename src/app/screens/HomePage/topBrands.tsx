@@ -10,26 +10,11 @@ import { CarSearchObj } from "../../../types/others";
 import CarApiService from "../../apiServices/carApiService";
 import { Car } from "../../../types/car";
 import { CategoryCont } from "../context/Category";
+import { setByCategories } from "./slice";
+import { retrieveByCategories } from "./selector";
+import{carData} from "../../components/brands&&car_types"
 
 
-interface Caren {
-  image: string;
-  model: string;
-}
-
-const carData: Caren[] = [
-  { model: "BMW", image: "/logos/1.png" },
-  { model: "AUDI", image: "/logos/2.jpg" },
-  { model: "FORD", image: "/logos/3.png" },
-  { model: "MERCEDES-BENZ", image: "/logos/4.jpg" },
-  { model: "KIA", image: "/logos/5.png" },
-  { model: "HYUNDAI", image: "/logos/6.png" },
-  { model: "SAMSUNG", image: "/logos/7.jpg" },
-  { model: "VOLVO", image: "/logos/8.jpg" },
-  { model: "DAF", image: "/logos/9.png" },
-  { model: "MAN", image: "/logos/10.jpg" },
-  { model: "CHEVROLET", image: "/logos/11.jpg" },
-];
 
 // REDUX SLICE
 const actionDispatch = (dispach: Dispatch) => ({
@@ -37,8 +22,8 @@ const actionDispatch = (dispach: Dispatch) => ({
 });
 
 // REDUX SELECTOR
-const targetCarsRetriever = createSelector(
-  retrieveTargetCars,
+const TargetCarsRetriever = createSelector(
+  retrieveByCategories,
   (targetCars) => ({
     targetCars,
   })
@@ -46,19 +31,61 @@ const targetCarsRetriever = createSelector(
 
 const brand_list = Array.from(Array(6).keys());
 
-export function TopBrands(props:any) {
+export function TopBrands(props: any) {
   /**INITIALIZATIONS */
   // const [category, setCategory] = CategoryCont();
+  const [make, setMake] = React.useState("");
+  const { targetCars } = useSelector(TargetCarsRetriever);
+  const [targetSearchObject, setTargetSearchObject] = useState<CarSearchObj>({
+    page: 1,
+    limit: 5,
+    order: "createdAt",
+    car_brand: "",
+  });
+  const [carRebuild, setCarRebuild] = useState<Date>(new Date());
+  useEffect(() => {
+    const carService = new CarApiService();
+    carService
+      .getTargetCars(targetSearchObject)
+      .then((data) => setTargetCars(data))
+      .catch((err) => console.log(err));
+  }, [targetSearchObject, carRebuild]);
 
-  const history = useHistory()
-  
+  const history = useHistory();
+
   const [showTopBrands, setShowTopBrands] = useState(true);
 
   const toggleView = () => {
     setShowTopBrands(!showTopBrands);
   };
   /**HANDLERS */
- 
+  const searchHandler_make = (value: string) => {
+    // console.log("selected brand", value)
+    //targetSearchObject.page = 1;
+    //targetSearchObject.car_brand = value;
+
+    // // setMake(value);
+    // // history.push("/dealer/cars")
+    // // setTargetSearchObject({ ...targetSearchObject });
+    // // Update the targetSearchObject with the selected brand
+    const updatedSearchObject: CarSearchObj = {
+        ...targetSearchObject,
+        page: 1, // Reset page to 1 when a new brand is selected
+        car_brand: value,
+     };
+    // console.log("Updated search object:", updatedSearchObject);
+    // // Update the state with the new targetSearchObject
+     setTargetSearchObject((prevSearchObject) => ({
+        ...prevSearchObject,
+        ...updatedSearchObject,
+      }));
+    // console.log("Updated targetSearchObject state:", targetSearchObject);
+    // // Navigate to the "/dealer/cars" page with the selected brand as a query parameter
+    //history.push(`/dealer/cars`);
+
+    //setTargetSearchObject({ ...targetSearchObject });
+  };
+
   return (
     <div className="top_brand">
       <Container>
@@ -71,7 +98,13 @@ export function TopBrands(props:any) {
             <Box className="model_inc">
               {carData.slice(0, 5).map((ele, index) => {
                 return (
-                  <Box className="brand_box" >
+                  <Box
+                    className="brand_box"
+                    onClick={() => {
+                      searchHandler_make(ele.model);
+                      history.push("/dealer/cars");
+                    }}
+                  >
                     <img src={`${ele.image}`} alt="" />
                     <p>{ele.model}</p>
                   </Box>
@@ -85,7 +118,7 @@ export function TopBrands(props:any) {
                 height: "auto",
                 flexDirection: "row",
                 justifyContent: "center",
-                marginTop: "40px", 
+                marginTop: "40px",
               }}
             >
               <button className="brand_button" onClick={toggleView}>
@@ -112,7 +145,7 @@ export function TopBrands(props:any) {
                 height: "auto",
                 flexDirection: "row",
                 justifyContent: "center",
-              
+
                 marginTop: "40px",
               }}
             >
