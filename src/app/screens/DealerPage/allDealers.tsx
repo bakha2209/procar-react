@@ -242,10 +242,13 @@ export function AllDealers() {
                     >
                       <Rating
                         name="readonly"
-                        value={value}
-                        onChange={(event, newValue) => {
-                          setValue(newValue);
-                        }}
+                        value={ele &&
+                          ele.mb_reviews &&
+                          ele.mb_reviews.length !== 0 &&
+                          ele.mb_rating !== undefined
+                            ? Math.floor(ele.mb_rating / ele.mb_reviews.length)
+                            : 0}
+                        readOnly
                       />
                     </Box>
                   </Box>

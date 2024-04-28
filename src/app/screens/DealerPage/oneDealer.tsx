@@ -1,71 +1,59 @@
-import { Box, Container, Button } from "@mui/material";
-import React, { useRef } from "react";
+import { Box, Container, Button, TextField } from '@mui/material'
+import React, { useRef } from 'react'
 
-import Option from "@mui/joy/Option";
-import { Select } from "antd";
-import { StyledEngineProvider } from "@mui/material/styles";
-import {
-  AspectRatio,
-  Card,
-  CardOverflow,
-  CssVarsProvider,
-  IconButton,
-  Typography,
-  Link,
-} from "@mui/joy";
-import { Favorite } from "@mui/icons-material";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import CallIcon from "@mui/icons-material/Call";
-import LocalGasStationIcon from "@mui/icons-material/LocalGasStation";
-import SpeedIcon from "@mui/icons-material/Speed";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { EffectFlip, Pagination, Navigation } from "swiper/modules";
-import { styled } from "@mui/material/styles";
-import Badge from "@mui/material/Badge";
-import Avatar from "@mui/material/Avatar";
-import Stack from "@mui/material/Stack";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Selects, { SelectChangeEvent } from "@mui/material/Select";
-import Slider from "@mui/material/Slider";
-import Typographys from "@mui/material/Typography";
+import Option from '@mui/joy/Option'
+import { Select } from 'antd'
+import { StyledEngineProvider } from '@mui/material/styles'
+import { AspectRatio, Card, CardOverflow, CssVarsProvider, IconButton, Typography, Link } from '@mui/joy'
+import { Favorite } from '@mui/icons-material'
+import VisibilityIcon from '@mui/icons-material/Visibility'
+import CallIcon from '@mui/icons-material/Call'
+import LocalGasStationIcon from '@mui/icons-material/LocalGasStation'
+import SpeedIcon from '@mui/icons-material/Speed'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { EffectFlip, Pagination, Navigation } from 'swiper/modules'
+import { styled } from '@mui/material/styles'
+import Badge from '@mui/material/Badge'
+import Avatar from '@mui/material/Avatar'
+import Stack from '@mui/material/Stack'
+import InputLabel from '@mui/material/InputLabel'
+import MenuItem from '@mui/material/MenuItem'
+import FormControl from '@mui/material/FormControl'
+import Selects, { SelectChangeEvent } from '@mui/material/Select'
+import Slider from '@mui/material/Slider'
+import Typographys from '@mui/material/Typography'
 //REDUX
-import { useDispatch, useSelector } from "react-redux";
-import {
-  retrieveChosenDealer,
-  retrieveTargetCars,
-} from "../DealerPage/selector";
-import { createSelector } from "reselect";
-import { Dealer } from "../../../types/user";
-import { serverApi } from "../../lib/config";
-import { Dispatch } from "@reduxjs/toolkit";
-import { setChosenDealer, setTargetCars } from "../../screens/DealerPage/slice";
-import { useEffect, useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
-import { Car } from "../../../types/car";
-import { CarSearchObj } from "../../../types/others";
-import CarApiService from "../../apiServices/carApiService";
-import assert from "assert";
-import { Definer } from "../../lib/Definer";
-import MemberApiService from "../../apiServices/memberApiService";
-import {
-  sweetErrorHandling,
-  sweetTopSmallSuccessAlert,
-} from "../../lib/sweetAlert";
-import DealerApiService from "../../apiServices/dealerApiService";
-import { verifiedMemberData } from "../../apiServices/verify";
-import {
-  car_brands,
-  car_colors,
-  car_types,
-  car_year,
-  petrol_types,
-} from "../../components/filter_configs";
-import Paginations from "@mui/material/Pagination";
-import PaginationItem from "@mui/material/PaginationItem";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { useDispatch, useSelector } from 'react-redux'
+import { retrieveChosenDealer, retrieveMemberReviews, retrieveTargetCars } from '../DealerPage/selector'
+import { createSelector } from 'reselect'
+import { Dealer } from '../../../types/user'
+import { serverApi } from '../../lib/config'
+import { Dispatch } from '@reduxjs/toolkit'
+import { setChosenDealer, setMemberReviews, setTargetCars } from '../../screens/DealerPage/slice'
+import { useEffect, useState } from 'react'
+import { useHistory, useParams } from 'react-router-dom'
+import { Car } from '../../../types/car'
+import { CarSearchObj, Review, SearchReviews } from '../../../types/others'
+import CarApiService from '../../apiServices/carApiService'
+import assert from 'assert'
+import { Definer } from '../../lib/Definer'
+import MemberApiService from '../../apiServices/memberApiService'
+import { sweetErrorHandling, sweetTopSmallSuccessAlert } from '../../lib/sweetAlert'
+import DealerApiService from '../../apiServices/dealerApiService'
+import { verifiedMemberData } from '../../apiServices/verify'
+import { car_brands, car_colors, car_types, car_year, petrol_types } from '../../components/filter_configs'
+import Paginations from '@mui/material/Pagination'
+import PaginationItem from '@mui/material/PaginationItem'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+import ReviewApiService from '../../apiServices/reviewApiService'
+import moment from 'moment'
+import Rating, { IconContainerProps } from '@mui/material/Rating'
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied'
+import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied'
+import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied'
+import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAltOutlined'
+import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied'
 
 //others
 
@@ -73,288 +61,360 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 const actionDispatch = (dispach: Dispatch) => ({
   setChosenDealer: (data: Dealer) => dispach(setChosenDealer(data)),
   setTargetCars: (data: Car[]) => dispach(setTargetCars(data)),
-});
+  setMemberReviews: (data: Review[]) => dispach(setMemberReviews(data)),
+})
 // REDUX SELECTOR
-const chosenDealerRetriever = createSelector(
-  retrieveChosenDealer,
-  (chosenDealer) => ({
-    chosenDealer,
-  })
-);
-const targetCarsRetriever = createSelector(
-  retrieveTargetCars,
-  (targetCars) => ({
-    targetCars,
-  })
-);
+const chosenDealerRetriever = createSelector(retrieveChosenDealer, chosenDealer => ({
+  chosenDealer,
+}))
+const targetCarsRetriever = createSelector(retrieveTargetCars, targetCars => ({
+  targetCars,
+}))
+const memberReviewsRetriever = createSelector(retrieveMemberReviews, memberReviews => ({
+  memberReviews,
+}))
 
-const MAX = 150000;
-const MIN = 1000;
+const MAX = 150000
+const MIN = 1000
 const marks = [
   {
     value: MIN,
-    label: "",
+    label: '',
   },
   {
     value: MAX,
-    label: "",
+    label: '',
   },
-];
+]
+const StyledRating = styled(Rating)(({ theme }) => ({
+  '& .MuiRating-iconEmpty .MuiSvgIcon-root': {
+    color: theme.palette.action.disabled,
+  },
+}))
 
+const customIcons: {
+  [index: string]: {
+    icon: React.ReactElement
+    label: string
+  }
+} = {
+  1: {
+    icon: <SentimentVeryDissatisfiedIcon color="error" />,
+    label: 'Very Dissatisfied',
+  },
+  2: {
+    icon: <SentimentDissatisfiedIcon color="error" />,
+    label: 'Dissatisfied',
+  },
+  3: {
+    icon: <SentimentSatisfiedIcon color="warning" />,
+    label: 'Neutral',
+  },
+  4: {
+    icon: <SentimentSatisfiedAltIcon color="success" />,
+    label: 'Satisfied',
+  },
+  5: {
+    icon: <SentimentVerySatisfiedIcon color="success" />,
+    label: 'Very Satisfied',
+  },
+}
+function IconContainer(props: IconContainerProps) {
+  const { value, ...other } = props
+  return <span {...other}>{customIcons[value].icon}</span>
+}
 const StyledBadge = styled(Badge)(({ theme }) => ({
-  "& .MuiBadge-badge": {
-    backgroundColor: "#44b700",
-    color: "#44b700",
+  '& .MuiBadge-badge': {
+    backgroundColor: '#44b700',
+    color: '#44b700',
     boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
-    "&::after": {
-      position: "absolute",
+    '&::after': {
+      position: 'absolute',
       top: 0,
       left: 0,
-      width: "100%",
-      height: "100%",
-      borderRadius: "50%",
-      animation: "ripple 1.2s infinite ease-in-out",
-      border: "1px solid currentColor",
+      width: '100%',
+      height: '100%',
+      borderRadius: '50%',
+      animation: 'ripple 1.2s infinite ease-in-out',
+      border: '1px solid currentColor',
       content: '""',
     },
   },
-  "@keyframes ripple": {
-    "0%": {
-      transform: "scale(.8)",
+  '@keyframes ripple': {
+    '0%': {
+      transform: 'scale(.8)',
       opacity: 1,
     },
-    "100%": {
-      transform: "scale(2.4)",
+    '100%': {
+      transform: 'scale(2.4)',
       opacity: 0,
     },
   },
-}));
+}))
 
 export function OneDealer(props: any) {
   /**INITIALIZATIONS */
-  let { dealer_id } = useParams<{ dealer_id: string }>();
-  const { setChosenDealer, setTargetCars } = actionDispatch(useDispatch());
-  const { chosenDealer } = useSelector(chosenDealerRetriever);
-  const { targetCars } = useSelector(targetCarsRetriever);
-  const [chosenDealerId, setChosenDealerId] = useState<string>(dealer_id);
-  const refs: any = useRef([]);
-  const history = useHistory();
-  const [make, setMake] = React.useState("");
-  const [transmission, setTransmission] = React.useState("");
-  const [petrol, setPetrol] = React.useState("");
-  const [color, setColor] = React.useState("");
-  const [year, setYear] = React.useState();
-  const [type, setType] = React.useState("");
-  const [search, setSearch] = React.useState("");
-  const [price, setPrice] = React.useState<number>(MIN);
+  let { dealer_id } = useParams<{ dealer_id: string }>()
+  const { setChosenDealer, setTargetCars, setMemberReviews } = actionDispatch(useDispatch())
+  const { chosenDealer } = useSelector(chosenDealerRetriever)
+  const { targetCars } = useSelector(targetCarsRetriever)
+  const [chosenDealerId, setChosenDealerId] = useState<string>(dealer_id)
+  const { memberReviews } = useSelector(memberReviewsRetriever)
+  const [reviewContent, setReviewContent] = useState('')
+  const [reviewRating, setReviewRating] = useState(0)
+  const refs: any = useRef([])
+  const history = useHistory()
+  const [make, setMake] = React.useState('')
+  const [transmission, setTransmission] = React.useState('')
+  const [petrol, setPetrol] = React.useState('')
+  const [color, setColor] = React.useState('')
+  const [year, setYear] = React.useState()
+  const [type, setType] = React.useState('')
+  const [search, setSearch] = React.useState('')
+  const [price, setPrice] = React.useState<number>(MIN)
+  const [productRebuild, setProductRebuild] = useState<Date>(new Date())
   const [targetSearchObject, setTargetSearchObject] = useState<CarSearchObj>({
     page: 1,
     limit: 6,
-    order: "createdAt",
+    order: 'createdAt',
     dealer_mb_id: dealer_id,
-    car_brand: "",
-    car_transmission: "",
-    car_color: "",
-    car_engine_type: "",
-    car_type: "",
+    car_brand: '',
+    car_transmission: '',
+    car_color: '',
+    car_engine_type: '',
+    car_type: '',
     produced_year: undefined,
     car_price: undefined,
-  });
-  const [productRebuild, setProductRebuild] = useState<Date>(new Date());
+  })
+  const [targetSearchDeal, setTargetSearchDeal] = useState<SearchReviews>({
+    page: 1,
+    limit: 3,
+    order: 'updatedAt',
+    review_ref_id: dealer_id,
+    group_type: 'member',
+  })
   useEffect(() => {
-    const dealerService = new DealerApiService();
+    const dealerService = new DealerApiService()
     dealerService
       .getChosenDealer(chosenDealerId)
-      .then((data) => setChosenDealer(data))
-      .catch((err) => console.log(err));
-    const carService = new CarApiService();
+      .then(data => setChosenDealer(data))
+      .catch(err => console.log(err))
+
+    const carService = new CarApiService()
     carService
       .getTargetCars(targetSearchObject)
-      .then((data) => setTargetCars(data))
-      .catch((err) => console.log(err));
-  }, [targetSearchObject, productRebuild]);
+      .then(data => setTargetCars(data))
+      .catch(err => console.log(err))
+    const carReviews = new ReviewApiService()
+    carReviews
+      .getMemberReviews(targetSearchDeal)
+      .then(data => setMemberReviews(data))
+      .catch(err => console.log(err))
+  }, [targetSearchObject, targetSearchDeal, productRebuild])
+
+  const submitReview = async () => {
+    try {
+      // Validate the review content
+      assert.ok(localStorage.getItem('member_data'), Definer.auth_err1)
+      assert.ok(reviewContent.trim() !== '', Definer.submit_content_err)
+      assert.ok(reviewRating == 0, Definer.submit_rating_err)
+
+      // Create the review object
+      const reviewData = {
+        mb: verifiedMemberData._id, // Replace member._id with the actual member ID
+        review_ref_id: dealer_id, // Replace articleId with the actual article ID
+        group_type: 'member',
+        review: reviewContent.trim(),
+        rating: reviewRating, // Replace 2 with the actual rating value
+      }
+      console.log('reviewData::', reviewData)
+      // Call the API to create the review
+      const communityService = new ReviewApiService()
+      const createdReview = await communityService.createReview(reviewData)
+      console.log('createdReview::', createdReview)
+      // Handle the success case
+      // console.log("Review created:", createdReview);
+      // Add any additional logic or state updates as needed
+
+      // Reset the review content
+      setReviewContent('')
+
+      await sweetTopSmallSuccessAlert('submitted successfully', 700, false)
+      setProductRebuild(new Date())
+    } catch (err) {
+      console.log('Error creating review:', err)
+      sweetErrorHandling(err).then()
+
+      // Handle the error case
+      // You can display an error message or perform any necessary actions
+    }
+  }
+
   /**HANDLERS */
   const targetLikeCar = async (e: any, id: string) => {
     try {
-      assert.ok(verifiedMemberData, Definer.auth_err1);
+      assert.ok(verifiedMemberData, Definer.auth_err1)
 
       const memberService = new MemberApiService(),
         like_result = await memberService.memberLikeTarget({
           like_ref_id: id,
-          group_type: "car",
-        });
-      assert.ok(like_result, Definer.general_err1);
+          group_type: 'car',
+        })
+      assert.ok(like_result, Definer.general_err1)
 
       if (like_result.like_status > 0) {
-        e.target.style.fill = "red";
-        refs.current[like_result.like_ref_id].innerHTML++;
+        e.target.style.fill = 'red'
+        refs.current[like_result.like_ref_id].innerHTML++
       } else {
-        e.target.style.fill = "white";
-        refs.current[like_result.like_ref_id].innerHTML--;
+        e.target.style.fill = 'white'
+        refs.current[like_result.like_ref_id].innerHTML--
       }
 
-      await sweetTopSmallSuccessAlert("success", 700, false);
-      setProductRebuild(new Date());
+      await sweetTopSmallSuccessAlert('success', 700, false)
+      setProductRebuild(new Date())
     } catch (err: any) {
-      console.log("targetLikeCar, ERROR:", err);
-      sweetErrorHandling(err).then();
+      console.log('targetLikeCar, ERROR:', err)
+      sweetErrorHandling(err).then()
     }
-  };
-  const handleChange = (
-    event: React.SyntheticEvent | null,
-    newValue: string | null
-  ) => {};
+  }
+  const handleChange = (event: React.SyntheticEvent | null, newValue: string | null) => {}
   const searchHandler = (category: string) =>
-    setTargetSearchObject((prevState) => ({
+    setTargetSearchObject(prevState => ({
       ...prevState,
       page: 1,
       order: category,
-    }));
+    }))
   const searchHandler_make = (e: any) => {
-    targetSearchObject.page = 1;
-    targetSearchObject.car_brand = e.target.value;
-    setMake(e.target.value);
-    setTargetSearchObject({ ...targetSearchObject });
-  };
+    targetSearchObject.page = 1
+    targetSearchObject.car_brand = e.target.value
+    setMake(e.target.value)
+    setTargetSearchObject({ ...targetSearchObject })
+  }
   const searchHandler_trans = (e: any) => {
-    targetSearchObject.page = 1;
-    targetSearchObject.car_transmission = e.target.value;
-    setTransmission(e.target.value);
-    setTargetSearchObject({ ...targetSearchObject });
-  };
+    targetSearchObject.page = 1
+    targetSearchObject.car_transmission = e.target.value
+    setTransmission(e.target.value)
+    setTargetSearchObject({ ...targetSearchObject })
+  }
   const searchHandler_color = (e: any) => {
-    targetSearchObject.page = 1;
-    targetSearchObject.car_color = e.target.value;
-    setColor(e.target.value);
-    setTargetSearchObject({ ...targetSearchObject });
-  };
+    targetSearchObject.page = 1
+    targetSearchObject.car_color = e.target.value
+    setColor(e.target.value)
+    setTargetSearchObject({ ...targetSearchObject })
+  }
   const searchHandler_engine = (e: any) => {
-    targetSearchObject.page = 1;
-    targetSearchObject.car_engine_type = e.target.value;
-    setPetrol(e.target.value);
-    setTargetSearchObject({ ...targetSearchObject });
-  };
+    targetSearchObject.page = 1
+    targetSearchObject.car_engine_type = e.target.value
+    setPetrol(e.target.value)
+    setTargetSearchObject({ ...targetSearchObject })
+  }
   const searchHandler_type = (e: any) => {
-    targetSearchObject.page = 1;
-    targetSearchObject.car_type = e.target.value;
-    setType(e.target.value);
-    setTargetSearchObject({ ...targetSearchObject });
-  };
+    targetSearchObject.page = 1
+    targetSearchObject.car_type = e.target.value
+    setType(e.target.value)
+    setTargetSearchObject({ ...targetSearchObject })
+  }
   const searchHandler_year = (e: any) => {
-    targetSearchObject.page = 1;
-    targetSearchObject.produced_year = e.target.value;
-    setYear(e.target.value);
-    setTargetSearchObject({ ...targetSearchObject });
-  };
+    targetSearchObject.page = 1
+    targetSearchObject.produced_year = e.target.value
+    setYear(e.target.value)
+    setTargetSearchObject({ ...targetSearchObject })
+  }
   const searchHandler_price = (e: any, value: any) => {
-    targetSearchObject.page = 1;
-    targetSearchObject.car_price = value;
-    setPrice(value);
-    setTargetSearchObject({ ...targetSearchObject });
-  };
+    targetSearchObject.page = 1
+    targetSearchObject.car_price = value
+    setPrice(value)
+    setTargetSearchObject({ ...targetSearchObject })
+  }
 
   const handleClick = (event: SelectChangeEvent) => {
-    setMake(event.target.value);
-  };
-  const [val, setVal] = React.useState<number>(MIN);
+    setMake(event.target.value)
+  }
+  const [val, setVal] = React.useState<number>(MIN)
   const handlePrice = (_: Event, newValue: number | number[]) => {
-    setVal(newValue as number);
-  };
+    setVal(newValue as number)
+  }
   const chosenCarHandler = (id: string) => {
-    history.push(`/dealer/cars/${id}`);
-  };
+    history.push(`/dealer/cars/${id}`)
+  }
   const handlePaginationChange = (event: any, value: number) => {
-    targetSearchObject.page = value;
-    setTargetSearchObject({ ...targetSearchObject });
-  };
+    targetSearchObject.page = value
+    setTargetSearchObject({ ...targetSearchObject })
+  }
   return (
     <div className="one_dealer">
       <Container>
-
-        <Stack flexDirection={"column"}>
+        <Stack flexDirection={'column'}>
           <div className="dealer_page_title">{chosenDealer?.mb_nick}</div>
-          <Stack flexDirection={"row"} alignItems={"center"}>
-            <img
-              src="/icons/map_icon.svg"
-              style={{ width: "17px", height: "17px", marginRight: "3px" }}
-            />
+          <Stack flexDirection={'row'} alignItems={'center'}>
+            <img src="/icons/map_icon.svg" style={{ width: '17px', height: '17px', marginRight: '3px' }} />
             <p className="title_address">Seoul, South Korea</p>
           </Stack>
         </Stack>
         <Stack className="central_info">
           <Stack className="info_left">
-            <Stack flexDirection={"column"}>
+            <Stack flexDirection={'column'}>
               <div className="big_image">
-                <img
-                  src={`${serverApi}/${chosenDealer?.mb_image}`}
-                  style={{ width: "100%", height: "100%" }}
-                />
+                <img src={`${serverApi}/${chosenDealer?.mb_image}`} style={{ width: '100%', height: '100%' }} />
               </div>
               <Stack className="image_desc">
-                <Stack flexDirection={"row"} sx={{ marginRight: "10px" }}>
+                <Stack flexDirection={'row'} sx={{ marginRight: '10px' }}>
                   <div className="map_box">
                     <img src="/icons/map_icon.svg" alt="" />
                   </div>
-                  <Box flexDirection={"column"}>
+                  <Box flexDirection={'column'}>
                     <div className="dealer_names">Phone Number</div>
-                    <div className="dealer_phones">
-                      {chosenDealer?.mb_phone}
-                    </div>
+                    <div className="dealer_phones">{chosenDealer?.mb_phone}</div>
                   </Box>
                 </Stack>
-                <Stack flexDirection={"row"} sx={{ marginRight: "10px" }}>
+                <Stack flexDirection={'row'} sx={{ marginRight: '10px' }}>
                   <div className="map_box">
                     <img src="/icons/map_icon.svg" alt="" />
                   </div>
-                  <Box flexDirection={"column"}>
+                  <Box flexDirection={'column'}>
                     <div className="dealer_names">Email Address</div>
                     <div className="dealer_phones">bakhodir2209@gmail.com</div>
                   </Box>
                 </Stack>
-                <Stack flexDirection={"row"} sx={{ marginRight: "10px" }}>
+                <Stack flexDirection={'row'} sx={{ marginRight: '10px' }}>
                   <div className="map_box">
                     <img src="/icons/map_icon.svg" alt="" />
                   </div>
-                  <Box flexDirection={"column"}>
+                  <Box flexDirection={'column'}>
                     <div className="dealer_names">Visit Website</div>
                     <div className="dealer_phones">www.DealerDemo.com</div>
                   </Box>
                 </Stack>
               </Stack>
             </Stack>
-            <Box flexDirection={"column"}>
-              <h2 style={{ color: "#1B1B1B" }}>Introduction</h2>
-              <p style={{ width: "575px", color: "#83827F" }}>
-                There are many variations of passages of Lorem Ipsum available,
-                but majority have suffered teration in some form, by injected
-                humour, or randomised words which don't look even slight
-                believable. If you are going to use a passa In publishing and
-                vfx graphic design, Lorem ipsum is a placeholder text commonly
-                used to demonstrate the visual fo of a document or a typeface
-                without relying on meaningful content. Lorem ipsum may be used
-                as a placeholder before final copy is available.
+            <Box flexDirection={'column'}>
+              <h2 style={{ color: '#1B1B1B' }}>Introduction</h2>
+              <p style={{ width: '575px', color: '#83827F' }}>
+                There are many variations of passages of Lorem Ipsum available, but majority have suffered teration in
+                some form, by injected humour, or randomised words which don't look even slight believable. If you are
+                going to use a passa In publishing and vfx graphic design, Lorem ipsum is a placeholder text commonly
+                used to demonstrate the visual fo of a document or a typeface without relying on meaningful content.
+                Lorem ipsum may be used as a placeholder before final copy is available.
               </p>
             </Box>
             <Stack className="inventory_sec">
-              <Stack flexDirection={"row"} justifyContent={"space-between"}>
-                <h2 style={{ color: "#000" }}>Dealer Inventory</h2>
+              <Stack flexDirection={'row'} justifyContent={'space-between'}>
+                <h2 style={{ color: '#000' }}>Dealer Inventory</h2>
                 <StyledEngineProvider injectFirst>
                   <FormControl
                     style={{
                       width: 200,
-                      marginTop: "20px",
-                      marginRight: "20px",
+                      marginTop: '20px',
+                      marginRight: '20px',
                     }}
-                    size="small"
-                  >
+                    size="small">
                     <InputLabel id="demo-select-small-label">Search</InputLabel>
                     <Selects
                       labelId="demo-select-small-label"
                       id="demo-select-small"
                       value={targetSearchObject.order}
                       label="Search"
-                      onChange={(event: SelectChangeEvent<string>) => searchHandler(event.target.value)}
-                    >
+                      onChange={(event: SelectChangeEvent<string>) => searchHandler(event.target.value)}>
                       <MenuItem value="createdAt">Recently</MenuItem>
                       <MenuItem value="car_views">Most Viewed</MenuItem>
                       <MenuItem value="car_likes">Most Liked</MenuItem>
@@ -394,60 +454,49 @@ export function OneDealer(props: any) {
               <div className="invent_line"></div>
               <Stack className="all_invent_box">
                 {targetCars.map((car: Car) => {
-                  const image_path_0 = `${serverApi}/${car.car_images[0]}`;
-                  const image_path_1 = `${serverApi}/${car.car_images[1]}`;
-                  const image_path_2 = `${serverApi}/${car.car_images[2]}`;
-                  const image_path_3 = `${serverApi}/${car.car_images[3]}`;
-                  const image_path_4 = `${serverApi}/${car.car_images[4]}`;
+                  const image_path_0 = `${serverApi}/${car.car_images[0]}`
+                  const image_path_1 = `${serverApi}/${car.car_images[1]}`
+                  const image_path_2 = `${serverApi}/${car.car_images[2]}`
+                  const image_path_3 = `${serverApi}/${car.car_images[3]}`
+                  const image_path_4 = `${serverApi}/${car.car_images[4]}`
 
-                  const car_desc = `${car.car_description.slice(0, 35)}`;
+                  const car_desc = `${car.car_description.slice(0, 35)}`
                   return (
                     <CssVarsProvider key={car._id}>
                       <Card
                         variant="outlined"
                         sx={{
-                          height: "auto",
-                          width: "295px",
-                          mr: "30px",
-                          mb: "10px",
-                        }}
-                      >
+                          height: 'auto',
+                          width: '295px',
+                          mr: '30px',
+                          mb: '10px',
+                        }}>
                         <CardOverflow>
-                          <AspectRatio ratio={"1"}>
+                          <AspectRatio ratio={'1'}>
                             <Swiper
-                              effect={"flip"}
+                              effect={'flip'}
                               grabCursor={true}
                               pagination={false}
                               navigation={true}
                               modules={[EffectFlip, Pagination, Navigation]}
-                              className="mySwiper"
-                            >
+                              className="mySwiper">
                               <SwiperSlide
                                 className="car_img"
                                 style={{
                                   backgroundImage: `url(${image_path_0})`,
-                                  backgroundSize: "cover",
-                                  cursor: "pointer",
-                                }}
-                              >
-                                <div
-                                  className="view_btn"
-                                  onClick={() => chosenCarHandler(car._id)}
-                                >
-                                  View Details{" "}
-                                  <img
-                                    src="/icons/arrow-right.svg"
-                                    style={{ marginLeft: "9px" }}
-                                  />
+                                  backgroundSize: 'cover',
+                                  cursor: 'pointer',
+                                }}>
+                                <div className="view_btn" onClick={() => chosenCarHandler(car._id)}>
+                                  View Details <img src="/icons/arrow-right.svg" style={{ marginLeft: '9px' }} />
                                 </div>
                                 <div
                                   className="view_btn"
-                                  onClick={(e) => {
-                                    props.onAdd(car);
-                                    e.stopPropagation();
-                                  }}
-                                >
-                                  Add to Cart{" "}
+                                  onClick={e => {
+                                    props.onAdd(car)
+                                    e.stopPropagation()
+                                  }}>
+                                  Add to Cart{' '}
                                 </div>
                               </SwiperSlide>
                             </Swiper>
@@ -458,25 +507,24 @@ export function OneDealer(props: any) {
                             variant="solid"
                             color="neutral"
                             sx={{
-                              position: "absolute",
+                              position: 'absolute',
                               zIndex: 2,
-                              borderRadius: "50%",
-                              right: "1rem",
+                              borderRadius: '50%',
+                              right: '1rem',
                               bottom: 0,
-                              transform: "translateY(50%)",
-                              color: "rgba(0,0,0,.4)",
+                              transform: 'translateY(50%)',
+                              color: 'rgba(0,0,0,.4)',
                             }}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                            }}
-                          >
+                            onClick={e => {
+                              e.stopPropagation()
+                            }}>
                             <Favorite
-                              onClick={(e) => targetLikeCar(e, car._id)}
+                              onClick={e => targetLikeCar(e, car._id)}
                               style={{
                                 fill:
                                   car?.me_liked && car?.me_liked[0]?.my_favorite //i should check here
-                                    ? "red"
-                                    : "white",
+                                    ? 'red'
+                                    : 'white',
                               }}
                             />
                           </IconButton>
@@ -491,121 +539,170 @@ export function OneDealer(props: any) {
                           <Link textColor="neutral.700">{car_desc}...</Link>
                         </Typography>
                         <Typography level="body-sm">
-                          <Link
-                            startDecorator={<LocalGasStationIcon />}
-                            textColor="#000"
-                          >
+                          <Link startDecorator={<LocalGasStationIcon />} textColor="#000">
                             {car.petrol_consumption}/100
                           </Link>
-                          <Link
-                            startDecorator={<SpeedIcon />}
-                            textColor="#000"
-                            sx={{ ml: "7px" }}
-                          >
+                          <Link startDecorator={<SpeedIcon />} textColor="#000" sx={{ ml: '7px' }}>
                             {car.acceleration}cc
                           </Link>
-                          <Link textColor="#000" sx={{ ml: "7px" }}>
+                          <Link textColor="#000" sx={{ ml: '7px' }}>
                             <img
                               src="/icons/gearbox.png"
                               style={{
-                                width: "18px",
-                                height: "14px",
-                                marginLeft: "7px",
+                                width: '18px',
+                                height: '14px',
+                                marginLeft: '7px',
                               }}
                               alt=""
-                            />{" "}
+                            />{' '}
                             {car.car_transmission}
                           </Link>
                         </Typography>
                         <CardOverflow
                           sx={{
-                            display: "flex",
+                            display: 'flex',
                             gap: 1.5,
                             py: 1.5,
-                            px: "var(--Card-padding)",
-                            borderTop: "1px solid",
-                            borderColor: "neutral.outlinedBorder",
-                            bgcolor: "background.level1",
-                          }}
-                        >
+                            px: 'var(--Card-padding)',
+                            borderTop: '1px solid',
+                            borderColor: 'neutral.outlinedBorder',
+                            bgcolor: 'background.level1',
+                          }}>
                           <Stack
                             sx={{
-                              flexDirection: "row",
-                              justifyContent: "space-between",
-                            }}
-                          >
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                            }}>
                             <Typography
                               level="body-sm"
                               sx={{
-                                fontWeight: "700",
-                                fontFamily: "Plus Jakarta Sans",
-                                color: "#D01818",
-                                alignItems: "center",
-                                display: "flex",
-                              }}
-                            >
-                              $
-                              {Math.round(
-                                car.car_price -
-                                  car.car_price * (car.car_discount / 100)
-                              )}
+                                fontWeight: '700',
+                                fontFamily: 'Plus Jakarta Sans',
+                                color: '#D01818',
+                                alignItems: 'center',
+                                display: 'flex',
+                              }}>
+                              ${Math.round(car.car_price - car.car_price * (car.car_discount / 100))}
                             </Typography>
                             <Typography
                               level="body-sm"
                               sx={{
-                                fontWeight: "500",
-                                fontFamily: "Plus Jakarta Sans",
-                                color: "#86898E",
-                                textDecoration: "line-through",
-                                alignItems: "center",
-                                display: "flex",
-                              }}
-                            >
+                                fontWeight: '500',
+                                fontFamily: 'Plus Jakarta Sans',
+                                color: '#86898E',
+                                textDecoration: 'line-through',
+                                alignItems: 'center',
+                                display: 'flex',
+                              }}>
                               ${car.car_price}
                             </Typography>
-                            <Stack flexDirection={"row"}>
+                            <Stack flexDirection={'row'}>
                               <Typography
                                 level="body-sm"
                                 sx={{
-                                  fontWeight: "md",
-                                  color: "text.secondary",
-                                  alignItems: "center",
-                                  display: "flex",
-                                }}
-                              >
-                                {car.car_views}{" "}
-                                <VisibilityIcon
-                                  sx={{ fontsize: 20, marginLeft: "5px" }}
-                                />
+                                  fontWeight: 'md',
+                                  color: 'text.secondary',
+                                  alignItems: 'center',
+                                  display: 'flex',
+                                }}>
+                                {car.car_views} <VisibilityIcon sx={{ fontsize: 20, marginLeft: '5px' }} />
                               </Typography>
-                              <Box sx={{ width: 2, bgcolor: "divider" }} />
+                              <Box sx={{ width: 2, bgcolor: 'divider' }} />
                               <Typography
                                 level="body-sm"
                                 sx={{
-                                  fontWeight: "md",
-                                  color: "text.secondary",
-                                  alignItems: "center",
-                                  display: "flex",
-                                }}
-                              >
-                                <div
-                                  ref={(element) =>
-                                    (refs.current[car._id] = element)
-                                  }
-                                >
-                                  {car.car_likes}
-                                </div>
-                                <Favorite
-                                  sx={{ fontSize: 20, marginLeft: "5px" }}
-                                />
+                                  fontWeight: 'md',
+                                  color: 'text.secondary',
+                                  alignItems: 'center',
+                                  display: 'flex',
+                                }}>
+                                <div ref={element => (refs.current[car._id] = element)}>{car.car_likes}</div>
+                                <Favorite sx={{ fontSize: 20, marginLeft: '5px' }} />
                               </Typography>
                             </Stack>
                           </Stack>
                         </CardOverflow>
                       </Card>
                     </CssVarsProvider>
-                  );
+                  )
                 })}
+              </Stack>
+              <Stack className="post_author">
+                <h3>Post Author</h3>
+                {memberReviews?.length == 0 ? (
+                  <Box className="no_comment">
+                    There is no comment yet, your comment could brighten someone's day. Share it here!
+                  </Box>
+                ) : (
+                  memberReviews?.map((review: Review) => {
+                    const image_path_com = `${serverApi}/${review.member_data.mb_image}`.replace(/\\/g, '/')
+                    return (
+                      <Stack className="each_comment">
+                        <Stack className="inner_comment">
+                          <div
+                            className="post_image"
+                            style={{
+                              backgroundImage: review?.member_data?.mb_image
+                                ? `url(${image_path_com})`
+                                : `url("/home/super_car.jpg")`,
+                            }}></div>
+                          <Box flexDirection={'column'} width={'100%'}>
+                            <div className="auth_inform">
+                              <p>{review?.member_data?.mb_nick}</p>
+                              <span>{moment(review?.member_data?.createdAt).format('LL')}</span>
+                            </div>
+                            <div className="auth_informs">
+                              <Box justifyContent={'center'} alignItems={'center'} flexDirection={'column'}>
+                                <Rating name="read-only" value={review.rating} readOnly size="small" />
+                              </Box>
+                              <p>{review.rating}.0</p>
+                            </div>
+                            <p className="comment_text">{review?.review_content} </p>
+                          </Box>
+                        </Stack>
+                      </Stack>
+                    )
+                  })
+                )}
+                <h3>leave a Comment</h3>
+              </Stack>
+              <Stack className="leave_comment">
+                <span>Ratings</span>
+                <Box className="rating_box">
+                  <StyledEngineProvider injectFirst>
+                    <StyledRating
+                      name="highlight-selected-only"
+                      defaultValue={reviewRating}
+                      value={reviewRating}
+                      onChange={(event, value) => setReviewRating(value as number)}
+                      IconContainerComponent={IconContainer}
+                      getLabelText={(value: number) => customIcons[value].label}
+                      highlightSelectedOnly
+                    />
+                  </StyledEngineProvider>
+                </Box>
+                <span>Write Review</span>
+                <Box
+                  className="review_box"
+                  component="form"
+                  sx={{
+                    '& > :not(style)': { m: 0 },
+                  }}
+                  noValidate
+                  autoComplete="off">
+                  <TextField
+                    id="outlined-basic"
+                    label="Tell your experience about us"
+                    variant="outlined"
+                    color="info"
+                    style={{ width: '460px', background: 'white' }}
+                    value={reviewContent}
+                    onChange={e => setReviewContent(e.target.value)}
+                  />
+                </Box>
+                <Button className="submit_button" onClick={submitReview}>
+                  Submit Review
+                </Button>
               </Stack>
             </Stack>
           </Stack>
@@ -614,9 +711,8 @@ export function OneDealer(props: any) {
               <Stack className="seller_avatar">
                 <StyledBadge
                   overlap="circular"
-                  anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                  variant="dot"
-                >
+                  anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                  variant="dot">
                   <Avatar alt="Remy Sharp" src="/cars/top_car.webp" />
                 </StyledBadge>
               </Stack>
@@ -624,70 +720,44 @@ export function OneDealer(props: any) {
                 <h2>Rosalina D. Willaim</h2>
                 <p>Webcost car Dealer</p>
               </div>
-              <Stack
-                flexDirection={"row"}
-                alignItems={"center"}
-                justifyContent={"center"}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="76"
-                  height="11"
-                  viewBox="0 0 76 11"
-                  fill="none"
-                >
-                  <path
-                    d="M11.6791 3.93085L7.99003 3.41394L6.33697 0.181233C6.30128 0.125832 6.25139 0.0800961 6.19204 0.0483744C6.13269 0.0166527 6.06585 0 5.99788 0C5.92991 0 5.86307 0.0166527 5.80372 0.0483744C5.74437 0.0800961 5.69448 0.125832 5.65879 0.181233L4.00573 3.41394L0.316712 3.93085C0.249997 3.93796 0.186738 3.96298 0.134231 4.00303C0.0817235 4.04308 0.0421075 4.09653 0.0199523 4.15722C-0.00220282 4.2179 -0.00599452 4.28335 0.0090146 4.34601C0.0240237 4.40867 0.0572222 4.46599 0.104781 4.51136L2.78924 7.03231L2.15204 10.5979C2.14338 10.6634 2.15384 10.7299 2.18225 10.79C2.21066 10.8502 2.25592 10.9016 2.31299 10.9386C2.37007 10.9756 2.43673 10.9967 2.50558 10.9997C2.57444 11.0026 2.64279 10.9872 2.70306 10.9551L5.99788 9.28262L9.2927 10.9538C9.35297 10.9858 9.42132 11.0012 9.49018 10.9983C9.55903 10.9954 9.6257 10.9742 9.68277 10.9372C9.73985 10.9002 9.7851 10.8488 9.81351 10.7887C9.84192 10.7285 9.85238 10.662 9.84373 10.5965L9.21076 7.03366L11.8952 4.51271C11.9428 4.46735 11.976 4.41002 11.991 4.34736C12.006 4.2847 12.0022 4.21925 11.98 4.15857C11.9579 4.09788 11.9183 4.04443 11.8658 4.00438C11.8133 3.96433 11.75 3.93931 11.6833 3.93221L11.6791 3.93085Z"
-                    fill="#FFC107"
+              <Stack flexDirection={'row'}>
+                <Box
+                  sx={{
+                    '& > legend': { mt: 2 },
+                  }}>
+                  <Rating
+                    name="read-only"
+                    value={
+                      chosenDealer &&
+                      chosenDealer.mb_reviews &&
+                      chosenDealer.mb_reviews.length !== 0 &&
+                      chosenDealer.mb_rating !== undefined
+                        ? Math.floor(chosenDealer.mb_rating / chosenDealer.mb_reviews.length)
+                        : 0
+                    }
+                    readOnly
                   />
-                  <path
-                    d="M27.6791 3.93085L23.99 3.41394L22.337 0.181233C22.3013 0.125832 22.2514 0.0800961 22.192 0.0483744C22.1327 0.0166527 22.0658 0 21.9979 0C21.9299 0 21.8631 0.0166527 21.8037 0.0483744C21.7444 0.0800961 21.6945 0.125832 21.6588 0.181233L20.0057 3.41394L16.3167 3.93085C16.25 3.93796 16.1867 3.96298 16.1342 4.00303C16.0817 4.04308 16.0421 4.09653 16.02 4.15722C15.9978 4.2179 15.994 4.28335 16.009 4.34601C16.024 4.40867 16.0572 4.46599 16.1048 4.51136L18.7892 7.03231L18.152 10.5979C18.1434 10.6634 18.1538 10.7299 18.1823 10.79C18.2107 10.8502 18.2559 10.9016 18.313 10.9386C18.3701 10.9756 18.4367 10.9967 18.5056 10.9997C18.5744 11.0026 18.6428 10.9872 18.7031 10.9551L21.9979 9.28262L25.2927 10.9538C25.353 10.9858 25.4213 11.0012 25.4902 10.9983C25.559 10.9954 25.6257 10.9742 25.6828 10.9372C25.7398 10.9002 25.7851 10.8488 25.8135 10.7887C25.8419 10.7285 25.8524 10.662 25.8437 10.5965L25.2108 7.03366L27.8952 4.51271C27.9428 4.46735 27.976 4.41002 27.991 4.34736C28.006 4.2847 28.0022 4.21925 27.98 4.15857C27.9579 4.09788 27.9183 4.04443 27.8658 4.00438C27.8133 3.96433 27.75 3.93931 27.6833 3.93221L27.6791 3.93085Z"
-                    fill="#FFC107"
-                  />
-                  <path
-                    d="M43.6791 3.93085L39.99 3.41394L38.337 0.181233C38.3013 0.125832 38.2514 0.0800961 38.192 0.0483744C38.1327 0.0166527 38.0658 0 37.9979 0C37.9299 0 37.8631 0.0166527 37.8037 0.0483744C37.7444 0.0800961 37.6945 0.125832 37.6588 0.181233L36.0057 3.41394L32.3167 3.93085C32.25 3.93796 32.1867 3.96298 32.1342 4.00303C32.0817 4.04308 32.0421 4.09653 32.02 4.15722C31.9978 4.2179 31.994 4.28335 32.009 4.34601C32.024 4.40867 32.0572 4.46599 32.1048 4.51136L34.7892 7.03231L34.152 10.5979C34.1434 10.6634 34.1538 10.7299 34.1823 10.79C34.2107 10.8502 34.2559 10.9016 34.313 10.9386C34.3701 10.9756 34.4367 10.9967 34.5056 10.9997C34.5744 11.0026 34.6428 10.9872 34.7031 10.9551L37.9979 9.28262L41.2927 10.9538C41.353 10.9858 41.4213 11.0012 41.4902 10.9983C41.559 10.9954 41.6257 10.9742 41.6828 10.9372C41.7398 10.9002 41.7851 10.8488 41.8135 10.7887C41.8419 10.7285 41.8524 10.662 41.8437 10.5965L41.2108 7.03366L43.8952 4.51271C43.9428 4.46735 43.976 4.41002 43.991 4.34736C44.006 4.2847 44.0022 4.21925 43.98 4.15857C43.9579 4.09788 43.9183 4.04443 43.8658 4.00438C43.8133 3.96433 43.75 3.93931 43.6833 3.93221L43.6791 3.93085Z"
-                    fill="#FFC107"
-                  />
-                  <path
-                    d="M59.6791 3.93085L55.99 3.41394L54.337 0.181233C54.3013 0.125832 54.2514 0.0800961 54.192 0.0483744C54.1327 0.0166527 54.0658 0 53.9979 0C53.9299 0 53.8631 0.0166527 53.8037 0.0483744C53.7444 0.0800961 53.6945 0.125832 53.6588 0.181233L52.0057 3.41394L48.3167 3.93085C48.25 3.93796 48.1867 3.96298 48.1342 4.00303C48.0817 4.04308 48.0421 4.09653 48.02 4.15722C47.9978 4.2179 47.994 4.28335 48.009 4.34601C48.024 4.40867 48.0572 4.46599 48.1048 4.51136L50.7892 7.03231L50.152 10.5979C50.1434 10.6634 50.1538 10.7299 50.1823 10.79C50.2107 10.8502 50.2559 10.9016 50.313 10.9386C50.3701 10.9756 50.4367 10.9967 50.5056 10.9997C50.5744 11.0026 50.6428 10.9872 50.7031 10.9551L53.9979 9.28262L57.2927 10.9538C57.353 10.9858 57.4213 11.0012 57.4902 10.9983C57.559 10.9954 57.6257 10.9742 57.6828 10.9372C57.7398 10.9002 57.7851 10.8488 57.8135 10.7887C57.8419 10.7285 57.8524 10.662 57.8437 10.5965L57.2108 7.03366L59.8952 4.51271C59.9428 4.46735 59.976 4.41002 59.991 4.34736C60.006 4.2847 60.0022 4.21925 59.98 4.15857C59.9579 4.09788 59.9183 4.04443 59.8658 4.00438C59.8133 3.96433 59.75 3.93931 59.6833 3.93221L59.6791 3.93085Z"
-                    fill="#FFC107"
-                  />
-                  <path
-                    d="M75.6791 3.93085L71.99 3.41394L70.337 0.181233C70.3013 0.125832 70.2514 0.0800961 70.192 0.0483744C70.1327 0.0166527 70.0658 0 69.9979 0C69.9299 0 69.8631 0.0166527 69.8037 0.0483744C69.7444 0.0800961 69.6945 0.125832 69.6588 0.181233L68.0057 3.41394L64.3167 3.93085C64.25 3.93796 64.1867 3.96298 64.1342 4.00303C64.0817 4.04308 64.0421 4.09653 64.02 4.15722C63.9978 4.2179 63.994 4.28335 64.009 4.34601C64.024 4.40867 64.0572 4.46599 64.1048 4.51136L66.7892 7.03231L66.152 10.5979C66.1434 10.6634 66.1538 10.7299 66.1823 10.79C66.2107 10.8502 66.2559 10.9016 66.313 10.9386C66.3701 10.9756 66.4367 10.9967 66.5056 10.9997C66.5744 11.0026 66.6428 10.9872 66.7031 10.9551L69.9979 9.28262L73.2927 10.9538C73.353 10.9858 73.4213 11.0012 73.4902 10.9983C73.559 10.9954 73.6257 10.9742 73.6828 10.9372C73.7398 10.9002 73.7851 10.8488 73.8135 10.7887C73.8419 10.7285 73.8524 10.662 73.8437 10.5965L73.2108 7.03366L75.8952 4.51271C75.9428 4.46735 75.976 4.41002 75.991 4.34736C76.006 4.2847 76.0022 4.21925 75.98 4.15857C75.9579 4.09788 75.9183 4.04443 75.8658 4.00438C75.8133 3.96433 75.75 3.93931 75.6833 3.93221L75.6791 3.93085Z"
-                    fill="#FFC107"
-                  />
-                </svg>
-                <span style={{ fontSize: "11px" }}>(1 Review)</span>
+                </Box>
+                <span>
+                  ({chosenDealer?.mb_reviews?.length}
+                  {chosenDealer?.mb_reviews?.length == 1 ? 'review' : 'reviews'})
+                </span>
               </Stack>
               <p className="seller_desc">
-                he whimsically named Egg Canvas is the design director and
-                photographer in Seoul.
+                he whimsically named Egg Canvas is the design director and photographer in Seoul.
               </p>
               <Stack className="seller_social">
-                <img
-                  src="/icons/facebook_icon.svg"
-                  style={{ marginRight: "10px" }}
-                  alt=""
-                />
-                <img
-                  src="/icons/twitter_icon.svg"
-                  style={{ marginRight: "10px" }}
-                />
-                <img
-                  src="/icons/youtube_icon.svg"
-                  style={{ marginRight: "10px" }}
-                />
-                <img
-                  src="/icons/insta_icon.svg"
-                  style={{ marginRight: "10px" }}
-                />
+                <img src="/icons/facebook_icon.svg" style={{ marginRight: '10px' }} alt="" />
+                <img src="/icons/twitter_icon.svg" style={{ marginRight: '10px' }} />
+                <img src="/icons/youtube_icon.svg" style={{ marginRight: '10px' }} />
+                <img src="/icons/insta_icon.svg" style={{ marginRight: '10px' }} />
               </Stack>
               <Button variant="contained" color="primary" size="small">
                 Contact with Dealer
               </Button>
             </Stack>
             <Stack className="car_location">
-              <Stack flexDirection={"row"} alignItems={"center"}>
+              <Stack flexDirection={'row'} alignItems={'center'}>
                 <div className="vertical_line"></div>
                 <div className="line_near">Car Location</div>
               </Stack>
@@ -697,12 +767,11 @@ export function OneDealer(props: any) {
                   width="222"
                   height="235"
                   loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                ></iframe>
+                  referrerPolicy="no-referrer-when-downgrade"></iframe>
               </Box>
             </Stack>
             <Stack className="car_filtering">
-              <Stack flexDirection={"row"} alignItems={"center"}>
+              <Stack flexDirection={'row'} alignItems={'center'}>
                 <div className="vertical_line"></div>
                 <div className="line_near">Search By Filter</div>
               </Stack>
@@ -714,8 +783,7 @@ export function OneDealer(props: any) {
                     id="demo-select-small"
                     value={make}
                     label="Make"
-                    onChange={searchHandler_make}
-                  >
+                    onChange={searchHandler_make}>
                     <MenuItem value="">
                       <em>All</em>
                     </MenuItem>
@@ -724,21 +792,18 @@ export function OneDealer(props: any) {
                         <MenuItem key={brand} value={brand}>
                           {brand}
                         </MenuItem>
-                      );
+                      )
                     })}
                   </Selects>
                 </FormControl>
                 <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                  <InputLabel id="demo-select-small-label">
-                    Transmission
-                  </InputLabel>
+                  <InputLabel id="demo-select-small-label">Transmission</InputLabel>
                   <Selects
                     labelId="demo-select-small-label"
                     id="demo-select-small"
                     value={transmission}
                     label="Transmission"
-                    onChange={searchHandler_trans}
-                  >
+                    onChange={searchHandler_trans}>
                     <MenuItem value="">
                       <em>All</em>
                     </MenuItem>
@@ -747,21 +812,18 @@ export function OneDealer(props: any) {
                   </Selects>
                 </FormControl>
                 <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                  <InputLabel id="demo-select-small-label">
-                    Petrol Type
-                  </InputLabel>
+                  <InputLabel id="demo-select-small-label">Petrol Type</InputLabel>
                   <Selects
                     labelId="demo-select-small-label"
                     id="demo-select-small"
                     value={petrol}
                     label="Petrol Type"
-                    onChange={searchHandler_engine}
-                  >
+                    onChange={searchHandler_engine}>
                     <MenuItem value="">
                       <em>All</em>
                     </MenuItem>
                     {petrol_types.map((ele: string) => {
-                      return <MenuItem value={ele}>{ele}</MenuItem>;
+                      return <MenuItem value={ele}>{ele}</MenuItem>
                     })}
                   </Selects>
                 </FormControl>
@@ -772,13 +834,12 @@ export function OneDealer(props: any) {
                     id="demo-select-small"
                     value={color}
                     label="Color"
-                    onChange={searchHandler_color}
-                  >
+                    onChange={searchHandler_color}>
                     <MenuItem value="">
                       <em>All</em>
                     </MenuItem>
-                    {car_colors.map((ele) => {
-                      return <MenuItem value={ele}>{ele}</MenuItem>;
+                    {car_colors.map(ele => {
+                      return <MenuItem value={ele}>{ele}</MenuItem>
                     })}
                   </Selects>
                 </FormControl>
@@ -789,37 +850,33 @@ export function OneDealer(props: any) {
                     id="demo-select-small"
                     value={year}
                     label="Year(above)"
-                    onChange={searchHandler_year}
-                  >
+                    onChange={searchHandler_year}>
                     <MenuItem value="">
                       <em>All</em>
                     </MenuItem>
                     {car_year.map((ele: number) => {
-                      return <MenuItem value={ele}>{ele}</MenuItem>;
+                      return <MenuItem value={ele}>{ele}</MenuItem>
                     })}
                   </Selects>
                 </FormControl>
                 <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                  <InputLabel id="demo-select-small-label">
-                    Body Type
-                  </InputLabel>
+                  <InputLabel id="demo-select-small-label">Body Type</InputLabel>
                   <Selects
                     labelId="demo-select-small-label"
                     id="demo-select-small"
                     value={type}
                     label="Body Type"
-                    onChange={searchHandler_type}
-                  >
+                    onChange={searchHandler_type}>
                     <MenuItem value="">
                       <em>All</em>
                     </MenuItem>
                     {car_types.map((ele: string) => {
-                      return <MenuItem value={ele}>{ele}</MenuItem>;
+                      return <MenuItem value={ele}>{ele}</MenuItem>
                     })}
                   </Selects>
                 </FormControl>
               </StyledEngineProvider>
-              <Stack flexDirection={"row"} alignItems={"center"}>
+              <Stack flexDirection={'row'} alignItems={'center'}>
                 <div className="vertical_line"></div>
                 <div className="line_near">By Price</div>
               </Stack>
@@ -833,19 +890,11 @@ export function OneDealer(props: any) {
                   max={MAX}
                   onChange={searchHandler_price}
                 />
-                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                  <Typographys
-                    variant="body2"
-                    onClick={() => setVal(MIN)}
-                    sx={{ cursor: "pointer" }}
-                  >
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Typographys variant="body2" onClick={() => setVal(MIN)} sx={{ cursor: 'pointer' }}>
                     {MIN} min
                   </Typographys>
-                  <Typographys
-                    variant="body2"
-                    onClick={() => setVal(MAX)}
-                    sx={{ cursor: "pointer" }}
-                  >
+                  <Typographys variant="body2" onClick={() => setVal(MAX)} sx={{ cursor: 'pointer' }}>
                     {MAX} max
                   </Typographys>
                 </Box>
@@ -854,25 +903,23 @@ export function OneDealer(props: any) {
           </Stack>
         </Stack>
         <Stack className="bottom_box">
-            <Paginations
-              count={
-                targetSearchObject.page >= 3 ? targetSearchObject.page + 1 : 3
-              }
-              page={targetSearchObject.page}
-              renderItem={(item) => (
-                <PaginationItem
-                  components={{
-                    previous: ArrowBackIcon,
-                    next: ArrowForwardIcon,
-                  }}
-                  {...item}
-                  color={"primary"}
-                />
-              )}
-              onChange={handlePaginationChange}
-            />
-          </Stack>
+          <Paginations
+            count={targetSearchObject.page >= 3 ? targetSearchObject.page + 1 : 3}
+            page={targetSearchObject.page}
+            renderItem={item => (
+              <PaginationItem
+                components={{
+                  previous: ArrowBackIcon,
+                  next: ArrowForwardIcon,
+                }}
+                {...item}
+                color={'primary'}
+              />
+            )}
+            onChange={handlePaginationChange}
+          />
+        </Stack>
       </Container>
     </div>
-  );
+  )
 }

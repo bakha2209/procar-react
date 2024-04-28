@@ -18,12 +18,12 @@ import Typography from '@mui/material/Typography'
 import { useParams } from 'react-router-dom'
 import { Car } from '../../../types/car'
 import { useDispatch, useSelector } from 'react-redux'
-import { retrieveChosenCar, retrieveChosenDealer } from '../DealerPage/selector'
+import { retrieveChosenCar, retrieveChosenDealer, retrieveMemberReviews } from '../DealerPage/selector'
 import { createSelector } from 'reselect'
 import { Dealer } from '../../../types/user'
 import { serverApi } from '../../lib/config'
 import { Dispatch } from '@reduxjs/toolkit'
-import { setChosenDealer, setChosenCar } from '../../screens/DealerPage/slice'
+import { setChosenDealer, setChosenCar, setMemberReviews } from '../../screens/DealerPage/slice'
 import { useEffect } from 'react'
 import CarApiService from '../../apiServices/carApiService'
 import DealerApiService from '../../apiServices/dealerApiService'
@@ -38,18 +38,25 @@ import { Favorite, FavoriteBorder } from '@mui/icons-material'
 import '../../../css/comments.css'
 import moment from 'moment'
 import TextField from '@mui/material/TextField'
+import { Review, SearchReviews } from '../../../types/others'
+import ReviewApiService from '../../apiServices/reviewApiService'
 
 // REDUX SLICE
 const actionDispatch = (dispach: Dispatch) => ({
   setChosenCar: (data: Car) => dispach(setChosenCar(data)),
   setChosenDealer: (data: Dealer) => dispach(setChosenDealer(data)),
+  setMemberReviews: (data: Review[]) => dispach(setMemberReviews(data)),
 })
+
 // REDUX SELECTOR
 const chosenCarRetriever = createSelector(retrieveChosenCar, chosenCar => ({
   chosenCar,
 }))
 const chosenDealerRetriever = createSelector(retrieveChosenDealer, chosenDealer => ({
   chosenDealer,
+}))
+const memberReviewsRetriever = createSelector(retrieveMemberReviews, memberReviews => ({
+  memberReviews,
 }))
 
 const order_list = Array.from(Array(3).keys())
@@ -96,11 +103,22 @@ function IconContainer(props: IconContainerProps) {
 export function ChosenCar(props: any) {
   /**INITIALIZATIONS */
   let { car_id } = useParams<{ car_id: string }>()
-  const { setChosenCar, setChosenDealer } = actionDispatch(useDispatch())
+  console.log('car_id', car_id)
+  const { setChosenCar, setChosenDealer, setMemberReviews } = actionDispatch(useDispatch())
   const { chosenCar } = useSelector(chosenCarRetriever)
   const { chosenDealer } = useSelector(chosenDealerRetriever)
+  const { memberReviews } = useSelector(memberReviewsRetriever)
   const label = { inputProps: { 'aria-label': 'Checkbox demo' } }
   const [productRebuild, setProductRebuild] = useState<Date>(new Date())
+  const [reviewContent, setReviewContent] = useState('')
+  const [reviewRating, setReviewRating] = useState(0)
+  const [targetSearchObj, setTargetSearchObj] = useState<SearchReviews>({
+    page: 1,
+    limit: 3,
+    order: 'updatedAt',
+    review_ref_id: car_id,
+    group_type: 'car',
+  })
 
   const carRelatedProcess = async () => {
     try {
@@ -111,6 +129,10 @@ export function ChosenCar(props: any) {
       const dealerService = new DealerApiService()
       const dealer = await dealerService.getChosenDealer(car.dealer_mb_id)
       setChosenDealer(dealer)
+
+      const carReviews = new ReviewApiService()
+      const reviews: Review[] = await carReviews.getMemberReviews(targetSearchObj)
+      setMemberReviews(reviews)
     } catch (err) {
       console.log('carRelatedProcess, ERROR:', err)
     }
@@ -118,6 +140,44 @@ export function ChosenCar(props: any) {
   useEffect(() => {
     carRelatedProcess().then()
   }, [productRebuild])
+
+  const submitReview = async () => {
+    try {
+      // Validate the review content
+      assert.ok(localStorage.getItem('member_data'), Definer.auth_err1)
+      assert.ok(reviewContent.trim() !== '', Definer.submit_content_err)
+      assert.ok(reviewRating !== 0, Definer.submit_rating_err)
+
+      // Create the review object
+      const reviewData = {
+        mb: verifiedMemberData._id, // Replace member._id with the actual member ID
+        review_ref_id: car_id, // Replace articleId with the actual article ID
+        group_type: 'car',
+        review: reviewContent.trim(),
+        rating: reviewRating, // Replace 2 with the actual rating value
+      }
+      console.log('reviewData::', reviewData)
+      // Call the API to create the review
+      const communityService = new ReviewApiService()
+      const createdReview = await communityService.createReview(reviewData)
+      console.log('createdReview::', createdReview)
+      // Handle the success case
+      // console.log("Review created:", createdReview);
+      // Add any additional logic or state updates as needed
+
+      // Reset the review content
+      setReviewContent('')
+
+      await sweetTopSmallSuccessAlert('submitted successfully', 700, false)
+      setProductRebuild(new Date())
+    } catch (err) {
+      console.log('Error creating review:', err)
+      sweetErrorHandling(err).then()
+
+      // Handle the error case
+      // You can display an error message or perform any necessary actions
+    }
+  }
 
   /**HANDLERS */
   const targetLikeProduct = async (e: any) => {
@@ -182,6 +242,14 @@ export function ChosenCar(props: any) {
                 {chosenCar?.produced_year} {chosenCar?.car_brand} {chosenCar?.car_name} {chosenCar?.car_model}
               </h2>
               <div className="sale_off">-{chosenCar?.car_discount ?? 0 > 0 ? chosenCar?.car_discount : null}%</div>
+              <div
+                className="detail_button"
+                onClick={e => {
+                  props.onAdd(chosenCar)
+                  e.stopPropagation()
+                }}>
+                Add to Cart
+              </div>
             </Stack>
             <Stack className="car_brand">
               <div className="car_toyota">Brand: {chosenCar?.car_brand}</div>
@@ -190,9 +258,23 @@ export function ChosenCar(props: any) {
                   sx={{
                     '& > legend': { mt: 2 },
                   }}>
-                  <Rating name="read-only" value={value} readOnly />
+                  <Rating
+                    name="read-only"
+                    value={
+                      chosenCar &&
+                      chosenCar.car_reviews &&
+                      chosenCar.car_reviews.length !== 0 &&
+                      chosenCar.car_rating !== undefined
+                        ? Math.floor(chosenCar.car_rating / chosenCar.car_reviews.length)
+                        : 0
+                    }
+                    readOnly
+                  />
                 </Box>
-                <span>(2reviews)</span>
+                <span>
+                  ({chosenCar?.car_reviews?.length}
+                  {chosenCar?.car_reviews?.length == 1 ? 'review' : 'reviews'})
+                </span>
               </Stack>
               <div style={{ flexDirection: 'row', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <div
@@ -405,33 +487,41 @@ export function ChosenCar(props: any) {
           </Box>
           <Stack className="post_author">
             <h3>Post Author</h3>
-            {order_list.map(ele => {
-              return (
-                <Stack className="each_comment">
-                  <Stack className="inner_comment">
-                    <div className="post_image" style={{ backgroundImage: `url("/home/super_car.jpg")` }}></div>
-                    <Box flexDirection={'column'} width={'100%'}>
-                      <div className="auth_inform">
-                        <p>Rohan De Spond</p>
-                        <span>{moment().format('LL')}</span>
-                      </div>
-                      <div className="auth_informs">
-                        <Box justifyContent={'center'} alignItems={'center'} flexDirection={'column'}>
-                          <Rating name="read-only" value={value} readOnly size="small" />
-                        </Box>
-                        <p>5.0</p>
-                      </div>
-                      <p className="comment_text">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.Curabitur have is covered many vulputate
-                        vestibulum Phasellus rhoncus, dolor eget viverra pretium dolor tellus aliquet nunc, vitae
-                        ultricies erat elit eu lacus. Vestibul non justo consectetur, cursus ante, tincidunt sapien.
-                        Nulla quis{' '}
-                      </p>
-                    </Box>
+            {memberReviews?.length == 0 ? (
+              <Box className="no_comment">
+                There is no comment yet, your comment could brighten someone's day. Share it here!
+              </Box>
+            ) : (
+              memberReviews?.map((review: Review) => {
+                const image_path_com = `${serverApi}/${review.member_data.mb_image}`.replace(/\\/g, '/')
+                return (
+                  <Stack className="each_comment">
+                    <Stack className="inner_comment">
+                      <div
+                        className="post_image"
+                        style={{
+                          backgroundImage: review?.member_data?.mb_image
+                            ? `url(${image_path_com})`
+                            : `url("/home/super_car.jpg")`,
+                        }}></div>
+                      <Box flexDirection={'column'} width={'100%'}>
+                        <div className="auth_inform">
+                          <p>{review?.member_data?.mb_nick}</p>
+                          <span>{moment(review?.member_data?.createdAt).format('LL')}</span>
+                        </div>
+                        <div className="auth_informs">
+                          <Box justifyContent={'center'} alignItems={'center'} flexDirection={'column'}>
+                            <Rating name="read-only" value={review.rating} readOnly size="small" />
+                          </Box>
+                          <p>{review.rating}.0</p>
+                        </div>
+                        <p className="comment_text">{review?.review_content} </p>
+                      </Box>
+                    </Stack>
                   </Stack>
-                </Stack>
-              )
-            })}
+                )
+              })
+            )}
             <h3>leave a Comment</h3>
           </Stack>
           <Stack className="leave_comment">
@@ -440,7 +530,9 @@ export function ChosenCar(props: any) {
               <StyledEngineProvider injectFirst>
                 <StyledRating
                   name="highlight-selected-only"
-                  defaultValue={4}
+                  defaultValue={reviewRating}
+                  value={reviewRating}
+                  onChange={(event, value) => setReviewRating(value as number)}
                   IconContainerComponent={IconContainer}
                   getLabelText={(value: number) => customIcons[value].label}
                   highlightSelectedOnly
@@ -460,11 +552,15 @@ export function ChosenCar(props: any) {
                 id="outlined-basic"
                 label="Tell your experience about us"
                 variant="outlined"
-                color='info'
+                color="info"
                 style={{ width: '460px', background: 'white' }}
+                value={reviewContent}
+                onChange={e => setReviewContent(e.target.value)}
               />
             </Box>
-            <Button className='submit_button'>Submit Review</Button>
+            <Button className="submit_button" onClick={submitReview}>
+              Submit Review
+            </Button>
           </Stack>
         </Stack>
       </Container>

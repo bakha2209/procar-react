@@ -18,6 +18,8 @@ export interface Dealer {
   mb_likes: number;
   mb_follow_cnt: number;
   mb_subscriber_cnt: number;
+  mb_rating?:number;
+  mb_reviews?:string[];
   createdAt: Date;
   me_liked: MeLiked[]; 
 }
@@ -36,6 +38,8 @@ export interface Member {
     mb_top?: string;
     mb_views: number;
     mb_likes: number;
+    mb_rating?:number;
+    mb_reviews?:string[];
     mb_follow_cnt: number;
     mb_subscriber_cnt: number;
     createdAt: Date;

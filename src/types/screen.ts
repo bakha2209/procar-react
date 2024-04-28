@@ -3,7 +3,7 @@ import { Car } from "./car";
 import { Dealer, Member } from "./user";
 import { Order } from "./order";
 import { Follower, Following } from "./follow";
-import {Event} from "./others"
+import {Event, Review} from "./others"
 
 export interface AppRootState {
   homePage: HomePageState;
@@ -28,6 +28,7 @@ export interface DealerPageState {
   chosenDealer: Dealer | null;
   targetCars: Car[];
   chosenCar: Car | null;
+  memberReviews: Review[] | null
 }
 /**ORDERS PAGE */
 export interface OrdersPageState {

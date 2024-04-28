@@ -36,8 +36,9 @@
   width: 54px;
   height: 54px;
   border-radius: 50%;
-  background-size: cover;
+  background-size: 100% 100%;
   background-position: center;
+  background-color: #B6B6BC;
 }
 
 .inner_comment .auth_inform {

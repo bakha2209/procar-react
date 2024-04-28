@@ -67,3 +67,19 @@ export interface Event {
   event_image: string
   member_data: Member
 }
+
+export interface Review {
+  review_ref_id: string
+  review_group: string
+  review_content: string
+  rating:number
+  member_data: Member
+}
+
+export interface SearchReviews {
+  limit:number
+  page:number
+  review_ref_id:string | null
+  group_type: string
+  order:string
+}

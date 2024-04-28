@@ -16,6 +16,7 @@ import{carData} from "../../components/brands&&car_types"
 
 
 
+
 // REDUX SLICE
 const actionDispatch = (dispach: Dispatch) => ({
   setTargetCars: (data: Car[]) => dispach(setTargetCars(data)),
@@ -40,16 +41,17 @@ export function TopBrands(props: any) {
     page: 1,
     limit: 5,
     order: "createdAt",
-    car_brand: "",
+    car_brand: "KIA",
   });
   const [carRebuild, setCarRebuild] = useState<Date>(new Date());
-  useEffect(() => {
-    const carService = new CarApiService();
-    carService
-      .getTargetCars(targetSearchObject)
-      .then((data) => setTargetCars(data))
-      .catch((err) => console.log(err));
-  }, [targetSearchObject, carRebuild]);
+  // useEffect(() => {
+  //   const carService = new CarApiService();
+  //   carService
+  //     .getTargetCars(targetSearchObject)
+  //     .then((data) => setTargetCars(data))
+  //     .catch((err) => console.log(err));
+  // }, [targetSearchObject, carRebuild]);
+  
 
   const history = useHistory();
 
@@ -86,6 +88,14 @@ export function TopBrands(props: any) {
     //setTargetSearchObject({ ...targetSearchObject });
   };
 
+  const searchTypeHandler = (type: string) => {
+    history.push(`/dealer/cars`);
+    window.scrollTo(0, 0);
+    targetSearchObject.page = 1;
+    targetSearchObject.car_brand = type;
+    setTargetSearchObject({ ...targetSearchObject });
+  };
+
   return (
     <div className="top_brand">
       <Container>
@@ -101,8 +111,8 @@ export function TopBrands(props: any) {
                   <Box
                     className="brand_box"
                     onClick={() => {
-                      searchHandler_make(ele.model);
-                      history.push("/dealer/cars");
+                      searchTypeHandler(ele.model);
+                      
                     }}
                   >
                     <img src={`${ele.image}`} alt="" />
@@ -131,7 +141,10 @@ export function TopBrands(props: any) {
             <Box className="model_inc" flexWrap={"wrap"}>
               {carData.map((ele) => {
                 return (
-                  <Box className="brand_box">
+                  <Box className="brand_box" onClick={() => {
+                    searchTypeHandler(ele.model);
+                    
+                  }}>
                     <img src={`${ele.image}`} alt="" />
                     <p>{ele.model}</p>
                   </Box>

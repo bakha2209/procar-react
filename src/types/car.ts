@@ -25,6 +25,8 @@ export interface Car {
     car_likes: number;
     car_views: number;
     dealer_mb_id: string;
+    car_rating?:number;
+    car_reviews?:string[];
     createdAt: Date;
     updatedAt: Date;
     me_liked: MeLiked[]; 

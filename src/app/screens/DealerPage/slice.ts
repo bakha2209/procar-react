@@ -6,6 +6,7 @@ const initialState: DealerPageState = {
   chosenDealer: null,
   targetCars: [],
   chosenCar: null,
+  memberReviews:null
 };
 
 const dealerPageSlice = createSlice({
@@ -24,6 +25,9 @@ const dealerPageSlice = createSlice({
         setChosenCar: (state, action) => {
             state.chosenCar=action.payload
         },
+        setMemberReviews: (state, action) => {
+            state.memberReviews=action.payload
+        },
     }
 })
 
@@ -31,7 +35,8 @@ export const {
     setTargetDealers,
     setChosenDealer,
     setTargetCars,
-    setChosenCar
+    setChosenCar,
+    setMemberReviews
 } = dealerPageSlice.actions
 
 const DealerPageReducer = dealerPageSlice.reducer;

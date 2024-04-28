@@ -1,11 +1,14 @@
 .main_view {
   display: flex;
   flex-direction: column;
+  width: 100%;
+  height: auto;
   padding: 80px 60px 20px 60px;
 }
 .main_view .central_view {
   display: flex;
   flex-direction: row;
+  height: auto;
 }
 .central_view .central_left {
   display: flex;

@@ -481,6 +481,7 @@ cursor: pointer;
   background: #ea1b25;
   margin-left: 40px;
   padding-left: 5px;
+  margin-right: 20px;
 }
 .car_description .car_brand {
   flex-direction: row;
@@ -891,7 +892,7 @@ width: 140px;
   justify-content: space-between;
   width: 100%;
 }
-.right_bottom .detail_button {
+.detail_button {
   width: 139px;
   height: 30px;
   border-radius: 2px;
@@ -915,7 +916,7 @@ width: 140px;
   letter-spacing: 0.42px;
   text-transform: uppercase;
 }
-.right_bottom .detail_button:hover {
+.detail_button:hover {
   background: #d01818;
   color: #fff;
 }
@@ -926,4 +927,18 @@ width: 140px;
   flex-direction: row;
   align-items: center;
   justify-content: center;
+}
+
+.no_comment {
+  background-color: #f8f8f8; /* Background color */
+  color: #333; /* Text color */
+  padding: 15px; /* Padding */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow */
+  font-size: 16px; /* Font size */
+  text-align: center; /* Center text */
+}
+.no_comment:hover {
+  background-color: #ebebeb; /* Darker background color on hover */
+  cursor: pointer; 
 }

@@ -18,3 +18,7 @@ export const retrieveChosenCar = createSelector(
     selectDealerPage,
     (DealerPage) => DealerPage.chosenCar
 );
+export const retrieveMemberReviews = createSelector(
+    selectDealerPage,
+    (DealerPage) => DealerPage.memberReviews
+);
