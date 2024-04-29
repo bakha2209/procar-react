@@ -72,6 +72,27 @@ class CarApiService {
       throw err;
     }
   }
+
+  async getTargetProductsBySearch(searchText: string): Promise<Car[]> {
+    try {
+      console.log("path::::", this.path);
+
+      const url = `/searchData/${searchText}`;
+      const result = await axios.get(this.path + url, {
+        withCredentials: true,
+      });
+
+      assert.ok(result?.data, Definer.general_err1);
+      assert.ok(result?.data?.state !== "fail", result?.data?.message);
+
+      console.log("TopSellingProducts:::", result.data.state);
+      const cars: Car[] = result.data.data;
+      return cars;
+    } catch (err: any) {
+      console.log(`ERROR::: getTargetProducts ${err.message}`);
+      throw err;
+    }
+  }
 }
 
 export default CarApiService;

@@ -108,6 +108,19 @@ export function AllCars(props: any) {
   }, [targetSearchObject, carRebuild]);
   const [clicked, setClicked] = useState(false);
   /**HANDLERS */
+  const handleInputChange = (event: any) => {
+   //window.scrollTo(1000, 0);
+    
+    // setSearchValue(event.target.value);
+    const carService = new CarApiService();
+
+    carService
+      .getTargetProductsBySearch(event.target.value)
+      .then((data) => setTargetCars(data))
+      .catch((err) => console.log(err));
+
+    // setProductRebuild(new Date());
+  };
   const chosenCarHandler = (id: string) => {
     history.push(`/dealer/cars/${id}`);
   };
@@ -206,6 +219,7 @@ export function AllCars(props: any) {
                   className="searchInput"
                   name="resSearch"
                   placeholder="Search"
+                  onChange={handleInputChange}
                 />
                 <Button
                   className="button_search"
