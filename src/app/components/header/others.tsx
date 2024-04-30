@@ -12,12 +12,21 @@ import {
   dividerClasses,
 } from "@mui/material";
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import Basket from "./basket";
 import { verifiedMemberData } from "../../apiServices/verify";
 
 export function NavbarOthers(props: any) {
+  const history = useHistory()
+  const goCarsHandler = () => {
+    
+    history.push("/dealer/cars");
+    window.scrollBy({
+      top: 480,
+      behavior: "smooth",
+    });
+  };
   return (
     <div className="format_others home_navbar">
       <Container>
@@ -161,6 +170,7 @@ export function NavbarOthers(props: any) {
               <span className="center_word_inner1">Drivers</span>
             </div>
           </Box>
+          <div className="header_shop" onClick={goCarsHandler}>Shop Now</div>
         </Stack>
       </Container>
     </div>

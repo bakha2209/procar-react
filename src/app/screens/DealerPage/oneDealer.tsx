@@ -217,7 +217,7 @@ export function OneDealer(props: any) {
       // Validate the review content
       assert.ok(localStorage.getItem('member_data'), Definer.auth_err1)
       assert.ok(reviewContent.trim() !== '', Definer.submit_content_err)
-      assert.ok(reviewRating == 0, Definer.submit_rating_err)
+      assert.ok(reviewRating !== 0, Definer.submit_rating_err)
 
       // Create the review object
       const reviewData = {
@@ -421,35 +421,7 @@ export function OneDealer(props: any) {
                     </Selects>
                   </FormControl>
                 </StyledEngineProvider>
-                {/* <Select
-                  showSearch
-                  style={{ width: 200, marginTop: "20px", marginRight: "20px" }}
-                  placeholder="Select"
-                  optionFilterProp="children"
-                  onChange={()=>searchHandler}
-                  // filterOption={(input, option) =>
-                  //   (option?.label ?? "").includes(input)
-                  // }
-                  // filterSort={(optionA, optionB) =>
-                  //   (optionA?.label ?? "")
-                  //     .toLowerCase()
-                  //     .localeCompare((optionB?.label ?? "").toLowerCase())
-                  // }
-                  options={[
-                    {
-                      value: "createdAt",
-                      label: "Recently",
-                    },
-                    {
-                      value: "car_views",
-                      label: "Most Viewed",
-                    },
-                    {
-                      value: "car_likes",
-                      label: "Most Liked",
-                    },
-                  ]}
-                /> */}
+                
               </Stack>
               <div className="invent_line"></div>
               <Stack className="all_invent_box">
@@ -649,7 +621,7 @@ export function OneDealer(props: any) {
                           <Box flexDirection={'column'} width={'100%'}>
                             <div className="auth_inform">
                               <p>{review?.member_data?.mb_nick}</p>
-                              <span>{moment(review?.member_data?.createdAt).format('LL')}</span>
+                              <span>{moment(review?.createdAt).format('LL')}</span>
                             </div>
                             <div className="auth_informs">
                               <Box justifyContent={'center'} alignItems={'center'} flexDirection={'column'}>

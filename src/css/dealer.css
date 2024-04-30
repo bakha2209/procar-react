@@ -118,7 +118,7 @@ cursor: pointer;
   justify-content: center;
   align-items: center;
 }
-.all_dealer .bottom_box {
+ .all_dealer .bottom_box {
   width: 100%;
   flex-direction: row;
   align-items: center;

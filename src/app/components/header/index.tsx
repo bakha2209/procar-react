@@ -13,11 +13,20 @@ import {
 } from "@mui/material";
 import React from "react";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import Basket from "./basket";
 import { verifiedMemberData } from "../../apiServices/verify";
 
 export function NavbarHome(props: any) {
+  const history = useHistory()
+  const goCarsHandler = () => {
+    
+    history.push("/dealer/cars");
+    window.scrollBy({
+      top: 800,
+      behavior: "smooth",
+    });
+  };
   return (
     <div className="format home_navbar">
       <Container>
@@ -206,6 +215,7 @@ export function NavbarHome(props: any) {
               <span className="center_word_inner1">Drivers</span>
             </div>
           </Box>
+          <div className="header_shop" onClick={goCarsHandler}>Shop Now</div>
           <Box className="site_desc">
             <span className="site_desc_text">
               Who wants to buy new cars, this is the best place for them.There

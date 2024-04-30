@@ -136,9 +136,9 @@ export function VisitMyPage(props: any) {
     setMemberArticleSearchObj({ ...memberArticleSearchObj });
   };
   const handlePaginationChange = (event: any, value: number) => {
-    memberArticleSearchObj.page = value;
-    setMemberArticleSearchObj({ ...memberArticleSearchObj });
-  };
+    memberArticleSearchObj.page = value
+    setMemberArticleSearchObj({ ...memberArticleSearchObj })
+  }
 
   const renderChosenArticleHandler = async (art_id: string) => {
     try {
@@ -161,6 +161,7 @@ export function VisitMyPage(props: any) {
       <Container sx={{ mt: "50px", mb: "50px" }}>
         <Stack className="my_page_frame">
           <TabContext value={value}>
+            
             <Stack className="my_page_left">
               <img src={verifiedMemberData?.mb_image ?? "/home/super_car.jpg"} className="profile_img" alt="" />
               <div className="full_name">{chosenMember?.mb_nick}</div>
@@ -288,7 +289,7 @@ export function VisitMyPage(props: any) {
               <Box display={"flex"} flexDirection={"column"}>
                 <TabPanel value="1">
                   <Box className="menu_name">My Stories</Box>
-                  <Box className="menu_content">
+                  <Stack className="menu_content">
                     <MemberPosts
                       chosenMemberBoArticles={chosenMemberBoArticles}
                       renderChosenArticleHandler={renderChosenArticleHandler}
@@ -296,20 +297,12 @@ export function VisitMyPage(props: any) {
                       articlesRebuild={articlesRebuild}
                       handleArticleChange={handleArticleChange}
                     />
-                    <Stack
-                      sx={{ my: "40px" }}
-                      direction={"row"}
-                      justifyContent={"center"}
-                    >
-                      <Box className={"bottom_box"}>
+                    <Stack direction={'row'} justifyContent={'center'} display={"flex"} position={"relative"}>
+                      <Box className={'bottom_box'}>
                         <Pagination
-                          count={
-                            memberArticleSearchObj.page >= 3
-                              ? memberArticleSearchObj.page + 1
-                              : 3
-                          }
+                          count={memberArticleSearchObj.page >= 3 ? memberArticleSearchObj.page + 1 : 3}
                           page={memberArticleSearchObj.page}
-                          renderItem={(item) => (
+                          renderItem={item => (
                             <PaginationItem
                               components={{
                                 previous: ArrowBackIcon,
@@ -323,7 +316,7 @@ export function VisitMyPage(props: any) {
                         />
                       </Box>
                     </Stack>
-                  </Box>
+                  </Stack>
                 </TabPanel>
                 <TabPanel value={"2"}>
                   <Box className={"menu_name"}>Followers</Box>
@@ -356,10 +349,11 @@ export function VisitMyPage(props: any) {
                   </Box>
                 </TabPanel>
 
-                <TabPanel value={"5"}>
+                <TabPanel value={"5"} onClick={()=>history.push(`/member-page/${chosenSingleBoArticles?._id}`)}>
                   <Box className={"menu_name"}>Chosen Story</Box>
                   <Box className={"menu_content"}>
-                    <TViewer chosenSingleBoArticles={chosenSingleBoArticles} />
+                    <TViewer chosenSingleBoArticles={chosenSingleBoArticles}  />
+                    
                   </Box>
                 </TabPanel>
 

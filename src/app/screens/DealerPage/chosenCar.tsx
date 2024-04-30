@@ -507,7 +507,7 @@ export function ChosenCar(props: any) {
                       <Box flexDirection={'column'} width={'100%'}>
                         <div className="auth_inform">
                           <p>{review?.member_data?.mb_nick}</p>
-                          <span>{moment(review?.member_data?.createdAt).format('LL')}</span>
+                          <span>{moment(review?.createdAt).format('LL')}</span>
                         </div>
                         <div className="auth_informs">
                           <Box justifyContent={'center'} alignItems={'center'} flexDirection={'column'}>

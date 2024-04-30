@@ -36,6 +36,7 @@ import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt
 import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied'
 import { StyledEngineProvider, styled } from '@mui/material/styles'
 import ReviewApiService from '../../apiServices/reviewApiService'
+import { Recent_Blogs } from '../recent_blogs'
 // REDUX SLICE
 const actionDispatch = (dispach: Dispatch) => ({
   setTargetBoArticles: (data: BoArticle[]) => dispach(setTargetBoArticles(data)),
@@ -240,10 +241,9 @@ const TViewer = (props: any) => {
                 <span>{moment(props.chosenMemberBoArticles?.createdAt).format('LL')}</span>
                 <div style={{ flexDirection: 'row', cursor: 'pointer' }}>
                   <img src="/icons/comment.svg" alt="" />
-                  <span>(03)</span>
+                  <span>({props.chosenMemberBoArticles?.art_reviews?.length || 0})</span>
                 </div>
-                {/* <img src="/icons/timer.svg" alt="" />
-                  <span>{moment().format("YY-MM-DD")}</span> */}
+                
               </Stack>
 
               <Box
@@ -309,27 +309,7 @@ const TViewer = (props: any) => {
               </Box>
             </Stack>
             <Stack className="recent_blog">
-              <Stack flexDirection={'row'} alignItems={'center'} width={'100%'}>
-                <div className="red_vertical"></div>
-                <div className="line_name">Recent Blog</div>
-              </Stack>
-              <Stack className="inner_blogs">
-                {targetBoArticles.map((articles: BoArticle) => {
-                  const images_path = articles.art_image ? `${serverApi}/${articles.art_image}` : '/home/super_car.jpg'
-                  return (
-                    <Box className="item_blog">
-                      <img src={images_path} className="item_image" alt="" />
-                      <Box flexDirection={'column'} height={'56px'}>
-                        <Stack flexDirection={'row'} alignItems={'center'} height={'auto'}>
-                          <CalendarMonthIcon fontSize="small" style={{ color: 'red' }} />
-                          <span>{moment(articles.createdAt).format('LL')}</span>
-                        </Stack>
-                        <div className="item_topic">{articles.art_subject}</div>
-                      </Box>
-                    </Box>
-                  )
-                })}
-              </Stack>
+              <Recent_Blogs/>
 
               <Stack className="popular_tags">
                 <Stack flexDirection={'row'} alignItems={'center'} width={'100%'}>
@@ -372,7 +352,7 @@ const TViewer = (props: any) => {
                           <Box flexDirection={'column'} width={'100%'}>
                             <div className="auth_inform">
                               <p>{review?.member_data?.mb_nick}</p>
-                              <span>{moment(review?.member_data?.createdAt).format('LL')}</span>
+                              <span>{moment(review?.createdAt).format('LL')}</span>
                             </div>
                             <div className="auth_informs">
                               <Box justifyContent={'center'} alignItems={'center'} flexDirection={'column'}>

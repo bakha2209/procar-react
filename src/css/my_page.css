@@ -291,9 +291,11 @@ width: 100%;
   color: #cbcbcb;
 }
 .member_right {
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 260px;
+  height: auto;
 }
 .member_right .image_ad {
   max-width: 260px;
@@ -352,6 +354,7 @@ width: 100%;
   display: flex;
   flex-direction: row;
   margin-top: 25px;
+  cursor: pointer;
 }
 .item_blog .item_image {
   width: 72px;
@@ -426,6 +429,7 @@ width: 100%;
   display: flex;
   flex-direction: column;
   padding: 26px 22px 37px 15px;
+  margin-top: 20px;
 }
 .popular_tags .box_wrap {
   display: flex;

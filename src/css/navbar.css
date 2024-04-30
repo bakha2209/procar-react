@@ -172,7 +172,7 @@
 }
 .head_information .site_desc {
   margin-left: 140px;
-  margin-top: 134px;
+  margin-top: 60px;
   width: 399px;
   height: auto;
 }
@@ -349,4 +349,25 @@ cursor: pointer;
   width:200px;
   justify-content: center;
   margin-top: 15px;
+}
+.header_shop {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background: #f0bc04;
+  margin-top: 95px;
+  margin-left: 80px;
+  width:140px;
+  color: #fff;
+  padding: 5px 10px;
+  leading-trim: both;
+cursor: pointer;
+  text-edge: cap;
+  font-family: "Plus Jakarta Sans";
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 28px; /* 175% */
+  text-transform: capitalize;
 }

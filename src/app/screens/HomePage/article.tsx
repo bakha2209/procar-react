@@ -91,11 +91,12 @@ export function Articles() {
                       padding: '10px',
                     }}>
                     <Box className="post_desc">
-                      <img src="/icons/user2.svg" alt="" />
+                      <Stack flexDirection={"row"}><img src="/icons/user2.svg" alt="" />
                       <span>{article?.member_data?.mb_nick} /</span>
 
                       <img src="/icons/timer.svg" alt="" />
-                      <span>{moment().startOf('hour').fromNow()}</span>
+                      <span>{moment(article.createdAt).startOf('hour').fromNow()}</span></Stack>
+                      
                       <Box
                         style={{
                           color: '#fff',

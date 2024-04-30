@@ -73,6 +73,7 @@ export interface Review {
   review_group: string
   review_content: string
   rating:number
+  createdAt:Date
   member_data: Member
 }
 

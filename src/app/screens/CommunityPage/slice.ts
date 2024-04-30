@@ -3,6 +3,7 @@ import { CommunityPageState } from "../../../types/screen";
 
 const initialState: CommunityPageState = {
   targetBoArticles: [],
+  recentArticles:[],
 };
 
 const communityPageSlice = createSlice({
@@ -12,9 +13,12 @@ const communityPageSlice = createSlice({
     setTargetBoArticles: (state, action) => {
       state.targetBoArticles = action.payload;
     },
+    setRecentArticles: (state, action) => {
+      state.recentArticles = action.payload;
+    },
   },
 });
 
-export const {setTargetBoArticles} = communityPageSlice.actions
+export const {setTargetBoArticles,setRecentArticles} = communityPageSlice.actions
 const CommunityPageReducer = communityPageSlice.reducer;
 export default CommunityPageReducer;

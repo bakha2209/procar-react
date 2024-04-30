@@ -7,3 +7,7 @@ export const retrieveTargetBoArticles = createSelector(
     selectCommunityPage,
     (CommunityPage)=> CommunityPage.targetBoArticles
 )
+export const retrieveRecentArticles = createSelector(
+    selectCommunityPage,
+    (CommunityPage)=> CommunityPage.recentArticles
+)
