@@ -46,6 +46,7 @@ const chosenSingleBoArticlesRetriever = createSelector(retrieveChosenSingleBoArt
 export function CommunityPage() {
   // INITIALIZATIONS
   const history = useHistory()
+  console.log('verfiid', verifiedMemberData)
   const { setTargetBoArticles, setChosenSingleBoArticle } = actionDispatch(useDispatch())
   const { targetBoArticles } = useSelector(targetBoArticlesRetriever)
   const { chosenSingleBoArticles } = useSelector(chosenSingleBoArticlesRetriever)
@@ -102,9 +103,10 @@ export function CommunityPage() {
     searchArticlesObj.page = value
     setSearchArticlesObj({ ...searchArticlesObj })
   }
-  const goarticleHandler = (mb_id: string, article_id: string) =>
+  const goarticleHandler = (mb_id: string, article_id: string) => {
     history.push(`/member-page/other?mb_id=${mb_id}&art_id=${article_id}`)
-
+    window.scrollTo(0, 500)
+  }
   const renderChosenArticleHandler = async (art_id: string) => {
     try {
       const communityService = new CommunityApiService()
@@ -112,7 +114,7 @@ export function CommunityPage() {
         .getChosenArticle(art_id)
         .then(data => {
           setChosenSingleBoArticle(data)
-          
+
           history.push(`/member-page/${art_id}`)
           setValue('5')
         })
@@ -199,11 +201,7 @@ export function CommunityPage() {
                   <div
                     style={{ flexDirection: 'row', cursor: 'pointer' }}
                     className="read_more"
-                    onClick={() =>
-                      article.mb_id === verifiedMemberData._id
-                        ? renderChosenArticleHandler(article._id)
-                        : goarticleHandler(article.mb_id, article._id)
-                    }>
+                    onClick={() => goarticleHandler(article.mb_id, article._id)}>
                     <span className="read_icon">Read More</span>
                     <img src="/icons/direction.svg" alt="" />
                   </div>
@@ -232,7 +230,7 @@ export function CommunityPage() {
             </Stack>
             <Stack className="recent_blog">
               <Recent_Blogs />
-              
+
               <Stack className="category_blog">
                 <Stack flexDirection={'row'} alignItems={'center'} width={'100%'}>
                   <div className="red_vertical"></div>

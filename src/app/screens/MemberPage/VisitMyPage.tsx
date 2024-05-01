@@ -134,10 +134,12 @@ export function VisitMyPage(props: any) {
     memberArticleSearchObj.page = 1;
     memberArticleSearchObj.bo_id = category;
     setMemberArticleSearchObj({ ...memberArticleSearchObj });
+    window.scrollTo(0,500)
   };
   const handlePaginationChange = (event: any, value: number) => {
     memberArticleSearchObj.page = value
     setMemberArticleSearchObj({ ...memberArticleSearchObj })
+    window.scrollTo(0,500)
   }
 
   const renderChosenArticleHandler = async (art_id: string) => {
@@ -148,7 +150,7 @@ export function VisitMyPage(props: any) {
         .then((data) => {
           setChosenSingleBoArticle(data);
           setValue("5");
-          
+          window.scrollTo(0,500)
         })
         .catch((err) => console.log(err));
     } catch (err: any) {

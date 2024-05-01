@@ -22,10 +22,7 @@ export function NavbarDealer(props: any) {
   const goCarsHandler = () => {
     
     history.push("/dealer/cars");
-    window.scrollBy({
-      top: 480,
-      behavior: "smooth",
-    });
+    window.scrollTo(0,500)
   };
   return (
     <div className="format_dealer home_navbar">

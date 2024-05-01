@@ -336,6 +336,7 @@ export function OneDealer(props: any) {
   }
   const chosenCarHandler = (id: string) => {
     history.push(`/dealer/cars/${id}`)
+    window.scrollTo(0,500)
   }
   const handlePaginationChange = (event: any, value: number) => {
     targetSearchObject.page = value

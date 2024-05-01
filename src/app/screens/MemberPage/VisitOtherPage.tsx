@@ -80,6 +80,7 @@ export function VisitOtherPage(props: any) {
   const handlePaginationChange = (event: any, value: number) => {
     memberArticleSearchObj.page = value
     setMemberArticleSearchObj({ ...memberArticleSearchObj })
+    window.scrollTo(0,500)
   }
 
   useEffect(() => {
@@ -105,6 +106,7 @@ export function VisitOtherPage(props: any) {
   useEffect(() => {
     if (chosen_mb_id === verifiedMemberData?._id) {
       history.push('/member-page')
+      window.scrollTo(0,500)
     }
 
     const memberService = new MemberApiService()
@@ -122,6 +124,7 @@ export function VisitOtherPage(props: any) {
         .then(data => {
           setChosenSingleBoArticle(data)
           setValue('4')
+          window.scrollTo(0,500)
         })
         .catch(err => console.log(err))
     } catch (err: any) {

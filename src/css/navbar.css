@@ -371,3 +371,6 @@ cursor: pointer;
   line-height: 28px; /* 175% */
   text-transform: capitalize;
 }
+.header_shop:hover {
+  background: #ae0000;
+}

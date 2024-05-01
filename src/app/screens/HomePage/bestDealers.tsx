@@ -78,10 +78,7 @@ export function BestDealers() {
   }
   const goCarsHandler = () => {
     history.push('/dealer/cars')
-    window.scrollBy({
-      top: -1700,
-      behavior: 'smooth',
-    })
+    window.scrollTo(0,500)
   }
 
   const targetLikeCar = async (e: any, id: string) => {

@@ -16,7 +16,12 @@ export function DealerPage(props: any) {
           <ChosenCar onAdd={props.onAdd} />
         </Route>
         <Route path={`${dealer.path}/cars`}>
-          <AllCars onAdd={props.onAdd} />
+          <AllCars onAdd={props.onAdd} targetCars={props.targetCars}
+            setTargetCars={props.setTargetCars}
+            targetSearchObject={props.targetSearchObject}
+            setTargetSearchObject={props.setTargetSearchObject}
+            orderRebuild={props.orderRebuild}
+            setOrderRebuild={props.setOrderRebuild}/>
         </Route>
         <Route path={`${dealer.path}/:dealer_id`}>
           <OneDealer onAdd={props.onAdd} />

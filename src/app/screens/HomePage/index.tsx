@@ -29,7 +29,7 @@ const topBrandRetriever = createSelector(
   })
 );
 
-export function HomePage() {
+export function HomePage(props:any) {
   //INITIALIZATION
   const { setTopBrands } = actionDispatch(useDispatch());
   const { topBrands } = useSelector(topBrandRetriever);
@@ -43,8 +43,19 @@ export function HomePage() {
   }, []);
   return (
     <div className="homepage">
-      <TopBrands />
-      <ByCategories />
+      <TopBrands targetCars={props.targetCars}
+            setTargetCars={props.setTargetCars}
+            targetSearchObject={props.targetSearchObject}
+            setTargetSearchObject={props.setTargetSearchObject}
+            orderRebuild={props.orderRebuild}
+            setOrderRebuild={props.setOrderRebuild}
+            />
+      <ByCategories targetCars={props.targetCars}
+            setTargetCars={props.setTargetCars}
+            targetSearchObject={props.targetSearchObject}
+            setTargetSearchObject={props.setTargetSearchObject}
+            orderRebuild={props.orderRebuild}
+            setOrderRebuild={props.setOrderRebuild}/>
       <BestDealers />
       <Advertisements />
       <Events />

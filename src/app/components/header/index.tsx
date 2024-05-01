@@ -22,10 +22,7 @@ export function NavbarHome(props: any) {
   const goCarsHandler = () => {
     
     history.push("/dealer/cars");
-    window.scrollBy({
-      top: 800,
-      behavior: "smooth",
-    });
+    window.scrollTo(0,500)
   };
   return (
     <div className="format home_navbar">
