@@ -197,7 +197,7 @@ export function CommunityPage() {
                       <span style={{ marginLeft: '5px' }}>{article?.art_views}</span>
                     </Box>
                   </Box>
-                  <p>{article?.art_subject}</p>
+                  <p>{article?.art_subject.slice(0,38)}</p>
                   <div
                     style={{ flexDirection: 'row', cursor: 'pointer' }}
                     className="read_more"

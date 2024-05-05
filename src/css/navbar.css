@@ -5,6 +5,9 @@
   background: url("/public/home/super_car.jpg");
   background-size: cover;
 }
+/* .format.home_navbar:hover {
+  background: url("/public/home/header.avif");
+} */
 .format_dealer.home_navbar {
   width: 100%;
   height: 500px;

@@ -52,6 +52,7 @@ const bestDealersRetriever = createSelector(retrieveBestDealers, bestDealers => 
 export function BestDealers() {
   /**INITIALIZATIONS */
   const history = useHistory()
+  const [isHovered, setIsHovered] = useState(false)
   const { setBestDealers } = actionDispatch(useDispatch())
   const { bestDealers } = useSelector(bestDealersRetriever)
   const [bestDealerSearchObj, setBestDealerSearchObj] = useState<CarSearchObj>({
@@ -78,7 +79,7 @@ export function BestDealers() {
   }
   const goCarsHandler = () => {
     history.push('/dealer/cars')
-    window.scrollTo(0,500)
+    window.scrollTo(0, 500)
   }
 
   const targetLikeCar = async (e: any, id: string) => {
@@ -108,6 +109,7 @@ export function BestDealers() {
   }
   const chosenCarHandler = (id: string) => {
     history.push(`/dealer/cars/${id}`)
+    window.scrollTo(0,800)
   }
 
   const handleClick = () => {
@@ -150,12 +152,10 @@ export function BestDealers() {
             </Box>
           </Stack>
           <Stack className="all_car_box">
-            {bestDealers.map((car: Car) => {
-              const image_path_0 = `${serverApi}/${car.car_images[0]}`
-              const image_path_1 = `${serverApi}/${car.car_images[1]}`
-              const image_path_2 = `${serverApi}/${car.car_images[2]}`
-              const image_path_3 = `${serverApi}/${car.car_images[3]}`
-              const image_path_4 = `${serverApi}/${car.car_images[4]}`
+            {bestDealers.map((car: Car, index: number) => {
+              const image_path = (car: Car, index: number) => {
+                return `${serverApi}/${car?.car_images[index]}`
+              }
 
               const car_desc = `${car.car_description.slice(0, 35)}`
               // const discount_price = `${car.car_price}`- `${car.car_price}`*(`${car.car_discount}`/100)
@@ -168,8 +168,9 @@ export function BestDealers() {
                       minWidth: 330,
                       mr: '35px',
                       mb: '15px',
-                    }}
-                    onClick={() => chosenCarHandler(car._id)}>
+                    }}>
+                    {/* onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)} */}
                     <CardOverflow>
                       <AspectRatio ratio={'1'}>
                         <Swiper
@@ -179,29 +180,19 @@ export function BestDealers() {
                           navigation={true}
                           modules={[EffectFlip, Pagination, Navigation]}
                           className="mySwiper">
-                          <SwiperSlide>
-                            <img src={`${image_path_0}`} width={'330px'} height={'330px'} />
-                          </SwiperSlide>
-                          <SwiperSlide>
-                            <img src={`${image_path_1}`} width={'330px'} height={'330px'} />{' '}
-                          </SwiperSlide>
-                          <SwiperSlide>
-                            <img src={`${image_path_2}`} width={'330px'} height={'330px'} />{' '}
-                          </SwiperSlide>
-                          <SwiperSlide>
-                            <img
-                              src={`${image_path_3}` ? `${image_path_3}` : `${image_path_0}`}
-                              width={'330px'}
-                              height={'330px'}
-                            />{' '}
-                          </SwiperSlide>
-                          <SwiperSlide>
-                            <img
-                              src={`${image_path_4}` ? `${image_path_4}` : `${image_path_0}`}
-                              width={'330px'}
-                              height={'330px'}
-                            />{' '}
-                          </SwiperSlide>
+                          {car.car_images.map((image, index) => (
+                            <SwiperSlide
+                              onClick={e => {
+                                e.stopPropagation()
+                              }}>
+                              <img
+                                src={`${image_path(car, index)}`}
+                                width={'330px'}
+                                height={'330px'}
+                                onClick={() => chosenCarHandler(car._id)}
+                              />
+                            </SwiperSlide>
+                          ))}
                         </Swiper>
                       </AspectRatio>
                       <IconButton

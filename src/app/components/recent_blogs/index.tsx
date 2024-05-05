@@ -80,9 +80,7 @@ export function Recent_Blogs() {
           : "/cars/top_car.webp";
         return (
           <Box className="item_blog" onClick={() =>
-            articles.mb_id === verifiedMemberData._id
-              ? renderChosenArticleHandler(articles._id)
-              : goarticleHandler(articles.mb_id, articles._id)
+             goarticleHandler(articles.mb_id, articles._id)
           }>
             <img src={art_images_url} className="item_image" alt="" />
             <Box flexDirection={"column"} height={"56px"}>

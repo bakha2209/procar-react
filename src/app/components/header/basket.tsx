@@ -50,7 +50,7 @@ export default function Basket(props: any) {
 
       onDeleteAll();
       handleClose();
-
+      window.scrollTo(0,500)
       props.setOrderRebuild(new Date());
       history.push("/orders");
     } catch (err: any) {

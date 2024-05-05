@@ -225,7 +225,7 @@ export function ChosenCar(props: any) {
                 clickable: true,
               }}
               modules={[Keyboard, Scrollbar, Navigation, Pagination]}
-              className="mySwiper">
+              className="swipe">
               {chosenCar?.car_images.map((ele: string) => {
                 const image_path = `${serverApi}/${ele}`
                 return (

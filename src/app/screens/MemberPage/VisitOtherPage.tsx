@@ -333,7 +333,7 @@ export function VisitOtherPage(props: any) {
                 <TabPanel value={'4'}>
                   <Box className={'menu_name'}>Chosen Story</Box>
                   <Box className={'menu_content'}>
-                    <TViewer chosenSingleBoArticles={chosenSingleBoArticles} />
+                    <TViewer chosenSingleBoArticles={chosenSingleBoArticles} chosenMemberBoArticles={chosenMemberBoArticles}/>
                   </Box>
                 </TabPanel>
               </Box>

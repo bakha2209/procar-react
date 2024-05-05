@@ -116,7 +116,7 @@ export function Articles() {
                         <span style={{ marginLeft: '10px' }}>{article.art_views}</span>
                       </Box>
                     </Box>
-                    <p>{article.art_subject}</p>
+                    <p>{article.art_subject.slice(0,38)}</p>
                     <Link href={`/member-page/other?mb_id=${article.mb_id}&art_id=${article._id}`}>
                       <div className="read_button">
                         <span className="read_icon">Read More</span>

@@ -238,10 +238,10 @@ const TViewer = (props: any) => {
             <Box className="post_desc">
               <Stack flexDirection={'row'} alignItems={'center'}>
                 <CalendarMonthIcon fontSize="small" sx={{ fill: 'red' }} />
-                <span>{moment(props.chosenMemberBoArticles?.createdAt).format('LL')}</span>
+                <span>{moment(props.chosenSingleBoArticles?.createdAt).format('LL')}</span>
                 <div style={{ flexDirection: 'row', cursor: 'pointer' }}>
                   <img src="/icons/comment.svg" alt="" />
-                  <span>({props.chosenMemberBoArticles?.art_reviews?.length || 0})</span>
+                  <span>({props.chosenSingleBoArticles?.art_reviews.length || 0})</span>
                 </div>
                 
               </Stack>

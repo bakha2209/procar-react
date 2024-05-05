@@ -29,45 +29,12 @@ export function Events() {
   useEffect(() => {
     const eventService = new EventApiService()
     eventService
-      .getEvents({ order: 'createdAt', page: 1, limit: 4 })
+      .getEvents({ order: 'createdAt', page: 1, limit: 6 })
       .then(data => setEvents(data))
       .catch(err => console.log(err))
   }, [])
 
-  const events_list = [
-    {
-      title: 'Boyin Foodga marhamat',
-      desc: 'Yangicha Uslubda Yangicha Tam va Yangicha his',
-      author: 'Abdurahmon Mufid',
-      date: '2022/09/01',
-      location: "Toshkent, Nurafshon ko'cha",
-      img: '/dealer/dealer_image4.jpg',
-    },
-    {
-      title: 'Katta Chegirma endi Belissimoda',
-      desc: 'Faqat 25 ~ 31- iyul kunlari antiqa Pitsa yegani tashrif buyuring!',
-      author: 'BelissimodUz',
-      date: '2022/07/25',
-      location: 'Toshkent, Chilonzod',
-      img: '/dealer/dealer_image4.jpg',
-    },
-    {
-      title: 'Hali his qilmagan hisni his qilmoqchimisiz?',
-      desc: "Merhaba promokodi orqali 50% skidgani qo'lga kiriting",
-      author: 'Chicken House',
-      date: '2022/09/10',
-      location: "Toshkent, Qo'yliq",
-      img: '/dealer/dealer_image4.jpg',
-    },
-    {
-      title: "Yangicha Yondashuv Endi O'zbekistonda!!",
-      desc: '🥬 O’zbekistondagi eng yirik ulgurji bozor.\n',
-      author: 'Food City',
-      date: '2022/08/01',
-      location: "Toshkent, Yangi Qo'yliq bozori",
-      img: '/dealer/dealer_image4.jpg',
-    },
-  ]
+  
 
   return (
     <div className={'events_frame'}>
@@ -79,12 +46,13 @@ export function Events() {
 
           <Swiper
             className={'events_info swiper-wrapper'}
-            spaceBetween={40}
-            slidesPerView={3}
+            spaceBetween={30}
+            
+            slidesPerView={"auto"}
             loop={true}
             centeredSlides={true}
             autoplay={{
-              delay: 5000,
+              delay: 2000,
               disableOnInteraction: false,
             }}
             modules={[Autoplay]}>
@@ -93,10 +61,10 @@ export function Events() {
               return (
                 <SwiperSlide className={'events_info_frame'}>
                   <div className={'events_img'}>
-                    <img src={image_path} className={'events_img'} />
+                    <img src={image_path}  className={'events_img'}/>
                   </div>
-                  <Box className={'events_desc'}>
-                    <Box className={'events_bott'}>
+                  <Stack className={'events_desc'}>
+                    
                       <Box className={'bott_left'}>
                         <div className={'event_title_speaker'}>
                           <strong>{event.event_name}</strong>
@@ -109,12 +77,12 @@ export function Events() {
                           </div>
                         </div>
 
-                        <p className={'text_desc'} style={{ marginTop: '10px' }}>
-                          {' '}
+                        <p className={'text_desc'} >
+                        
                           {event.event_content}{' '}
                         </p>
 
-                        <div className={'bott_info'} style={{ marginTop: '10px' }}>
+                        <div className={'bott_info'} >
                           <div className={'bott_info_main'}>
                             <img src={'/icons/calendar.png'} style={{ marginRight: '10px' }} />
                             {event.event_date}
@@ -124,9 +92,9 @@ export function Events() {
                             {event.event_address}
                           </div>
                         </div>
-                      </Box>
+                      
                     </Box>
-                  </Box>
+                  </Stack>
                 </SwiperSlide>
               )
             })}

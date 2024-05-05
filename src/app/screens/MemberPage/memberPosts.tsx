@@ -158,7 +158,7 @@ export function MemberPosts(props: any) {
                       <span style={{ marginLeft: '5px' }}>{article?.art_views}</span>
                     </Box>
                   </Box>
-                  <p>{article?.art_subject}</p>
+                  <p>{article?.art_subject.slice(0,38)}</p>
                   <div className="read_more"
                     style={{ flexDirection: 'row', cursor: 'pointer' }}
                     onClick={() => renderChosenArticleHandler(article?._id)}>

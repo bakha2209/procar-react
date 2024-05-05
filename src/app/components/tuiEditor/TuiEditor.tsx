@@ -124,7 +124,7 @@ export const TuiEditor = (props: any) => {
         </Box>
         <Box className="form_row" style={{ width: "300px" }}>
           <Typography
-            style={{ color: "rgb(225 255 233", margin: "10px" }}
+            style={{ color: "rgb(225, 255, 233", margin: "10px" }}
             variant="h3"
           >
             Topic
