@@ -6,7 +6,7 @@ git pull origin master
 npm i yarn -g
 yarn
 yarn run build
-pm2 start yarn --name=PROCAR -- run start:prod
+pm2 start "yarn run start:prod" --name=PROCAR
 
 # DEVELOPMENT
 # npm i yarn -g
