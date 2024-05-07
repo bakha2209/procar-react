@@ -167,7 +167,7 @@ export function NavbarDealer(props: any) {
               <span className="center_word_inner1">Drivers</span>
             </div>
           </Box>
-          <div className="header_shop" onClick={goCarsHandler}>Shop Now</div>
+          <div className="header_shop" onClick={goCarsHandler} style={{alignItems:"flex-end"}}>Shop Now</div>
         </Stack>
       </Container>
     </div>
