@@ -49,6 +49,8 @@ export function MySettings(props: any) {
         validTypes = ["image/jpg", "image/jpeg", "image/png"];
       assert.ok(validTypes.includes(fileTypes) && file, Definer.input_err2);
 
+      
+
       memberUpdate.mb_image = file;
       setMemberUpdate({ ...memberUpdate });
       setFile(URL.createObjectURL(file));
