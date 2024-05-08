@@ -3,7 +3,6 @@ import assert from "assert";
 
 import { Definer } from "../lib/Definer";
 import { serverApi } from "../lib/config";
-import { Dealer } from "../../types/user";
 import { CarSearchObj } from "../../types/others";
 import { Car } from "../../types/car";
 

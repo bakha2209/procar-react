@@ -51,9 +51,10 @@ export const TuiEditor = (props: any) => {
   };
 
   const changeCategoryHandler = (e: any) => {
-    communityArticleData.bo_id = e.target.value;
+    const newBoId = e.target.value;
     setCommunityArticleData((prevState) => ({
       ...prevState,
+      bo_id: newBoId
     }));
   };
   // const changeTitleHandler = (e: any) => {
@@ -62,9 +63,10 @@ export const TuiEditor = (props: any) => {
   //}
   const changeTitleHandler = useCallback(
     (e: any) => {
-      communityArticleData.art_subject = e.target.value;
+      const newArtSubject = e.target.value;
       setCommunityArticleData((prevState) => ({
         ...prevState,
+        art_subject: newArtSubject
       }));
     },
     [communityArticleData.art_subject]
