@@ -79,6 +79,7 @@ export function MemberFollowing(props: any) {
   const handlePaginationChange = (event: any, value: number) => {
     followingsSearchObj.page = value;
     setFollowingsSearchObj({ ...followingsSearchObj });
+    window.scrollTo(0,500)
   };
   const visitMemberHandler = (mb_id: string) => {
     history.push(`/member-page/other?mb_id=${mb_id}`);

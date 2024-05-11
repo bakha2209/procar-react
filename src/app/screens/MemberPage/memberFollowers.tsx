@@ -68,6 +68,7 @@ export function MemberFollowers(props: any) {
   const handlePaginationChange = (event: any, value: number) => {
     followersSearchObj.page = value;
     setFollowersSearchObj({ ...followersSearchObj });
+    window.scrollTo(0,500)
   };
   const subscribeHandler = async (e: any, id: string) => {
     try {

@@ -37,13 +37,14 @@ export const TuiEditor = (props: any) => {
     try {
       const communityService = new CommunityApiService();
       const image_name = await communityService.uploadImageToServer(image);
+      const normalizedImageName = image_name.replace(/\\/g, "/");
 
       communityArticleData.art_image = image_name;
       setCommunityArticleData((prevState) => ({
         ...prevState,
-        art_image: image_name,
+        art_image: normalizedImageName,
       }));
-      const source = `${serverApi}/${image_name}`;
+      const source = `${serverApi}/${normalizedImageName}`;
       return source;
     } catch (err) {
       console.log("ERROR ::: uploadImage", err);

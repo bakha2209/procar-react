@@ -102,6 +102,7 @@ export function CommunityPage() {
   const handlePaginationChange = (event: any, value: number) => {
     searchArticlesObj.page = value
     setSearchArticlesObj({ ...searchArticlesObj })
+    window.scrollTo(0,500)
   }
   const goarticleHandler = (mb_id: string, article_id: string) => {
     history.push(`/member-page/other?mb_id=${mb_id}&art_id=${article_id}`)

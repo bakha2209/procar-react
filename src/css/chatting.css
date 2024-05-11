@@ -2,6 +2,7 @@
   position: fixed;
   bottom: 80px; /* Adjust this value as needed */
   right: 60px; /* Adjust this value as needed */
+  z-index: 9999;
 }
 
 .dropdown-content {
@@ -22,6 +23,7 @@
 
 .dropdown.open .dropdown-content {
   display: block;
+  z-index: 9999;
 }
 .dropdown-btn {
   width: 50px;

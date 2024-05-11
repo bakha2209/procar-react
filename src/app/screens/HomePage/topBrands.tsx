@@ -89,7 +89,7 @@ export function TopBrands(props: any) {
                 marginTop: '40px',
               }}>
               <button className="brand_button" onClick={toggleView}>
-                see more
+                SEE MORE
               </button>
             </Stack>
           </Stack>
@@ -120,7 +120,7 @@ export function TopBrands(props: any) {
                 marginTop: '40px',
               }}>
               <button className="brand_button" onClick={toggleView}>
-                see top models
+                SEE TOP MODELS
               </button>
             </Stack>
           </Stack>

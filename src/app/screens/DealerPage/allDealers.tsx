@@ -103,6 +103,7 @@ export function AllDealers() {
   const handlePaginationChange = (event: any, value: number) => {
     targetSearchObject.page = value;
     setTargetSearchObject({ ...targetSearchObject });
+    window.scrollTo(0,500)
   };
   const targetLikeHandler = async (e: any, id: string) => {
     try {

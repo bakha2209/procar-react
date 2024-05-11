@@ -78,6 +78,7 @@ export function NavbarDealer(props: any) {
             <Box className="hover-line">
               <IconButton color="primary" aria-label="add to shopping cart">
                 <Basket
+                
                   cartItems={props.cartItems}
                   onAdd={props.onAdd}
                   onDelete={props.onDelete}

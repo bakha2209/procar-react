@@ -51,7 +51,8 @@ export function MySettings(props: any) {
 
       memberUpdate.mb_image = file;
       setMemberUpdate({ ...memberUpdate });
-      setFile(URL.createObjectURL(file));
+      const filePath = URL.createObjectURL(file).replace(/\\/g, "/");
+      setFile(filePath);
     } catch (err) {
       console.log(`ERROR ::: handleImagePreviewer ${err}`);
       sweetErrorHandling(err).then();
