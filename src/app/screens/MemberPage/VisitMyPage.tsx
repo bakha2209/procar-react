@@ -165,7 +165,7 @@ export function VisitMyPage(props: any) {
           <TabContext value={value}>
             
             <Stack className="my_page_left">
-              <img src={verifiedMemberData?.mb_image.replace(/\\/g, "/") ?? "/home/super_car.jpg"} className="profile_img" alt="" />
+              <img src={verifiedMemberData?.mb_image ?? "/home/super_car.jpg"} className="profile_img" alt="" />
               <div className="full_name">{chosenMember?.mb_nick}</div>
               <span>{chosenMember?.mb_type}</span>
               <Box display={"flex"} justifyContent={"center"}>
