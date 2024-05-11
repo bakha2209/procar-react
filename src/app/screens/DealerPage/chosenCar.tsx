@@ -229,8 +229,8 @@ export function ChosenCar(props: any) {
               {chosenCar?.car_images.map((ele: string) => {
                 const image_path = `${serverApi}/${ele}`
                 return (
-                  <SwiperSlide>
-                    <img src={image_path} />
+                  <SwiperSlide style={{height:"100%"}}>
+                    <img height={"100%"} width={"100%"} src={image_path} />
                   </SwiperSlide>
                 )
               })}

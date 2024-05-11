@@ -854,6 +854,7 @@ cursor: pointer;
   width: 223px;
   height: 165px;
   background-size: cover;
+  background-position: center;
 }
 .car_size .car_condition {
   height: 20px;

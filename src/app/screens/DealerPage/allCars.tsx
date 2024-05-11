@@ -94,11 +94,16 @@ export function AllCars(props: any) {
     setTargetSearchObject({ ...targetSearchObject })
   }
   const searchHandler_make = (e: any) => {
-    targetSearchObject.page = 1
-    targetSearchObject.car_brand = e.target.value
-    setMake(e.target.value)
-    setTargetSearchObject({ ...targetSearchObject })
-  }
+    const selectedMake = e.target.value;
+    const updatedSearchObject = {
+      ...targetSearchObject,
+      page: 1,
+      car_brand: selectedMake
+    };
+    const updatedMake = selectedMake === "" ? "All" : selectedMake;
+    setMake(updatedMake);
+    setTargetSearchObject(updatedSearchObject);
+  };
   const searchHandler_trans = (e: any) => {
     targetSearchObject.page = 1
     targetSearchObject.car_transmission = e.target.value
@@ -137,7 +142,8 @@ export function AllCars(props: any) {
   }
   const handlePaginationChange = (event: any, value: number) => {
     targetSearchObject.page = value
-    setTargetSearchObject({ ...targetSearchObject })
+    setTargetSearchObject({ ...targetSearchObject });
+    window.scrollTo(0,500)
   }
   const targetLikeProduct = async (e: any) => {
     try {
@@ -225,9 +231,7 @@ export function AllCars(props: any) {
                     value={make}
                     label="Make"
                     onChange={searchHandler_make}>
-                    <MenuItem value="">
-                      <em>All</em>
-                    </MenuItem>
+                    <MenuItem value=""><em>All</em></MenuItem>
                     {car_brands.map((brand: string) => {
                       return (
                         <MenuItem key={brand} value={brand}>

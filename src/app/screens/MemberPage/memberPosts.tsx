@@ -82,6 +82,7 @@ export function MemberPosts(props: any) {
   const handlePaginationChange = (event: any, value: number) => {
     searchArticlesObj.page = value
     setSearchArticlesObj({ ...searchArticlesObj })
+    window.scrollTo(0,500)
   }
 
   return (

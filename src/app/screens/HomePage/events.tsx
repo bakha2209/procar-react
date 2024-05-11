@@ -47,8 +47,8 @@ export function Events() {
           <Swiper
             className={'events_info swiper-wrapper'}
             spaceBetween={30}
-            
-            slidesPerView={"auto"}
+            style={{width:"100%"}}
+            slidesPerView={3}
             loop={true}
             centeredSlides={true}
             autoplay={{
